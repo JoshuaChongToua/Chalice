@@ -3,7 +3,7 @@ require_once "includes/Users.php";
 ?>
 <link href="css/userCrud.css" rel="stylesheet" media="screen">
 <?php
-$users = getAllUsers();
+
 
 $displayList = true;
 $displayForm = false;
@@ -38,12 +38,7 @@ if(isset($_GET['action'])) {
     }
 
 
-    if ($_GET['action'] == "read") {
-        $displayList = true;
-        $displayForm = false;
-    }
-
-    if ($_GET['action']=="update") :
+    elseif ($_GET['action']=="update"){
         $displayList = false;
         $displayForm = false;
         if (isset($_GET['user_id']) && !empty($_GET['user_id'])){
@@ -82,7 +77,7 @@ if(isset($_GET['action'])) {
         catch (PDOException $e){
         echo 'Erreur : '.$e->getMessage();}
 
-     endif;
+    }
 
 
     if ($_GET['action'] == "delete") {
@@ -125,7 +120,7 @@ if(isset($_GET['action'])) {
 
 
 
-
+$users = getAllUsers();
 
 
 
