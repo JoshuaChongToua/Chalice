@@ -1,5 +1,5 @@
 <?php
-require_once "inc/Users.php";
+require_once "includes/Users.php";
 ?>
 
 <form method="POST">
@@ -33,3 +33,8 @@ if (getVerification($login,$password)){
 
 else
     echo"ko";
+
+?>
+<br>
+
+<a href="userCRUD.php" >userCRUD</a>

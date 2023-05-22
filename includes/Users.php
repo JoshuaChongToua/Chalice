@@ -16,3 +16,27 @@ function getVerification($login,$password)
         return false;
     }
 }
+
+
+function getAllUsers()
+{
+    global $pdo;
+    $query = 'SELECT * FROM users;';
+    return $pdo->query($query)->fetchAll();
+}
+
+function getUser($id)
+{
+    global $pdo;
+    $query = 'SELECT * from users where user_id=:id;';
+    try {
+        $prep = $pdo->prepare($query);
+        $prep->bindParam(':id', $id, PDO::PARAM_INT);
+        $prep->execute();
+        $result = $prep->fetch();
+        return $result;
+    }
+    catch ( Exception $e ) {
+        die("erreur dans la requete ".$e->getMessage());
+    }
+}
