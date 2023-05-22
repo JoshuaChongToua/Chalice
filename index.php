@@ -1,5 +1,5 @@
 <?php
-require_once "inc/manager-db.php";
+require_once "inc/Users.php";
 ?>
 
 <form method="POST">

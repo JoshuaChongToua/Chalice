@@ -1,5 +1,5 @@
 <?php
-require_once 'connect-db.php';
+require_once 'PDO.php';
 function getVerification($login,$password)
 {
     global $pdo;
