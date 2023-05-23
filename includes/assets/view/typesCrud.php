@@ -1,5 +1,7 @@
 <?php
-require_once 'includes/Types.php';
+require_once '../../model/Types.php';
+require_once '../../header.php';
+require_once '../../footer.php';
 $displayForm = false;
 
 if (isset($_GET['action'])) {
@@ -92,7 +94,7 @@ if ($displayForm) {
 
     echo '
     
-    <form name="typeForm" method="POST" action="?action=' . $action . '" onsubmit= "return validateForm(); " required>
+    <form name="typeForm" method="POST" action="?action=' . $action . '" onsubmit= "return validateForm(\'typeForm\',\'role\'); " required>
         Role : <input type="text" name="role" value="' . ($action == 'update' ? $infoType->role : '') . '"  />
         <br>
         <input type="hidden" name="type_id" value="' . ($action == 'update' ? $id : '' ) . '">
@@ -129,4 +131,4 @@ echo '<a href="newsCrud.php">newsCrud</a>';
 </body>
 
 
-<link href="css/userCrud.css" rel="stylesheet" media="screen">
+<link href="../css/userCrud.css" rel="stylesheet" media="screen">

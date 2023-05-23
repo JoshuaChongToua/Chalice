@@ -1,5 +1,8 @@
 <?php
-require_once 'includes/News.php';
+require_once '../../model/News.php';
+require_once '../../header.php';
+require_once '../../footer.php';
+
 $displayForm = false;
 
 if (isset($_GET['action'])) {
@@ -112,7 +115,7 @@ $news = getAllNews();
 
 if ($displayForm) {
     echo '
-    <form name="newsForm" method="POST" action="?action=' . $action . '" onsubmit= "return validateForm(); " required>
+    <form name="newsForm" method="POST" action="?action=' . $action . '" onsubmit= "return validateForm(\'newsForm\',\'title\'); " required>
         Title : <input type="text" name="title"  value="' . ($action == 'update' ? $infoNews->title : '') . '" />
         <br>
         Description : <input type="text" name="description"  value="' . ($action == 'update' ? $infoNews->description : '') . '">
@@ -164,7 +167,7 @@ echo '<a href="typesCrud.php">typeCrud</a>';
 </body>
 
 
-<link href="css/userCrud.css" rel="stylesheet" media="screen">
+<link href="../css/userCrud.css" rel="stylesheet" media="screen">
 
 
 

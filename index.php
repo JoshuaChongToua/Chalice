@@ -1,5 +1,7 @@
 <?php
-require_once "includes/Users.php";
+require_once "includes/model/Users.php";
+require_once "includes/header.php";
+require_once "includes/footer.php";
 ?>
 
 <form method="POST">
@@ -37,6 +39,6 @@ else
 ?>
 <br>
 
-<a href="userCRUD.php" >userCRUD</a>
+<a href="includes/assets/view/userCRUD.php">userCRUD</a>
 <br>
-<a href="newsCrud.php">NewsCrud</a>
+<a href="includes/assets/view/newsCrud.php">NewsCrud</a>
