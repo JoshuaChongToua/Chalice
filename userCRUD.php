@@ -1,9 +1,9 @@
 <?php
 require_once "includes/Users.php";
-var_dump($_POST);
+//var_dump($_POST);
 
-echo "<pre>" . print_r($_GET, true) . "</pre>";
-echo "<pre>" . print_r($_POST, true) . "</pre>";
+//echo "<pre>" . print_r($_GET, true) . "</pre>";
+//echo "<pre>" . print_r($_POST, true) . "</pre>";
 
 
 $displayForm = false;
@@ -165,6 +165,8 @@ if ($displayForm) {
 echo '<a href="?action=create">Create</a>';
 echo '<br>';
 echo '<a href="newsCrud.php">NewsCrud</a>';
+echo '<br>';
+echo '<a href="typesCrud.php">Types</a>';
 ?>
 
 

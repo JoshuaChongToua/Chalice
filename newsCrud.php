@@ -113,7 +113,7 @@ if ($displayForm) {
             <th>supprimer</th>
         </tr>
     ';
-    
+
     foreach ($news as $info) {
         echo '<tr>';
         echo '<td>' . $info->news_id . '</td>';
@@ -132,6 +132,8 @@ if ($displayForm) {
 echo '<a href="?action=create">Create</a>';
 echo '<br>';
 echo '<a href="userCRUD.php">UserCRUD</a>';
+echo '<br>';
+echo '<a href="typesCrud.php">typeCrud</a>';
 ?>
 
 
