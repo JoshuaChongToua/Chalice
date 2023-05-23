@@ -163,6 +163,8 @@ if ($displayForm) {
 }
 
 echo '<a href="?action=create">Create</a>';
+echo '<br>';
+echo '<a href="newsCrud.php">NewsCrud</a>';
 ?>
 
 

@@ -38,3 +38,5 @@ else
 <br>
 
 <a href="userCRUD.php" >userCRUD</a>
+<br>
+<a href="newsCrud.php">NewsCrud</a>
