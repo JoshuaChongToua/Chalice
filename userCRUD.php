@@ -105,13 +105,38 @@ if (isset($action)) {
 
 }
 
+?>
+
+<html>
+<head>
+    <title>News</title>
+    <script type="text/javascript">
+        function validateForm()
+        {
+            var x = document.forms["userForm"]["login"].value;
+            var y = document.forms["userForm"]["password"].value;
+            if (x == "") {
+                alert("Login must be filled out");
+                return false;
+            }
+            if (y == "") {
+                alert("Password must be filled out");
+                return false;
+            }
+
+        }
+    </script>
+</head>
+<body>
+
+<?php
 
 $users = getAllUsers();
 
 
 if ($displayForm) {
     echo '
-    <form method="POST" action="?action=' . $action . '">
+    <form name="userForm" method="POST" action="?action=' . $action . '" onsubmit= "return validateForm(); " required>
         Login : <input type="text" name="login"  value="' . ($action == 'update' ? $infoUser->login : '') . '" />
         <br>
         Password : <input type="password" name="password"  value="' . ($action == 'update' ? $infoUser->password : '') . '">
@@ -168,6 +193,8 @@ echo '<a href="newsCrud.php">NewsCrud</a>';
 echo '<br>';
 echo '<a href="typesCrud.php">Types</a>';
 ?>
+
+</body>
 
 
 <link href="css/userCrud.css" rel="stylesheet" media="screen">

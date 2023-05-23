@@ -17,7 +17,13 @@ if (isset($action)) {
         if (isset($_POST['title'])) {
             $title = $_POST['title'];
             $description = $_POST['description'];
-            $image_id = $_POST['image_id'];
+            if ($_POST['image_id']==''){
+                $image_id = NULL;
+            }
+            else{
+                $image_id = $_POST['image_id'];
+            }
+
             $link = $_POST['link'];
 
             $sql = "INSERT INTO news(title, description, image_id, link) VALUES (:title, :description, :image_id, :link);";
@@ -82,17 +88,36 @@ if (isset($action)) {
     }
 }
 
+?>
 
+<html>
+<head>
+    <title>News</title>
+    <script type="text/javascript">
+        function validateForm()
+        {
+            var x = document.forms["newsForm"]["title"].value;
+            if (x == "") {
+                alert("Name must be filled out");
+                return false;
+            }
+
+        }
+    </script>
+</head>
+<body>
+
+<?php
 $news = getAllNews();
 
 if ($displayForm) {
     echo '
-    <form method="POST" action="?action=' . $action . '">
-        Title : <input type="text" name="title" required value="' . ($action == 'update' ? $infoNews->title : '') . '" />
+    <form name="newsForm" method="POST" action="?action=' . $action . '" onsubmit= "return validateForm(); " required>
+        Title : <input type="text" name="title"  value="' . ($action == 'update' ? $infoNews->title : '') . '" />
         <br>
         Description : <input type="text" name="description"  value="' . ($action == 'update' ? $infoNews->description : '') . '">
         <br>
-        Image_id : <input type="text" name="image_id" pattern="[0-9]+" title="Veuillez entrer un nombre" value="' . ($action == 'update' ? $infoNews->image_id : '') . '">
+        Image_id : <input type="text" name="image_id"  pattern="[0-9]*" title="Veuillez entrer un nombre"  value="' . ($action == 'update' ? $infoNews->image_id : '') . '">
         <br>
         Link : <input type="text" name="link"  value="' . ($action == 'update' ? $infoNews->link : '') . '">
         <br>
@@ -135,6 +160,8 @@ echo '<a href="userCRUD.php">UserCRUD</a>';
 echo '<br>';
 echo '<a href="typesCrud.php">typeCrud</a>';
 ?>
+
+</body>
 
 
 <link href="css/userCrud.css" rel="stylesheet" media="screen">

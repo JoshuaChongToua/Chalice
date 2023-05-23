@@ -67,41 +67,33 @@ if (isset($action)) {
 
     }
 }
+?>
+<html>
+<head>
+    <title>Type</title>
+    <script type="text/javascript">
+        function validateForm()
+        {
+            var x = document.forms["typeForm"]["role"].value;
+            if (x == "") {
+                alert("Name must be filled out");
+                return false;
+            }
+        }
+    </script>
+</head>
+<body>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<?php
 $types = getAllTypes();
 
 if ($displayForm) {
+
     echo '
-    <form method="POST" action="?action=' . $action . '">
-        Role : <input type="text" name="role" required value="' . ($action == 'update' ? $infoType->role : '') . '" />
+    
+    <form name="typeForm" method="POST" action="?action=' . $action . '" onsubmit= "return validateForm(); " required>
+        Role : <input type="text" name="role" value="' . ($action == 'update' ? $infoType->role : '') . '"  />
         <br>
         <input type="hidden" name="type_id" value="' . ($action == 'update' ? $id : '' ) . '">
         <input type="submit" name="submit" value="submit">
@@ -134,6 +126,7 @@ echo '<a href="userCRUD.php">UserCRUD</a>';
 echo '<br>';
 echo '<a href="newsCrud.php">newsCrud</a>';
 ?>
+</body>
 
 
 <link href="css/userCrud.css" rel="stylesheet" media="screen">
