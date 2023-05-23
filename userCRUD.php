@@ -24,8 +24,15 @@ if (isset($action)) {
         if (isset($_POST['login']) && isset($_POST['password'])) {
             $login = $_POST['login'];
             $password = $_POST['password'];
+            $role = $_POST['role'];
+            if ($role == "admin"){
+                $type_id = 1;
+            }
+            else{
+                $type_id = 2;
+            }
 
-            $sql = "INSERT INTO users(login, password, type_id) VALUES (:login, :password, 2);";
+            $sql = "INSERT INTO users(login, password, type_id) VALUES (:login, :password, $type_id);";
             try {
                 global $pdo;
                 $statement = $pdo->prepare($sql);
@@ -45,18 +52,33 @@ if (isset($action)) {
             $login = $_POST['login'];
             $password = $_POST['password'];
             $id = $_POST['user_id'];
+            $role = $_POST['role'];
+            if ($role == "admin"){
+                $type_id = 1;
+            }
+            else{
+                $type_id = 2;
+            }
 
 
 
-            $sql = "UPDATE users SET login=:login, password=:password WHERE user_id=:id;";
+            $sql = "UPDATE users SET login=:login, password=:password, type_id=:type_id WHERE user_id=:id;";
+            $sql2 = "UPDATE users_types SET role=:role WHERE type_id=:type_id;";
+
             try {
                 global $pdo;
                 $statement = $pdo->prepare($sql);
                 $statement->bindParam(':id', $id, PDO::PARAM_INT);
                 $statement->bindParam(':login', $login, PDO::PARAM_STR);
                 $statement->bindParam(':password', $password, PDO::PARAM_STR);
-                //$statement->bindParam(':type_id', $type_id, PDO::PARAM_STR);
+                $statement->bindParam(':type_id',$type_id, PDO::PARAM_INT);
                 $statement->execute();
+
+                $stat = $pdo->prepare($sql2);
+                $stat->bindParam(':type_id',$type_id, PDO::PARAM_INT);
+                $stat->bindParam(':role',$role, PDO::PARAM_STR);
+                $stat->execute();
+
             } catch (PDOException $e) {
                 echo 'Erreur : ' . $e->getMessage();
             }
@@ -95,12 +117,13 @@ if ($displayForm) {
         Password : <input type="password" name="password"  value="' . ($action == 'update' ? $infoUser->password : '') . '">
         <br>
         <input type="hidden" name="user_id" value="' . ($action == 'update' ? $id : '' ) . '">
-        <!--Role:
+        <input type="hidden" name="type_id" value="' . ($action == 'update' ? $infoUser->type_id : '' ) . '">
+        Role:
         <select name="role">
         <option value ="admin" >admin</option>
         <option value="visiteur">visiteur</option>
         </select>
-        -->
+        
         <input type="submit" name="submit" value="submit">
     </form>
     ';
@@ -112,11 +135,14 @@ if ($displayForm) {
             <th>Login</th>
             <th>Password</th>
             <th>type id</th>
+            <th>role</th>
             <th>date</th>
             <th>action</th>
             <th>supprimer</th>
         </tr>
     ';
+
+
 
     foreach ($users as $user) {
         echo '<tr>';
@@ -124,6 +150,9 @@ if ($displayForm) {
         echo '<td>' . $user->login . '</td>';
         echo '<td>' . $user->password . '</td>';
         echo '<td>' . $user->type_id . '</td>';
+        $role = getRole($user->type_id);
+        //echo "<pre>" . print_r($role, true) . "</pre>";
+        echo '<td>' . $role[0]->role . '</td>';
         echo '<td>' . $user->create_date . '</td>';
         echo '<td> <a href="?action=update&user_id=' . $user->user_id . '">edit</a> </td>';
         echo '<td> <a href="?action=delete&user_id=' . $user->user_id . '">delete</a> </td>';

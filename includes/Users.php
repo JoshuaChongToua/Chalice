@@ -40,3 +40,13 @@ function getUser($id)
         die("erreur dans la requete ".$e->getMessage());
     }
 }
+
+function getRole($id){
+
+    global $pdo;
+    $query = "SELECT role FROM users_types WHERE type_id =:id;";
+    $prep = $pdo->prepare($query);
+    $prep->bindValue(':id', $id, PDO::PARAM_INT);
+    $prep->execute();
+    return $prep->fetchAll();
+}
