@@ -1,168 +1,142 @@
 <?php
 require_once "includes/Users.php";
-?>
-<link href="css/userCrud.css" rel="stylesheet" media="screen">
-<?php
+var_dump($_POST);
+
+echo "<pre>".print_r( $_GET, true)."</pre>";
 
 
-$displayList = true;
 $displayForm = false;
 
+if(isset($_GET['action'])){
+    $action = $_GET['action'];
+}
 
-
-
-
-if(isset($_GET['action'])) {
-    if ($_GET['action'] == "create") {
-        $displayList = false;
-        $displayForm = true;
-        if (isset($_GET['login'])&& !empty($_GET['login'])) {
-            $login = $_GET['login'];
-        }
-        if (isset($_GET['password'])&& !empty($_GET['password'])) {
-            $password = $_GET['password'];
-        }
-
-        $sql = "INSERT into users(login, password, type_id) values(:login, :password,2);";
-        try {
-            global $pdo;
-            $statement = $pdo->prepare($sql);
-            $statement->bindParam(':login', $login, PDO::PARAM_STR);
-            $statement->bindParam(':password', $password, PDO::PARAM_STR);
-            $statement->execute();
-        }
-        catch (PDOException $e){
-            echo "Erreur : ".$e->getMessage();
-        }
-
-    }
-
-
-    elseif ($_GET['action']=="update"){
-        $displayList = false;
-        $displayForm = false;
-        if (isset($_GET['user_id']) && !empty($_GET['user_id'])){
-            $id = $_GET['user_id'];
-        }
-        $infoUser = getUser($id);
-
-        ?>
-        <form method="GET" >
-            Login : <input type="text" name="login"  value="<?php echo $infoUser->login; ?>" />
-        <br>
-        Password : <input type="password" name="password"  value="<?php echo $infoUser->password; ?>">
-        <input type="submit" name="submit" value="submit">
-    </form>
-    <?php
-        if (isset($_GET['user_id']) && !empty($_GET['user_id'])){
-        $id = $_GET['user_id'];
-        }
-
-
-        if (isset($_GET['login']) && !empty($_GET['login'])){
-        $login = $_GET['login'];
-        }
-        if (isset($_GET['password']) && !empty($_GET['password'])){
-        $password = $_GET['password'];
-        }
-        $sql = "Update users set login=:login, password=:password where id=:id;";
-        try {
-        global $pdo;
-        $statement = $pdo->prepare($sql);
-        $statement->bindParam(':id', $id, PDO::PARAM_INT);
-        $statement->bindParam(':login', $login, PDO::PARAM_STR);
-        $statement->bindParam(':password', $password, PDO::PARAM_STR);
-        $statement->execute();
-        }
-        catch (PDOException $e){
-        echo 'Erreur : '.$e->getMessage();}
-
-    }
-
-
-    if ($_GET['action'] == "delete") {
-        $displayList = true;
-        $displayForm = false;
-        if (isset($_GET['user_id']) && !empty($_GET['user_id'])){
-            $id = $_GET['user_id'];
-        }
-
-        $sql = "DELETE FROM users where user_id = :id";
-        try {
-            global $pdo;
-            $stmt = $pdo->prepare($sql);
-            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-            $stmt->execute();
-        } catch (Exception $e) {
-            die("erreur dans la requete " . $e->getMessage());
-        }
-
-    }
-
-
+if(isset($_GET['user_id'])){
+    $id = $_GET['user_id'];
 }
 
 
-/*create*/
+if(isset($action)) {
+    if ($action == "create") {
+        $displayForm = true;
+        // si le formulaire a été submit
+        if (isset($_POST['login']) && isset($_POST['password'])) {
+            $login = $_POST['login'];
+            $password = $_POST['password'];
+
+            $sql = "INSERT INTO users(login, password, type_id) VALUES (:login, :password, 2);";
+            try {
+                global $pdo;
+                $statement = $pdo->prepare($sql);
+                $statement->bindParam(':login', $login, PDO::PARAM_STR);
+                $statement->bindParam(':password', $password, PDO::PARAM_STR);
+                $statement->execute();
+            } catch (PDOException $e) {
+                echo "Erreur : " . $e->getMessage();
+            }
+            // on retire le formulaire
+            $displayForm = false;
+
+        }
+    } else if ($action == "update" && !empty($id)) {
+        $displayForm = true;
+
+        $infoUser = getUser($id);
+
+        // si le formulaire a été submit
+        if (isset($_POST['login']) && isset($_POST['password'])) {
+            $login = $_POST['login'];
+            $password = $_POST['password'];
 
 
 
+            $sql = "UPDATE users SET login=:login, password=:password, type_id=:type_id WHERE id=:id;";
+            try {
+                global $pdo;
+                $statement = $pdo->prepare($sql);
+                $statement->bindParam(':id', $id, PDO::PARAM_INT);
+                $statement->bindParam(':login', $login, PDO::PARAM_STR);
+                $statement->bindParam(':password', $password, PDO::PARAM_STR);
+                //$statement->bindParam(':type_id', $type_id, PDO::PARAM_STR);
+                $statement->execute();
+            } catch (PDOException $e) {
+                echo 'Erreur : ' . $e->getMessage();
+            }
+
+        } else if ($action == "delete" && !empty($id)) {
+
+            $sql = "DELETE FROM users WHERE user_id = :id";
+
+            try {
+                global $pdo;
+                $statement = $pdo->prepare($sql);
+                $statement->bindParam(':id', $id, PDO::PARAM_INT);
+                $statement->execute();
+            } catch (PDOException $e) {
+                die("erreur dans la requete " . $e->getMessage());
+            }
+
+        }
 
 
+    }
+}
 
 
-/*delete*/
+    $users = getAllUsers();
 
 
-
-/*update*/
-
-
-
-
-$users = getAllUsers();
-
-
-
-
-
-
-
-
-
-if($displayForm): ?>
-    <form method="GET" >
-        Login : <input type="text" name="login" >
-        Password : <input type="password" name="password" >
+    if ($displayForm) {
+        echo '
+    <form method="POST" action="?action=' . $action . '">
+        Login : <input type="text" name="login"  value="' . ($action == 'update' ? $infoUser->login : '') . '" />
+        <br>
+        Password : <input type="password" name="password"  value="' . ($action == 'update' ? $infoUser->password : '') . '">
+        <br>
+        <!--Role:
+        <select name="role">
+        <option value ="admin" >admin</option>
+        <option value="visiteur">visiteur</option>
+        </select>
+        
         <input type="submit" name="submit" value="submit">
-    </form>
-<?php endif;
-
-
-
-if($displayList):
-    ?>
+    </form> -->
+    ';
+    } else {
+        echo '
     <table>
-    <tr>
-        <th>user_id</th>
-        <th>Login</th>
-        <th>Password</th>
-        <th>type id</th>
-        <th>date</th>
-    </tr>
-    <?php foreach ($users as $user):?>
-    <tr>
-        <td><?php echo $user->user_id ?></td>
-        <td><?php echo $user->login ?></td>
-        <td><?php echo $user->password ?></td>
-        <td><?php echo $user->type_id ?></td>
-        <td><?php echo $user->create_date ?></td>
-    </tr>
+        <tr>
+            <th>user_id</th>
+            <th>Login</th>
+            <th>Password</th>
+            <th>type id</th>
+            <th>date</th>
+            <th>action</th>
+            <th>supprimer</th>
+        </tr>
+    ';
 
-    <?php endforeach;
-    ?>
-    </table>
-<?php endif;
+        foreach ($users as $user) {
+            echo '<tr>';
+            echo '<td>' . $user->user_id . '</td>';
+            echo '<td>' . $user->login . '</td>';
+            echo '<td>' . $user->password . '</td>';
+            echo '<td>' . $user->type_id . '</td>';
+            echo '<td>' . $user->create_date . '</td>';
+            echo '<td> <a href="?action=update&user_id=' . $user->user_id . '">edit</a> </td>';
+            echo '<td> <a href="?action=delete&user_id=' . $user->user_id . '">delete</a> </td>';
+            echo '</tr>';
+        }
+
+        echo '</table>';
+    }
+
+    echo '<a href="?action=create">Create</a>' ;
+?>
+
+
+<link href="css/userCrud.css" rel="stylesheet" media="screen">
+
 
 
 
