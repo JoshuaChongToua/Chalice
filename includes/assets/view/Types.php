@@ -73,6 +73,7 @@ if (isset($action)) {
 
 
 
+
 <?php
 $types = getAllTypes();
 
@@ -109,12 +110,5 @@ if ($displayForm) {
 }
 
 echo '<a href="?action=create">Create</a>';
-echo '<br>';
-echo '<a href="Users.php">UserCRUD</a>';
-echo '<br>';
-echo '<a href="News.php">newsCrud</a>';
+
 ?>
-</body>
-
-
-<link href="../css/userCrud.css" rel="stylesheet" media="screen">

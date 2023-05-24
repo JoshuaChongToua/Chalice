@@ -4,6 +4,7 @@ require_once '../../header.php';
 require_once '../../footer.php';
 
 
+
 $displayForm = false;
 
 if (isset($_GET['action'])) {
@@ -34,28 +35,6 @@ if (isset($action)) {
             $displayForm = false;
 
         }
-    } else if ($action == "update") {
-        // si le formulaire a été submit
-        if (isset($_POST['role'])) {
-            $role = $_POST['role'];
-            $id = $_POST['type_id'];
-
-            $sql = "UPDATE users_types SET role=:role WHERE type_id=:id;";
-
-            try {
-                global $pdo;
-                $statement = $pdo->prepare($sql);
-                $statement->bindParam(':id', $id, PDO::PARAM_INT);
-                $statement->bindParam(':role', $role, PDO::PARAM_STR);
-                $statement->execute();
-            } catch (PDOException $e) {
-                echo 'Erreur : ' . $e->getMessage();
-            }
-
-        } else {
-            $displayForm = true;
-            $infoType = get_Type($id);
-        }
     } else if ($action == "delete" && !empty($id)) {
 
         $sql = "DELETE FROM users_types WHERE type_id = :id";
@@ -75,16 +54,13 @@ if (isset($action)) {
 
 
 <?php
-$types = getAllTypes();
 
 if ($displayForm) {
-
+    //Formulaire pour upload l'image
     echo '
-    
-    <form name="typeForm" method="POST" action="?action=' . $action . '" onsubmit= "return validateForm(\'typeForm\',\'role\'); " required>
-        Role : <input type="text" name="role" value="' . ($action == 'update' ? $infoType->role : '') . '"  />
+    <form action="?action=' . $action . '" method="POST" enctype="multipart/form-data">
+        <input type="file" name="image" required>
         <br>
-        <input type="hidden" name="type_id" value="' . ($action == 'update' ? $id : '') . '">
         <input type="submit" name="submit" value="submit">
     </form>
     ';
@@ -97,7 +73,7 @@ if ($displayForm) {
         </tr>
     ';
 
-    foreach ($types as $type) {
+    /*foreach ($types as $type) {
         echo '<tr>';
         echo '<td>' . $type->type_id . '</td>';
         echo '<td>' . $type->role . '</td>';
@@ -107,13 +83,26 @@ if ($displayForm) {
     }
 
     echo '</table>';
+     */
 }
 
-echo '<a href="?action=create">Create</a>';
-echo '<br>';
-echo '<a href="Users.php">UserCRUD</a>';
-echo '<br>';
-echo '<a href="News.php">newsCrud</a>';
+$chemin = '../images/';
+$fichiers = scandir($chemin);
+if(!$displayForm) {
+    foreach ($fichiers as $file) {
+        //Pour vérifier que l'image est au bon format
+        if (in_array(strtolower(pathinfo($file, PATHINFO_EXTENSION)), ['jpg', 'jpeg', 'png', 'gif'])) {
+
+            echo '<img src="' . $chemin . $file . '" alt="Image">' . PHP_EOL;
+        }
+
+
+    }
+}
+
+
+echo '<a href="?action=create">Ajouter</a>';
+
 ?>
 
 </body>

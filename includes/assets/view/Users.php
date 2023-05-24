@@ -171,10 +171,7 @@ if ($displayForm) {
 }
 
 echo '<a href="?action=create">Create</a>';
-echo '<br>';
-echo '<a href="News.php">NewsCrud</a>';
-echo '<br>';
-echo '<a href="Types.php">Types</a>';
+
 ?>
 
 

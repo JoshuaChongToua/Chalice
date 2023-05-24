@@ -103,7 +103,7 @@ if (isset($action)) {
 <?php
 $news = getAllNews();
 $idImage = getIdImage();
-echo "<pre>" . print_r($_POST, true) . "</pre>";
+//echo "<pre>" . print_r($_POST, true) . "</pre>";
 
 
 if ($displayForm) {
@@ -163,16 +163,9 @@ if ($displayForm) {
 }
 
 echo '<a href="?action=create">Create</a>';
-echo '<br>';
-echo '<a href="Users.php">UserCRUD</a>';
-echo '<br>';
-echo '<a href="Types.php">typeCrud</a>';
+
 ?>
 
-</body>
-
-
-<link href="../css/userCrud.css" rel="stylesheet" media="screen">
 
 
 
