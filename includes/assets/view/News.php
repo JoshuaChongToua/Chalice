@@ -78,7 +78,7 @@ if (isset($action)) {
 
         } else {
             $displayForm = true;
-            $infoNews = getNews($id);
+            $newsInfo = getNews($id);
         }
     } else if ($action == "delete" && !empty($id)) {
 
@@ -101,33 +101,35 @@ if (isset($action)) {
 
 
 <?php
-$news = getAllNews();
-$idImage = getIdImage();
+$newsCollection = getAllNews();
+$images = getImages();
 //echo "<pre>" . print_r($_POST, true) . "</pre>";
 
 
 if ($displayForm) {
 
+
     echo '
-    <form name="newsForm" method="POST" action="?action=' . $action . '" onsubmit= "return validateForm(\'newsForm\',\'title\'); " required>
-        Title : <input type="text" name="title"  value="' . ($action == 'update' ? $infoNews->title : '') . '" />
+    <form name="newsForm" method="POST" action="?action=' . $action . '" onsubmit= "return validateForm(\'newsForm\',\'title\'); " >
+        Title : <input type="text" name="title"  value="' . ($action == 'update' ? $newsInfo->title : '') . '" />
         <br>
-        Description : <input type="text" name="description"  value="' . ($action == 'update' ? $infoNews->description : '') . '">
+        Description : <input type="text" name="description"  value="' . ($action == 'update' ? $newsInfo->description : '') . '">
         <br>';
-    if (!empty($idImage)) {
+    if (!empty($images)) {
         echo ' Image_id : 
             <select name="image_id">';
         echo '<option value="--">--</option>';
 
-        foreach ($idImage as $idImg) {
-            echo '<option value="' . ($action == 'update' ? $infoNews->image_id : '') . '">' . $idImg->image_id . '</option>';
+        foreach ($images as $image) {
+
+            echo '<option value="' . $image->image_id . '" ' . ( $action == 'update' && $image->image_id == $newsInfo->image_id ? ' selected="selected" ' : '' ) . '  >' . $image->image_id . '</option>';
         }
         echo '</select>
             <br>';
 
     }
     echo '
-        Link : <input type="text" name="link"  value="' . ($action == 'update' ? $infoNews->link : '') . '">
+        Link : <input type="text" name="link"  value="' . ($action == 'update' ? $newsInfo->link : '') . '">
         <br>
         <input type="hidden" name="news_id" value="' . ($action == 'update' ? $id : '' ) . '">
         <input type="submit" name="submit" value="submit">
@@ -147,15 +149,15 @@ if ($displayForm) {
         </tr>
     ';
 
-    foreach ($news as $info) {
+    foreach ($newsCollection as $news) {
         echo '<tr>';
-        echo '<td>' . $info->news_id . '</td>';
-        echo '<td>' . $info->title . '</td>';
-        echo '<td>' . $info->description . '</td>';
-        echo '<td>' . $info->image_id . '</td>';
-        echo '<td>' . $info->link . '</td>';
-        echo '<td> <a href="?action=update&news_id=' . $info->news_id . '">edit</a> </td>';
-        echo '<td> <a href="?action=delete&news_id=' . $info->news_id . '">delete</a> </td>';
+        echo '<td>' . $news->news_id . '</td>';
+        echo '<td>' . $news->title . '</td>';
+        echo '<td>' . $news->description . '</td>';
+        echo '<td>' . $news->image_id . '</td>';
+        echo '<td>' . $news->link . '</td>';
+        echo '<td> <a href="?action=update&news_id=' . $news->news_id . '">edit</a> </td>';
+        echo '<td> <a href="?action=delete&news_id=' . $news->news_id . '">delete</a> </td>';
         echo '</tr>';
     }
 

@@ -1,5 +1,4 @@
 <?php
-require_once 'D:\laragon\www\Chalice\includes\common\SPDO.php';
 
 function getAllTypes()
 {

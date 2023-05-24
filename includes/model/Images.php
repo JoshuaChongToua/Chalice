@@ -1,7 +1,6 @@
 <?php
-require_once 'D:\laragon\www\Chalice\includes\common\SPDO.php';
 
-function getIdImage()
+function getImages()
 {
     global $pdo;
     $query = "SELECT * FROM images ;";

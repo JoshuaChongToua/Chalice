@@ -1,6 +1,8 @@
-<html>
 <?php
 session_start();
+
+require_once 'common/SPDO.php';
+
 $isLaragon = "";
 if ($_SERVER['HTTP_HOST'] == "localhost") {
     $isLaragon = "/Chalice";
@@ -16,9 +18,8 @@ if ($_SERVER['PHP_SELF'] != 'index.php') {
 }
 
 
-
-
 echo '
+<html>
 <head>
     <title>Chalice</title>
     <link href="' . $isLaragon . '/includes/assets/css/userCrud.css" rel="stylesheet" media="screen">
