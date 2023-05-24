@@ -39,6 +39,6 @@ else
 ?>
 <br>
 
-<a href="includes/assets/view/userCRUD.php">userCRUD</a>
+<a href="includes/assets/view/Users.php">userCRUD</a>
 <br>
-<a href="includes/assets/view/newsCrud.php">NewsCrud</a>
+<a href="includes/assets/view/News.php">NewsCrud</a>

@@ -1,5 +1,6 @@
 <?php
 require_once '../../model/News.php';
+require_once '../../model/Images.php';
 require_once '../../header.php';
 require_once '../../footer.php';
 
@@ -30,6 +31,7 @@ if (isset($action)) {
             $link = $_POST['link'];
 
             $sql = "INSERT INTO news(title, description, image_id, link) VALUES (:title, :description, :image_id, :link);";
+
             try {
                 global $pdo;
                 $statement = $pdo->prepare($sql);
@@ -93,35 +95,34 @@ if (isset($action)) {
 
 ?>
 
-<html>
-<head>
-    <title>News</title>
-    <script type="text/javascript">
-        function validateForm()
-        {
-            var x = document.forms["newsForm"]["title"].value;
-            if (x == "") {
-                alert("Name must be filled out");
-                return false;
-            }
 
-        }
-    </script>
-</head>
-<body>
 
 <?php
 $news = getAllNews();
+$idImage = getIdImage();
+echo "<pre>" . print_r($idImage, true) . "</pre>";
+
 
 if ($displayForm) {
+
     echo '
     <form name="newsForm" method="POST" action="?action=' . $action . '" onsubmit= "return validateForm(\'newsForm\',\'title\'); " required>
         Title : <input type="text" name="title"  value="' . ($action == 'update' ? $infoNews->title : '') . '" />
         <br>
         Description : <input type="text" name="description"  value="' . ($action == 'update' ? $infoNews->description : '') . '">
-        <br>
-        Image_id : <input type="text" name="image_id"  pattern="[0-9]*" title="Veuillez entrer un nombre"  value="' . ($action == 'update' ? $infoNews->image_id : '') . '">
-        <br>
+        <br>';
+    if (!empty($idImage)) {
+        echo ' Image_id : 
+            <select name="image_id">';
+
+        foreach ($idImage as $idImg) {
+            echo '<option value="' . ($action == 'update' ? $infoNews->image_id : '') . '">' . $idImg . '</option>';
+        }
+        echo '</select>
+            <br>';
+
+    }
+    echo '
         Link : <input type="text" name="link"  value="' . ($action == 'update' ? $infoNews->link : '') . '">
         <br>
         <input type="hidden" name="news_id" value="' . ($action == 'update' ? $id : '' ) . '">
@@ -159,9 +160,9 @@ if ($displayForm) {
 
 echo '<a href="?action=create">Create</a>';
 echo '<br>';
-echo '<a href="userCRUD.php">UserCRUD</a>';
+echo '<a href="Users.php">UserCRUD</a>';
 echo '<br>';
-echo '<a href="typesCrud.php">typeCrud</a>';
+echo '<a href="Types.php">typeCrud</a>';
 ?>
 
 </body>

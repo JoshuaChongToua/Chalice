@@ -112,12 +112,12 @@ if (isset($action)) {
 
 <html>
 <head>
-    <title>News</title>
+    <title>Type</title>
     <script type="text/javascript">
-        function validateForm()
+        function validateForm2(form_name, val_name, val_name2)
         {
-            var x = document.forms["userForm"]["login"].value;
-            var y = document.forms["userForm"]["password"].value;
+            var x = document.forms[form_name][val_name].value;
+            var y = document.forms[form_name][val_name2].value;
             if (x == "") {
                 alert("Login must be filled out");
                 return false;
@@ -139,7 +139,7 @@ $users = getAllUsers();
 
 if ($displayForm) {
     echo '
-    <form name="userForm" method="POST" action="?action=' . $action . '" onsubmit= "return validateForm(\'userForm\',\'login\', \'password\'); " required>
+    <form name="userForm" method="POST" action="?action=' . $action . '" onsubmit= "return validateForm2(\'userForm\',\'login\', \'password\'); " required>
         Login : <input type="text" name="login"  value="' . ($action == 'update' ? $infoUser->login : '') . '" />
         <br>
         Password : <input type="password" name="password"  value="' . ($action == 'update' ? $infoUser->password : '') . '">
@@ -192,16 +192,11 @@ if ($displayForm) {
 
 echo '<a href="?action=create">Create</a>';
 echo '<br>';
-echo '<a href="newsCrud.php">NewsCrud</a>';
+echo '<a href="News.php">NewsCrud</a>';
 echo '<br>';
-echo '<a href="typesCrud.php">Types</a>';
+echo '<a href="Types.php">Types</a>';
 ?>
 
-</body>
-
-</html>
-
-<link href="../css/userCrud.css" rel="stylesheet" media="screen">
 
 
 

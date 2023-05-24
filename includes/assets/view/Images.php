@@ -1,15 +1,17 @@
 <?php
-require_once '../../model/Types.php';
+require_once "../../model/Images.php";
 require_once '../../header.php';
 require_once '../../footer.php';
+
+
 $displayForm = false;
 
 if (isset($_GET['action'])) {
     $action = $_GET['action'];
 }
 
-if (isset($_GET['type_id'])) {
-    $id = $_GET['type_id'];
+if (isset($_GET['image_id'])) {
+    $id = $_GET['image_id'];
 }
 
 if (isset($action)) {
@@ -70,21 +72,6 @@ if (isset($action)) {
     }
 }
 ?>
-<html>
-<head>
-    <title>Type</title>
-    <script type="text/javascript">
-        function validateForm()
-        {
-            var x = document.forms["typeForm"]["role"].value;
-            if (x == "") {
-                alert("Name must be filled out");
-                return false;
-            }
-        }
-    </script>
-</head>
-<body>
 
 
 <?php
@@ -97,7 +84,7 @@ if ($displayForm) {
     <form name="typeForm" method="POST" action="?action=' . $action . '" onsubmit= "return validateForm(\'typeForm\',\'role\'); " required>
         Role : <input type="text" name="role" value="' . ($action == 'update' ? $infoType->role : '') . '"  />
         <br>
-        <input type="hidden" name="type_id" value="' . ($action == 'update' ? $id : '' ) . '">
+        <input type="hidden" name="type_id" value="' . ($action == 'update' ? $id : '') . '">
         <input type="submit" name="submit" value="submit">
     </form>
     ';
@@ -106,7 +93,7 @@ if ($displayForm) {
     <table>
         <tr>
             <th>type_id</th>
-            <th>role</th>
+            <th>create_date</th>
         </tr>
     ';
 
@@ -124,11 +111,10 @@ if ($displayForm) {
 
 echo '<a href="?action=create">Create</a>';
 echo '<br>';
-echo '<a href="userCRUD.php">UserCRUD</a>';
+echo '<a href="Users.php">UserCRUD</a>';
 echo '<br>';
-echo '<a href="newsCrud.php">newsCrud</a>';
+echo '<a href="News.php">newsCrud</a>';
 ?>
+
 </body>
 
-
-<link href="../css/userCrud.css" rel="stylesheet" media="screen">
