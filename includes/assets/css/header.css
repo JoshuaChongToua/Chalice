@@ -1,0 +1,15 @@
+.page {
+    background-color: #333;
+    padding: 10px 0;
+}
+
+.page a {
+    text-decoration: none;
+    color: red;
+    padding: 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+.page a:hover {
+    background-color: #ddd;
+}

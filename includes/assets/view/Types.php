@@ -70,23 +70,7 @@ if (isset($action)) {
     }
 }
 ?>
-<html>
-<head>
-    <title>Type</title>
-    <script type="text/javascript">
-        function validateForm(form_name,val_name)
-        {
-            var x = document.forms[form_name][val_name].value;
 
-            if (x == "") {
-                alert("Login must be filled out");
-                return false;
-            }
-
-        }
-    </script>
-</head>
-<body>
 
 
 <?php

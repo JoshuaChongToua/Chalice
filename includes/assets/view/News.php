@@ -21,11 +21,14 @@ if (isset($action)) {
         if (isset($_POST['title'])) {
             $title = $_POST['title'];
             $description = $_POST['description'];
-            if ($_POST['image_id']==''){
+            if ($_POST['image_id']=='--'){
                 $image_id = NULL;
+
             }
             else{
                 $image_id = $_POST['image_id'];
+
+
             }
 
             $link = $_POST['link'];
@@ -100,7 +103,7 @@ if (isset($action)) {
 <?php
 $news = getAllNews();
 $idImage = getIdImage();
-echo "<pre>" . print_r($idImage, true) . "</pre>";
+echo "<pre>" . print_r($_POST, true) . "</pre>";
 
 
 if ($displayForm) {
@@ -114,9 +117,10 @@ if ($displayForm) {
     if (!empty($idImage)) {
         echo ' Image_id : 
             <select name="image_id">';
+        echo '<option value="--">--</option>';
 
         foreach ($idImage as $idImg) {
-            echo '<option value="' . ($action == 'update' ? $infoNews->image_id : '') . '">' . $idImg . '</option>';
+            echo '<option value="' . ($action == 'update' ? $infoNews->image_id : '') . '">' . $idImg->image_id . '</option>';
         }
         echo '</select>
             <br>';
