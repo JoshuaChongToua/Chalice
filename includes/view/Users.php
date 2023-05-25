@@ -1,7 +1,7 @@
 <?php
-require_once "../../model/Users.php";
-require_once '../../header.php';
-require_once '../../footer.php';
+require_once "../model/Users.php";
+require_once '../header.php';
+require_once '../footer.php';
 
 //var_dump($_POST);
 
@@ -62,9 +62,7 @@ if (isset($action)) {
             else{
                 $type_id = 2;
             }
-
-
-
+            
             $sql = "UPDATE users SET login=:login, password=:password, type_id=:type_id WHERE user_id=:id;";
             $sql2 = "UPDATE users_types SET role=:role WHERE type_id=:type_id;";
 
@@ -88,7 +86,7 @@ if (isset($action)) {
 
         } else {
             $displayForm = true;
-            $infoUser = getUser($id);
+            $userInfo = getUser($id);
         }
     } else if ($action == "delete" && !empty($id)) {
 
@@ -120,12 +118,12 @@ $users = getAllUsers();
 if ($displayForm) {
     echo '
     <form name="userForm" method="POST" action="?action=' . $action . '" onsubmit= "return validateForm2(\'userForm\',\'login\', \'password\'); " required>
-        Login : <input type="text" name="login"  value="' . ($action == 'update' ? $infoUser->login : '') . '" />
+        Login : <input type="text" name="login"  value="' . ($action == 'update' ? $userInfo->login : '') . '" />
         <br>
-        Password : <input type="password" name="password"  value="' . ($action == 'update' ? $infoUser->password : '') . '">
+        Password : <input type="password" name="password"  value="' . ($action == 'update' ? $userInfo->password : '') . '">
         <br>
         <input type="hidden" name="user_id" value="' . ($action == 'update' ? $id : '' ) . '">
-        <input type="hidden" name="type_id" value="' . ($action == 'update' ? $infoUser->type_id : '' ) . '">
+        <input type="hidden" name="type_id" value="' . ($action == 'update' ? $userInfo->type_id : '' ) . '">
         Role:
         <select name="role">
         <option value ="admin" >admin</option>

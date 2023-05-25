@@ -1,7 +1,7 @@
 <?php
-require_once "../../model/Images.php";
-require_once '../../header.php';
-require_once '../../footer.php';
+require_once "../model/Images.php";
+require_once '../header.php';
+require_once '../footer.php';
 
 
 
@@ -72,28 +72,16 @@ if ($displayForm) {
             <th>create_date</th>
         </tr>
     ';
-
-    /*foreach ($types as $type) {
-        echo '<tr>';
-        echo '<td>' . $type->type_id . '</td>';
-        echo '<td>' . $type->role . '</td>';
-        echo '<td> <a href="?action=update&type_id=' . $type->type_id . '">edit</a> </td>';
-        echo '<td> <a href="?action=delete&type_id=' . $type->type_id . '">delete</a> </td>';
-        echo '</tr>';
-    }
-
-    echo '</table>';
-     */
 }
 
-$chemin = '../images/';
-$fichiers = scandir($chemin);
+$imageDirectory = '../assets/images/';
+$images = scandir($imageDirectory);
 if(!$displayForm) {
-    foreach ($fichiers as $file) {
+    foreach ($images as $image) {
         //Pour vérifier que l'image est au bon format
-        if (in_array(strtolower(pathinfo($file, PATHINFO_EXTENSION)), ['jpg', 'jpeg', 'png', 'gif'])) {
+        if (in_array(strtolower(pathinfo($image, PATHINFO_EXTENSION)), ['jpg', 'jpeg', 'png', 'gif'])) {
 
-            echo '<img src="' . $chemin . $file . '" alt="Image">' . PHP_EOL;
+            echo '<img src="' . $imageDirectory . $image . '" alt="Image">' . PHP_EOL;
         }
 
 

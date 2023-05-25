@@ -2,9 +2,10 @@
 require_once "includes/model/Users.php";
 
 require_once "includes/footer.php";
+echo '<script type="text/javascript" src="/Chalice/includes/assets/js/verifForm.js"></script>';
 
 echo'
-<form name="index" method="POST"  onsubmit= "return validateForm2(\'index\',\'login\', \'password\'); " required>
+<form name="index" method="POST"  onsubmit= "return validateForm2(\'index\',\'login\', \'password\'); " >
     Login : <input type="text" name="login" autocomplete="off">
     Password : <input type="password" name="password" autocomplete="off">
     <input type="submit" name="submit" value="submit">
@@ -21,7 +22,7 @@ if (!empty($_POST['login']) && !empty($_POST['password'])) {
         $_SESSION['login'] = $login;
         $_SESSION['password'] = $password;
         if (isset($_SESSION['login']) && isset($_SESSION['password'])) {
-            header("Location:includes/assets/view/main.php ");
+            header("Location:includes/view/main.php ");
         }
 
 

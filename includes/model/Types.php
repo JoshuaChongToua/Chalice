@@ -7,7 +7,7 @@ function getAllTypes()
     return $pdo->query($query)->fetchAll();
 }
 
-function get_Type($id)
+function getTypeById($id)
 {
     global $pdo;
     $query = 'SELECT * from users_types where type_id=:id;';

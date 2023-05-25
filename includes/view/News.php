@@ -1,8 +1,8 @@
 <?php
-require_once '../../model/News.php';
-require_once '../../model/Images.php';
-require_once '../../header.php';
-require_once '../../footer.php';
+require_once '../model/News.php';
+require_once '../model/Images.php';
+require_once '../header.php';
+require_once '../footer.php';
 
 $displayForm = false;
 

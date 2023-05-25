@@ -18,6 +18,8 @@ if ($_SERVER['PHP_SELF'] != 'index.php') {
 }
 
 
+
+
 echo '
 <html>
 <head>
@@ -30,10 +32,15 @@ echo '
 <body>
 
 <div class="page">
-    <a href="' . $isLaragon . '/includes/assets/view/Users.php">User</a>
-    <a href="' . $isLaragon . '/includes/assets/view/News.php">News</a>
-    <a href="' . $isLaragon . '/includes/assets/view/Types.php">Type</a>
-    <a href="' . $isLaragon . '/includes/assets/view/Images.php">Images</a>
+    <a href="' . $isLaragon . '/includes/view/Users.php">User</a>
+    <a href="' . $isLaragon . '/includes/view/News.php">News</a>
+    <a href="' . $isLaragon . '/includes/view/Types.php">Type</a>
+    <a href="' . $isLaragon . '/includes/view/Images.php">Images</a>';
+    if (isset($_SESSION['login'])){
+        echo "<p> Bienvenue : " .  $_SESSION['login'] . "";
+        echo "<a href='/Chalice/includes/logout.php' >Se deconecter</a> ";
+    }
+    echo'
 </div>
 ';
 

@@ -1,7 +1,7 @@
 <?php
-require_once '../../model/Types.php';
-require_once '../../header.php';
-require_once '../../footer.php';
+require_once '../model/Types.php';
+require_once '../header.php';
+require_once '../footer.php';
 $displayForm = false;
 
 if (isset($_GET['action'])) {
@@ -52,7 +52,7 @@ if (isset($action)) {
 
         } else {
             $displayForm = true;
-            $infoType = get_Type($id);
+            $typeInfo = getTypeById($id);
         }
     } else if ($action == "delete" && !empty($id)) {
 
@@ -82,7 +82,7 @@ if ($displayForm) {
     echo '
     
     <form name="typeForm" method="POST" action="?action=' . $action . '" onsubmit= "return validateForm(\'typeForm\',\'role\'); " required>
-        Role : <input type="text" name="role" value="' . ($action == 'update' ? $infoType->role : '') . '"  />
+        Role : <input type="text" name="role" value="' . ($action == 'update' ? $typeInfo->role : '') . '"  />
         <br>
         <input type="hidden" name="type_id" value="' . ($action == 'update' ? $id : '' ) . '">
         <input type="submit" name="submit" value="submit">
