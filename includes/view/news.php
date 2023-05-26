@@ -1,6 +1,6 @@
 <?php
-require_once '../model/News.php';
-require_once '../model/Images.php';
+require_once '../model/news.php';
+require_once '../model/images.php';
 require_once '../header.php';
 require_once '../footer.php';
 
@@ -110,8 +110,8 @@ if ($displayForm) {
 
 
     echo '
-    <form name="newsForm" method="POST" action="?action=' . $action . '" onsubmit= "return validateForm(\'newsForm\',\'title\'); " >
-        Title : <input type="text" name="title"  value="' . ($action == 'update' ? $newsInfo->title : '') . '" />
+    <form name="newsForm" method="POST" action="?action=' . $action . '" onsubmit= "return validateForm(\'newsForm\',\'title\'); "  >
+        Title : <input type="text" name="title"  value="' . ($action == 'update' ? $newsInfo->title : '') . '" onkeypress="verifierCaracteres(event); return false;" />
         <br>
         Description : <input type="text" name="description"  value="' . ($action == 'update' ? $newsInfo->description : '') . '">
         <br>';
@@ -122,14 +122,13 @@ if ($displayForm) {
 
         foreach ($images as $image) {
 
-            echo '<option value="' . $image->image_id . '" ' . ( $action == 'update' && $image->image_id == $newsInfo->image_id ? ' selected="selected" ' : '' ) . '  >' . $image->image_id . '</option>';
+            echo '<option value="' . $image->image_id . '" ' . ( $action == 'update'  ? $image->name  : '' ) . '  >' . $image->name . '</option>';
         }
         echo '</select>
             <br>';
-
     }
     echo '
-        Link : <input type="text" name="link"  value="' . ($action == 'update' ? $newsInfo->link : '') . '">
+        Link : <input type="text" name="link"  value="' . ($action == 'update' ? $newsInfo->link : '') . '" onkeypress="verifierCaracteres(event); return false;" />
         <br>
         <input type="hidden" name="news_id" value="' . ($action == 'update' ? $id : '' ) . '">
         <input type="submit" name="submit" value="submit">
@@ -148,13 +147,16 @@ if ($displayForm) {
             <th>supprimer</th>
         </tr>
     ';
-
     foreach ($newsCollection as $news) {
         echo '<tr>';
         echo '<td>' . $news->news_id . '</td>';
         echo '<td>' . $news->title . '</td>';
         echo '<td>' . $news->description . '</td>';
-        echo '<td>' . $news->image_id . '</td>';
+        $imageInfo = getImageById($news->image_id);
+        echo "<pre>" . print_r($imageInfo, true) . "</pre>";
+
+
+        echo '<td>' . $imageInfo->name . '</td>';
         echo '<td>' . $news->link . '</td>';
         echo '<td> <a href="?action=update&news_id=' . $news->news_id . '">edit</a> </td>';
         echo '<td> <a href="?action=delete&news_id=' . $news->news_id . '">delete</a> </td>';

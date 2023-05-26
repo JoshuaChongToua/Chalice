@@ -27,15 +27,16 @@ echo '
     <link href="' . $isLaragon . '/includes/assets/css/userCrud.css" rel="stylesheet" media="screen">
     <link href="' . $isLaragon . '/includes/assets/css/header.css" rel="stylesheet" media="screen">
     <link href="' . $isLaragon . '/includes/assets/css/images.css" rel="stylesheet" media="screen">
+    <link href="' . $isLaragon . '/includes/assets/css/form.css" rel="stylesheet" media="screen">
     <script type="text/javascript" src="' . $isLaragon . '/includes/assets/js/verifForm.js"></script>
 </head>
 <body>
 
 <div class="page">
-    <a href="' . $isLaragon . '/includes/view/Users.php">User</a>
-    <a href="' . $isLaragon . '/includes/view/News.php">News</a>
-    <a href="' . $isLaragon . '/includes/view/Types.php">Type</a>
-    <a href="' . $isLaragon . '/includes/view/Images.php">Images</a>';
+    <a href="' . $isLaragon . '/includes/view/users.php">User</a>
+    <a href="' . $isLaragon . '/includes/view/news.php">News</a>
+    <a href="' . $isLaragon . '/includes/view/types.php">Type</a>
+    <a href="' . $isLaragon . '/includes/view/images.php">Images</a>';
     if (isset($_SESSION['login'])){
         echo "<p> Bienvenue : " .  $_SESSION['login'] . "";
         echo "<a href='/Chalice/includes/logout.php' >Se deconecter</a> ";

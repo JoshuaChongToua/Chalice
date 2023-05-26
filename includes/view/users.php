@@ -1,5 +1,5 @@
 <?php
-require_once "../model/Users.php";
+require_once "../model/users.php";
 require_once '../header.php';
 require_once '../footer.php';
 
@@ -117,7 +117,7 @@ $users = getAllUsers();
 
 if ($displayForm) {
     echo '
-    <form name="userForm" method="POST" action="?action=' . $action . '" onsubmit= "return validateForm2(\'userForm\',\'login\', \'password\'); " required>
+    <form name="userForm" method="POST" action="?action=' . $action . '" onsubmit= "return validateForm2(\'userForm\',\'login\', \'password\'); " onkeypress="verifierCaracteres(event); return false;">
         Login : <input type="text" name="login"  value="' . ($action == 'update' ? $userInfo->login : '') . '" />
         <br>
         Password : <input type="password" name="password"  value="' . ($action == 'update' ? $userInfo->password : '') . '">

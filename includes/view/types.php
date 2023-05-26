@@ -1,5 +1,5 @@
 <?php
-require_once '../model/Types.php';
+require_once '../model/types.php';
 require_once '../header.php';
 require_once '../footer.php';
 $displayForm = false;
@@ -81,7 +81,7 @@ if ($displayForm) {
 
     echo '
     
-    <form name="typeForm" method="POST" action="?action=' . $action . '" onsubmit= "return validateForm(\'typeForm\',\'role\'); " required>
+    <form name="typeForm" method="POST" action="?action=' . $action . '" onsubmit= "return validateForm(\'typeForm\',\'role\'); " onkeypress="verifierCaracteres(event); return false;">
         Role : <input type="text" name="role" value="' . ($action == 'update' ? $typeInfo->role : '') . '"  />
         <br>
         <input type="hidden" name="type_id" value="' . ($action == 'update' ? $id : '' ) . '">
