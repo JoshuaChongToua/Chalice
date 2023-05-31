@@ -50,3 +50,13 @@ function getRole($id){
     $prep->execute();
     return $prep->fetchAll();
 }
+
+function getTypeId($role)
+{
+    global $pdo;
+    $query = "SELECT * FROM users_types WHERE role =:role;";
+    $prep = $pdo->prepare($query);
+    $prep->bindValue(':role', $role, PDO::PARAM_STR);
+    $prep->execute();
+    return $prep->fetchAll();
+}

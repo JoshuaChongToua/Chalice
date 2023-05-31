@@ -29,6 +29,7 @@ echo '
     <link href="' . $isLaragon . '/includes/assets/css/images.css" rel="stylesheet" media="screen">
     <link href="' . $isLaragon . '/includes/assets/css/form.css" rel="stylesheet" media="screen">
     <script type="text/javascript" src="' . $isLaragon . '/includes/assets/js/verifForm.js"></script>
+    <script type="text/javascript" src="' . $isLaragon . '/includes/assets/js/getImage.js"></script>
 </head>
 <body>
 

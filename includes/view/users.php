@@ -1,5 +1,6 @@
 <?php
 require_once "../model/users.php";
+require_once "../model/types.php";
 require_once '../header.php';
 require_once '../footer.php';
 
@@ -27,20 +28,16 @@ if (isset($action)) {
         if (isset($_POST['login']) && isset($_POST['password'])) {
             $login = $_POST['login'];
             $password = $_POST['password'];
-            $role = $_POST['role'];
-            if ($role == "admin"){
-                $type_id = 1;
-            }
-            else{
-                $type_id = 2;
-            }
+            $typeId = $_POST['type_id'];
 
-            $sql = "INSERT INTO users(login, password, type_id) VALUES (:login, :password, $type_id);";
+            $sql = "INSERT INTO users(login, password, type_id) VALUES (:login, :password, :typeId);";
             try {
                 global $pdo;
                 $statement = $pdo->prepare($sql);
+                var_dump($statement);
                 $statement->bindParam(':login', $login, PDO::PARAM_STR);
                 $statement->bindParam(':password', $password, PDO::PARAM_STR);
+                $statement->bindParam(':typeId', $typeId, PDO::PARAM_INT);
                 $statement->execute();
             } catch (PDOException $e) {
                 echo "Erreur : " . $e->getMessage();
@@ -55,16 +52,11 @@ if (isset($action)) {
             $login = $_POST['login'];
             $password = $_POST['password'];
             $id = $_POST['user_id'];
-            $role = $_POST['role'];
-            if ($role == "admin"){
-                $type_id = 1;
-            }
-            else{
-                $type_id = 2;
-            }
-            
+
+            $typeId = $_POST['type_id'];
+
+
             $sql = "UPDATE users SET login=:login, password=:password, type_id=:type_id WHERE user_id=:id;";
-            $sql2 = "UPDATE users_types SET role=:role WHERE type_id=:type_id;";
 
             try {
                 global $pdo;
@@ -72,13 +64,10 @@ if (isset($action)) {
                 $statement->bindParam(':id', $id, PDO::PARAM_INT);
                 $statement->bindParam(':login', $login, PDO::PARAM_STR);
                 $statement->bindParam(':password', $password, PDO::PARAM_STR);
-                $statement->bindParam(':type_id',$type_id, PDO::PARAM_INT);
+                $statement->bindParam(':type_id', $typeId, PDO::PARAM_INT);
+                var_dump($statement);
                 $statement->execute();
 
-                $stat = $pdo->prepare($sql2);
-                $stat->bindParam(':type_id',$type_id, PDO::PARAM_INT);
-                $stat->bindParam(':role',$role, PDO::PARAM_STR);
-                $stat->execute();
 
             } catch (PDOException $e) {
                 echo 'Erreur : ' . $e->getMessage();
@@ -113,6 +102,7 @@ if (isset($action)) {
 <?php
 
 $users = getAllUsers();
+$typeCollection = getAllTypes();
 
 
 if ($displayForm) {
@@ -123,12 +113,13 @@ if ($displayForm) {
         Password : <input type="password" name="password"  value="' . ($action == 'update' ? $userInfo->password : '') . '">
         <br>
         <input type="hidden" name="user_id" value="' . ($action == 'update' ? $id : '' ) . '">
-        <input type="hidden" name="type_id" value="' . ($action == 'update' ? $userInfo->type_id : '' ) . '">
         Role:
-        <select name="role">
-        <option value ="admin" >admin</option>
-        <option value="visiteur">visiteur</option>
-        </select>
+            <select name="type_id">';
+        foreach ($typeCollection as $type){
+            echo '<option value ="' . $type->type_id . '"' . ( $action == 'update'   ? $type->role  : '' ) . ' >' . $type->role .'</option>';
+        }
+
+        echo '</select>
         
         <input type="submit" name="submit" value="submit">
     </form>

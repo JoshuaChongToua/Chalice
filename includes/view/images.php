@@ -28,52 +28,49 @@ if (isset($action)) {
             $allowedExtensions = ['jpg', 'jpeg', 'png'];
             $fileExtension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
 
-            $destination = '../assets/images/' . $filename . '.' . $fileExtension;
+            $destination = '../assets/images/' . kodex_random_string($length=10) . '.' . $fileExtension;
             //echo "<pre>" . print_r($destination, true) . "</pre>";
 
 
-            // Vérifier si le fichier existe déjà
-            if (file_exists($destination)) {
-                echo "Le fichier existe déjà.";
-            } else {
-                // Vérifier si l'extension est autorisée
-                if (in_array($fileExtension, $allowedExtensions)) {
-                    // Déplacer le fichier téléchargé vers le dossier de destination
-                    if (move_uploaded_file($tmpFilePath, $destination)) {
-                        // Le fichier a été téléchargé avec succès, vous pouvez effectuer d'autres actions si nécessaire
-                        echo "L'image a été téléchargée avec succès.";
-                        //recuperer l'id image
-                        global $pdo;
-
-                        //$lastInsertedId = $_POST['image_id'];
-                        //echo "<pre>" . print_r($lastInsertedId, true) . "</pre>";
-
-                        //$newName =
-                        $sql = "INSERT INTO images(name) VALUES (:name);";
-                        try {
-                            $statement = $pdo->prepare($sql);
-                            $statement->bindParam(':name', $filename, PDO::PARAM_STR);
-                            $statement->execute();
-
-                            //$destination2 = '../assets/images/' . $lastInsertedId . '.' . $fileExtension;
-                            /*if (move_uploaded_file($destination, $destination2)) {
-                                echo 'Fichier bien renomee';
-                            } else{
-                                echo 'echec';
-                            }*/
+            // Vérifier si l'extension est autorisée
+            if (in_array($fileExtension, $allowedExtensions)) {
+                // Déplacer le fichier téléchargé vers le dossier de destination
+                if (move_uploaded_file($tmpFilePath, $destination)) {
+                    // Le fichier a été téléchargé avec succès, vous pouvez effectuer d'autres actions si nécessaire
+                    echo "L'image a été téléchargée avec succès.";
+                    //recuperer l'id image
+                    global $pdo;
 
 
-                        } catch (PDOException $e) {
-                            echo "Erreur : " . $e->getMessage();
+                    //$newName =
+                    $sql = "INSERT INTO images(name) VALUES (:name);";
+                    try {
+                        $statement = $pdo->prepare($sql);
+                        $statement->bindParam(':name', $filename, PDO::PARAM_STR);
+                        $statement->execute();
+
+                        $destination2 = '../assets/images/' . $pdo->lastInsertId() . '.' . $fileExtension;
+                        echo $destination;
+                        echo '<br>';
+                        echo $destination2;
+                        if (rename($destination, $destination2)) {
+                            echo 'Fichier bien renomee';
+                        } else {
+                            echo 'echec';
                         }
-                    } else {
-                        echo "Une erreur s'est produite lors du téléchargement de l'image.";
+                        $displayForm = false;
+
+                    } catch (PDOException $e) {
+                        echo "Erreur : " . $e->getMessage();
                     }
                 } else {
-                    echo "Le format de fichier n'est pas pris en charge. Veuillez sélectionner une image valide.";
+                    echo "Une erreur s'est produite lors du téléchargement de l'image.";
                 }
+            } else {
+                echo "Le format de fichier n'est pas pris en charge. Veuillez sélectionner une image valide.";
             }
         }
+
     } else if ($action == "update") {
         // si le formulaire a été submit
         if (isset($_POST['imageTitle'])) {
@@ -81,16 +78,16 @@ if (isset($action)) {
             $id = $_POST['image_id'];
 
             $image = getImageById($id);
-            echo "<pre>" . print_r($image, true) . "</pre>";
+            //echo "<pre>" . print_r($image, true) . "</pre>";
 
             if ($image) {
                 $allowedExtensions = ['jpg', 'jpeg', 'png'];
                 $filename = $image->name;
-                echo "<pre>" . print_r($filename, true) . "</pre>";
+                //echo "<pre>" . print_r($filename, true) . "</pre>";
 
                 $fileCollection = glob('../assets/images/' . $filename . '.*');
                 $tempPath = '../assets/images/' . $filename;
-                echo "<pre>" . print_r($tempPath, true) . "</pre>";
+                //echo "<pre>" . print_r($tempPath, true) . "</pre>";
 
                 foreach ($fileCollection as $filePath) {
                     echo "<pre>" . print_r($filePath, true) . "</pre>";
@@ -125,7 +122,7 @@ if (isset($action)) {
         $image = getImageById($id);
         if ($image) {
             $allowedExtensions = ['jpg', 'jpeg', 'png'];
-            $filename = $image->name;
+            $filename = $image->image_id;
             $fileCollection = glob('../assets/images/' . $filename . '.*');
             $tempPath = '../assets/images/' . $filename;
             foreach ($fileCollection as $filePath) {
@@ -133,9 +130,10 @@ if (isset($action)) {
                 foreach ($allowedExtensions as $extension) {
 
                     if ($tempPath . '.' . $extension == $filePath) {
-                        $filename = $image->name . '.' . $extension;
-                        //echo "$filename \n";
+                        $filename = $image->image_id . '.' . $extension;
+                        echo "<pre>" . print_r($filename, true) . "</pre>";
                     }
+
                 }
             }
 
@@ -171,9 +169,11 @@ if ($displayForm) {
     echo '
     <form name="imageForm" action="?action=' . $action . '" method="POST" enctype="multipart/form-data" onsubmit= "return validateForm(\'imageForm\',\'imageTitle\');" onkeypress="verifierCaracteres(event); return false;">
         <input type="text" name="imageTitle" placeholder="imageTitle" autocomplete="off" value="' . ($action == 'update' ? $image->name : '') . '">
-        <br>
-        <input type="file" name="image" >
-        <br>
+        <br>';
+    if ($action != 'update') {
+        echo '<input type="file" name="image" >';
+    }
+    echo '<br>
         <input type="hidden" name="image_id" value="' . ($action == 'update' ? $id : '') . '" >
         <br>
         <input type="submit" name="submit" value="submit">
@@ -183,6 +183,7 @@ if ($displayForm) {
     echo '
     <table>
         <tr>
+            <th></th>
             <th>image_id</th>
             <th>name</th>
             <th>create_date</th>
@@ -194,6 +195,10 @@ if ($displayForm) {
 
     foreach ($imagesCollection as $imageItem) {
         echo '<tr>';
+        echo '<td>';
+        echo '<img src="' . getImage($imageItem->image_id) . '" alt="Image" title="' . $imageItem->name . '">' . PHP_EOL;
+
+        echo '</td>';
         echo '<td>' . $imageItem->image_id . '</td>';
         echo '<td>' . $imageItem->name . '</td>';
         echo '<td>' . $imageItem->create_date . '</td>';
@@ -206,15 +211,25 @@ if ($displayForm) {
 
 }
 
+function getImage(string $id)
+{
+    $imageDirectory = '../assets/images/';
 
-if (!$displayForm) {
-    foreach ($images as $image) {
-        //Pour vérifier que l'image est au bon format
-        if (in_array(strtolower(pathinfo($image, PATHINFO_EXTENSION)), ['jpg', 'jpeg', 'png'])) {
-            $imageName = pathinfo($image, PATHINFO_FILENAME);
-            echo '<img src="' . $imageDirectory . $image . '" alt="Image" title="' . $imageName . '">' . PHP_EOL;
+    foreach (['jpg', 'jpeg', 'png'] as $extension) {
+        if (file_exists($imageDirectory . $id . '.' . $extension)) {
+            return $imageDirectory . $id . '.' . $extension;
         }
     }
+    return $imageDirectory . "default.png";
+}
+
+function kodex_random_string($length=20){
+    $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $string = '';
+    for($i=0; $i<$length; $i++){
+        $string .= $chars[rand(0, strlen($chars)-1)];
+    }
+    return $string;
 }
 
 

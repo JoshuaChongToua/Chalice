@@ -22,16 +22,18 @@ if (isset($action)) {
             $title = $_POST['title'];
             $description = $_POST['description'];
             if ($_POST['image_id']=='--'){
-                $image_id = NULL;
+                $imageId = NULL;
 
             }
             else{
-                $image_id = $_POST['image_id'];
+                $imageId = $_POST['image_id'];
 
 
             }
 
             $link = $_POST['link'];
+            echo "<pre>" . print_r($_POST, true) . "</pre>";
+
 
             $sql = "INSERT INTO news(title, description, image_id, link) VALUES (:title, :description, :image_id, :link);";
 
@@ -40,7 +42,7 @@ if (isset($action)) {
                 $statement = $pdo->prepare($sql);
                 $statement->bindParam(':title', $title, PDO::PARAM_STR);
                 $statement->bindParam(':description', $description, PDO::PARAM_STR);
-                $statement->bindParam(':image_id', $image_id, PDO::PARAM_INT);
+                $statement->bindParam(':image_id', $imageId, PDO::PARAM_INT);
                 $statement->bindParam(':link', $link, PDO::PARAM_STR);
                 $statement->execute();
             } catch (PDOException $e) {
@@ -61,7 +63,6 @@ if (isset($action)) {
 
 
             $sql = "UPDATE news SET title=:title, description=:description, image_id=:image_id, link=:link WHERE news_id=:id;";
-
 
             try {
                 global $pdo;
@@ -103,6 +104,7 @@ if (isset($action)) {
 <?php
 $newsCollection = getAllNews();
 $images = getImages();
+
 //echo "<pre>" . print_r($_POST, true) . "</pre>";
 
 
@@ -117,12 +119,12 @@ if ($displayForm) {
         <br>';
     if (!empty($images)) {
         echo ' Image_id : 
-            <select name="image_id">';
+            <select name="image_id" onchange="getImageSelect( \' . $newsInfo->image_id . \' )" >';
         echo '<option value="--">--</option>';
 
         foreach ($images as $image) {
 
-            echo '<option value="' . $image->image_id . '" ' . ( $action == 'update'  ? $image->name  : '' ) . '  >' . $image->name . '</option>';
+            echo '<option value="' . $image->image_id . '" data-image="' . $image->name . '"  >' . $image->name . '</option>';
         }
         echo '</select>
             <br>';
@@ -134,6 +136,10 @@ if ($displayForm) {
         <input type="submit" name="submit" value="submit">
     </form>
     ';
+    echo '<div id="test" >
+            
+    </div>';
+
 } else {
     echo '
     <table>
@@ -145,18 +151,24 @@ if ($displayForm) {
             <th>link</th>
             <th>action</th>
             <th>supprimer</th>
-        </tr>
+       </tr>
     ';
+    //echo "<pre>" . print_r($newsCollection, true) . "</pre>";
+    //echo "<pre>" . print_r($images, true) . "</pre>";
+
     foreach ($newsCollection as $news) {
         echo '<tr>';
         echo '<td>' . $news->news_id . '</td>';
         echo '<td>' . $news->title . '</td>';
         echo '<td>' . $news->description . '</td>';
-        $imageInfo = getImageById($news->image_id);
-        echo "<pre>" . print_r($imageInfo, true) . "</pre>";
+        //$imageInfo = getImageById($news->image_id);
+        //echo "<pre>" . print_r($imageInfo, true) . "</pre>";
 
 
-        echo '<td>' . $imageInfo->name . '</td>';
+        //echo '<td>' getImage(->)
+        //echo "<pre>" . print_r($newsCollection, true) . "</pre>";
+        $imageById = getImageById($news->image_id);
+        echo '<td>' . $imageById->name . '</td>';
         echo '<td>' . $news->link . '</td>';
         echo '<td> <a href="?action=update&news_id=' . $news->news_id . '">edit</a> </td>';
         echo '<td> <a href="?action=delete&news_id=' . $news->news_id . '">delete</a> </td>';
@@ -169,6 +181,7 @@ if ($displayForm) {
 echo '<a href="?action=create">Create</a>';
 
 ?>
+
 
 
 

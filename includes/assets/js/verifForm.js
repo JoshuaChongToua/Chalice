@@ -1,29 +1,37 @@
 
 function validateForm(form_name,val_name)
 {
-    var x = document.forms[form_name][val_name].value;
+    var x = document.forms[form_name][val_name];
 
-    if (x == "") {
-        alert("Login must be filled out");
-        return false;
-    }
-
-}
-
-/*function validateForm2(form_name, val_name, val_name2)
-{
-    var x = document.forms[form_name][val_name].value;
-    var y = document.forms[form_name][val_name2].value;
-    if (x == "") {
+    if (x.value === "") {
         x.style.borderColor = "red";
         alert("aaa must be filled out");
         return false;
     } else {
         x.style.borderColor = "";
 
+
     }
-    if (y == "") {
-        y.className = "y";
+
+}
+
+function validateForm2(form_name, val_name, val_name2)
+{
+
+    var x = document.forms[form_name][val_name];
+
+    var y = document.forms[form_name][val_name2];
+    if (x.value === "") {
+        x.style.borderColor = "red";
+        alert("aaa must be filled out");
+        return false;
+
+    } else {
+        x.style.borderColor = "";
+
+    }
+
+    if (y.value === "") {
         y.style.borderColor = "red";
         alert("Password must be filled out");
         return false;
@@ -32,9 +40,9 @@ function validateForm(form_name,val_name)
     }
 
 }
-*/
 
-function validateForm2(form_name, val_name, val_name2)
+
+/*function validateForm2(form_name, val_name, val_name2)
 {
     var x = document.forms[form_name][val_name].value;
     var y = document.forms[form_name][val_name2].value;
@@ -48,6 +56,8 @@ function validateForm2(form_name, val_name, val_name2)
     }
 
 }
+
+ */
 
 function verifierCaracteres(event) {
 
@@ -64,4 +74,6 @@ function verifierCaracteres(event) {
         alert('Les caractères spéciaux ne sont pas autorisés.');
     }
 }
+
+
 
