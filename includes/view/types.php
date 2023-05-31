@@ -1,4 +1,6 @@
 <?php
+echo '<div class="container">';
+
 require_once '../model/types.php';
 require_once '../header.php';
 require_once '../footer.php';
@@ -109,6 +111,8 @@ if ($displayForm) {
     echo '</table>';
 }
 
-echo '<a href="?action=create">Create</a>';
+echo '<a class="create" href="?action=create">Create</a>';
+echo '</div>';
 
 ?>
+<link href="../assets/css/types.css" rel="stylesheet" media="screen">

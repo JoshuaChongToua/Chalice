@@ -1,4 +1,5 @@
 <?php
+echo '<div class="container">';
 require_once "../model/images.php";
 require_once '../header.php';
 require_once '../footer.php';
@@ -233,9 +234,11 @@ function kodex_random_string($length=20){
 }
 
 
-echo '<a href="?action=create">Ajouter</a>';
+echo '<a class="create" href="?action=create">Create</a>';
+echo '</div>';
 
 ?>
 
-</body>
+<link href="../assets/css/users.css" rel="stylesheet" media="screen">
+
 

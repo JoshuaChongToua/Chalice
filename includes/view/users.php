@@ -1,4 +1,5 @@
 <?php
+echo '<div class="container">';
 require_once "../model/users.php";
 require_once "../model/types.php";
 require_once '../header.php';
@@ -65,7 +66,6 @@ if (isset($action)) {
                 $statement->bindParam(':login', $login, PDO::PARAM_STR);
                 $statement->bindParam(':password', $password, PDO::PARAM_STR);
                 $statement->bindParam(':type_id', $typeId, PDO::PARAM_INT);
-                var_dump($statement);
                 $statement->execute();
 
 
@@ -159,9 +159,11 @@ if ($displayForm) {
     echo '</table>';
 }
 
-echo '<a href="?action=create">Create</a>';
-
+echo '<a class="create" href="?action=create">Create</a>';
+echo '</div>';
 ?>
+
+<link href="../assets/css/users.css" rel="stylesheet" media="screen">
 
 
 

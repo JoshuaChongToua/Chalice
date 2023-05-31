@@ -39,7 +39,9 @@ echo '
     <a href="' . $isLaragon . '/includes/view/types.php">Type</a>
     <a href="' . $isLaragon . '/includes/view/images.php">Images</a>';
     if (isset($_SESSION['login'])){
-        echo "<p> Bienvenue : " .  $_SESSION['login'] . "";
+        echo "<p> Bienvenue : " .  $_SESSION['login'] . "</p>" ;
+        echo '<br>';
+        //echo "<p>  Role : " .  $_SESSION['type_id'] . "</p>";
         echo "<a href='/Chalice/includes/logout.php' >Se deconecter</a> ";
     }
     echo'

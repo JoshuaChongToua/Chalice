@@ -1,4 +1,5 @@
 <?php
+echo '<div class="container">';
 require_once '../model/news.php';
 require_once '../model/images.php';
 require_once '../header.php';
@@ -32,7 +33,7 @@ if (isset($action)) {
             }
 
             $link = $_POST['link'];
-            echo "<pre>" . print_r($_POST, true) . "</pre>";
+            //echo "<pre>" . print_r($_POST, true) . "</pre>";
 
 
             $sql = "INSERT INTO news(title, description, image_id, link) VALUES (:title, :description, :image_id, :link);";
@@ -113,24 +114,25 @@ if ($displayForm) {
 
     echo '
     <form name="newsForm" method="POST" action="?action=' . $action . '" onsubmit= "return validateForm(\'newsForm\',\'title\'); "  >
-        Title : <input type="text" name="title"  value="' . ($action == 'update' ? $newsInfo->title : '') . '" onkeypress="verifierCaracteres(event); return false;" />
+        <label for="title" class="title-label">Title :</label>  
+        <input type="text" name="title" placeholder="Title"  value="' . ($action == 'update' ? $newsInfo->title : '') . '" onkeypress="verifierCaracteres(event); return false;" />
         <br>
-        Description : <input type="text" name="description"  value="' . ($action == 'update' ? $newsInfo->description : '') . '">
+        Description : <input type="text" name="description" placeholder="Description" autocomplete="off"  value="' . ($action == 'update' ? $newsInfo->description : '') . '">
         <br>';
     if (!empty($images)) {
         echo ' Image_id : 
-            <select name="image_id" onchange="getImageSelect( \' . $newsInfo->image_id . \' )" >';
+            <select name="image_id" onchange="getImageSelect( this.value )" >';
         echo '<option value="--">--</option>';
 
         foreach ($images as $image) {
 
-            echo '<option value="' . $image->image_id . '" data-image="' . $image->name . '"  >' . $image->name . '</option>';
+            echo '<option value="' . $image->image_id . '" data-name="' . $image->name . '" data-id="$image->image_id"  >' . $image->name . '</option>';
         }
         echo '</select>
             <br>';
     }
     echo '
-        Link : <input type="text" name="link"  value="' . ($action == 'update' ? $newsInfo->link : '') . '" onkeypress="verifierCaracteres(event); return false;" />
+        Link : <input type="text" name="link" placeholder="Link" value="' . ($action == 'update' ? $newsInfo->link : '') . '" onkeypress="verifierCaracteres(event); return false;" autocomplete="off" />
         <br>
         <input type="hidden" name="news_id" value="' . ($action == 'update' ? $id : '' ) . '">
         <input type="submit" name="submit" value="submit">
@@ -178,11 +180,12 @@ if ($displayForm) {
     echo '</table>';
 }
 
-echo '<a href="?action=create">Create</a>';
-
+echo '<a class="create" href="?action=create">Create</a>';
+echo '</div>'
 ?>
 
 
+<link href="../assets/css/news.css" rel="stylesheet" media="screen">
 
 
 
