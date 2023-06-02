@@ -1,9 +1,6 @@
 <?php
-echo '<div class="container">';
-
-require_once '../model/types.php';
 require_once '../header.php';
-require_once '../footer.php';
+require_once '../model/types.php';
 $displayForm = false;
 
 if (isset($_GET['action'])) {
@@ -78,6 +75,8 @@ if (isset($action)) {
 
 <?php
 $types = getAllTypes();
+echo '<div class="container">';
+
 
 if ($displayForm) {
 
@@ -88,30 +87,59 @@ if ($displayForm) {
         <br>
         <input type="hidden" name="type_id" value="' . ($action == 'update' ? $id : '' ) . '">
         <input type="submit" name="submit" value="submit">
+        <a href="types.php">Retour</a>
+
     </form>
     ';
 } else {
     echo '
-    <table>
-        <tr>
-            <th>type_id</th>
-            <th>role</th>
+<div id="main-content">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="jsgrid-table-panel">
+                                    <div id="jsGrid">
+    <table class="jsgrid-table">
+        <tbody>
+
+            <tr class="jsgrid-header-row">
+            <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">type_id</th>
+            <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">role</th>
+            <th class="jsgrid-header-cell jsgrid-control-field jsgrid-align-center" style="width: 50px;">
+                    <a href="?action=create"><span class="jsgrid-button jsgrid-mode-button jsgrid-insert-mode-button ti-plus" type="button" title=""></span></a>
+            </th>
         </tr>
     ';
 
     foreach ($types as $type) {
-        echo '<tr>';
-        echo '<td>' . $type->type_id . '</td>';
-        echo '<td>' . $type->role . '</td>';
-        echo '<td> <a href="?action=update&type_id=' . $type->type_id . '">edit</a> </td>';
-        echo '<td> <a href="?action=delete&type_id=' . $type->type_id . '">delete</a> </td>';
+        echo '<tr class="jsgrid-row" style="display: table-row;">';
+        echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $type->type_id . '</td>';
+        echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $type->role . '</td>';
+        echo '<td class="jsgrid-cell jsgrid-control-field jsgrid-align-center" style="width: 50px;"> 
+                <a href="?action=update&user_id=' . $type->type_id . '"><span class="jsgrid-button jsgrid-edit-button ti-pencil" type="button" title="Edit"  ></span></a> 
+                <a href="?action=delete&user_id=' . $type->type_id . '"><span class="jsgrid-button jsgrid-delete-button ti-trash" type="button" title="Delete"></span></a> 
+               </td>';
         echo '</tr>';
     }
 
-    echo '</table>';
+    echo '</tbody>
+    </table>';
 }
+echo '</div>
+                                </div>
+                            </div>
+                            <!-- /# card -->
+                        </div>
+                        <!-- /# column -->
+                    </div>
+                    <!-- /# row -->
+
+                    
+                </div>';
 
 echo '<a class="create" href="?action=create">Create</a>';
 echo '</div>';
+require_once '../footer.php';
+
 
 ?>

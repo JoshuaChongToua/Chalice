@@ -1,8 +1,6 @@
 <?php
-echo '<div class="container">';
-require_once "../model/images.php";
 require_once '../header.php';
-require_once '../footer.php';
+require_once "../model/images.php";
 
 
 $displayForm = false;
@@ -165,6 +163,8 @@ $imagesCollection = getImages();
 $imageDirectory = '../assets/images/upload';
 $images = scandir($imageDirectory);
 
+echo '<div class="container">';
+
 if ($displayForm) {
     //Formulaire pour upload l'image
     echo '
@@ -178,39 +178,62 @@ if ($displayForm) {
         <input type="hidden" name="image_id" value="' . ($action == 'update' ? $id : '') . '" >
         <br>
         <input type="submit" name="submit" value="submit">
+        <a href="images.php">Retour</a>
     </form>
     ';
 } else {
     echo '
-    <table>
-        <tr>
-            <th></th>
-            <th>image_id</th>
-            <th>name</th>
-            <th>create_date</th>
-            <th>edit</th>
-            <th>delete</th>
-            
+<div id="main-content">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="jsgrid-table-panel">
+                                    <div id="jsGrid">
+    <table class="jsgrid-table">
+       <tbody>
+            <tr class="jsgrid-header-row">
+            <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;"></th>
+            <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">image_id</th>
+            <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">name</th>
+            <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">create_date</th>
+            <th class="jsgrid-header-cell jsgrid-control-field jsgrid-align-center" style="width: 50px;">
+                    <a href="?action=create"><span class="jsgrid-button jsgrid-mode-button jsgrid-insert-mode-button ti-plus" type="button" title=""></span></a>
+            </th> 
         </tr>
     ';
 
     foreach ($imagesCollection as $imageItem) {
-        echo '<tr>';
-        echo '<td>';
+        echo '<tr class="jsgrid-row" style="display: table-row;">';
+        echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 150px;">';
         echo '<img id="imageTab" src="' . getImage($imageItem->image_id) . '" alt="Image" title="' . $imageItem->name . '">' . PHP_EOL;
 
         echo '</td>';
-        echo '<td>' . $imageItem->image_id . '</td>';
-        echo '<td>' . $imageItem->name . '</td>';
-        echo '<td>' . $imageItem->create_date . '</td>';
-        echo '<td><a href="?action=update&image_id=' . $imageItem->image_id . '">edit</a></td>';
-        echo '<td><a href="?action=delete&image_id=' . $imageItem->image_id . '">Supprimer</a></td>';
-
+        echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 150px;">' . $imageItem->image_id . '</td>';
+        echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 150px;">' . $imageItem->name . '</td>';
+        echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 150px;">' . $imageItem->create_date . '</td>';
+        echo '<td class="jsgrid-cell jsgrid-control-field jsgrid-align-center" style="width: 50px;"> 
+                <a href="?action=update&image_id=' . $imageItem->image_id . '"><span class="jsgrid-button jsgrid-edit-button ti-pencil" type="button" title="Edit"  ></span></a> 
+                <a href="?action=delete&image_id=' . $imageItem->image_id . '"><span class="jsgrid-button jsgrid-delete-button ti-trash" type="button" title="Delete"></span></a> 
+                </td>';
+        echo '</tr>';
 
     }
 
 
+    echo '</tbody>
+    </table>';
 }
+echo '</div>
+                                </div>
+                            </div>
+                            <!-- /# card -->
+                        </div>
+                        <!-- /# column -->
+                    </div>
+                    <!-- /# row -->
+
+                    
+                </div>';
 
 function getImage(string $id)
 {
@@ -236,6 +259,8 @@ function kodex_random_string($length=20){
 
 echo '<a class="create" href="?action=create">Create</a>';
 echo '</div>';
+require_once '../footer.php';
+
 
 ?>
 

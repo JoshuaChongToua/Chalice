@@ -1,8 +1,8 @@
 <?php
-echo '<div class="container">';
+require_once '../header.php';
 require_once "../model/users.php";
 require_once "../model/types.php";
-require_once '../header.php';
+
 
 //var_dump($_POST);
 
@@ -94,15 +94,10 @@ if (isset($action)) {
 
 }
 
-?>
-
-
-
-<?php
-
 $users = getAllUsers();
 $typeCollection = getAllTypes();
 
+echo '<div class="container">';
 
 if ($displayForm) {
     echo '
@@ -121,10 +116,17 @@ if ($displayForm) {
         echo '</select>
         
         <input type="submit" name="submit" value="submit">
+        <a href="users.php">Retour</a>
     </form>
     ';
 } else {
     echo '
+<div id="main-content">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="jsgrid-table-panel">
+                                    <div id="jsGrid">
     <table class="jsgrid-table">
         <tbody>
             <tr class="jsgrid-header-row">
@@ -134,8 +136,9 @@ if ($displayForm) {
                 <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">type id</th>
                 <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">role</th>
                 <th class="jsgrid-header-cell jsgrid-align-center" style="width: 200px;">date</th>
-                <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">action</th>
-                <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">supprimer</th>
+                <th class="jsgrid-header-cell jsgrid-control-field jsgrid-align-center" style="width: 50px;">
+                    <a href="?action=create"><span class="jsgrid-button jsgrid-mode-button jsgrid-insert-mode-button ti-plus" type="button" title=""></span></a>
+                </th>            
             </tr>
         
     ';
@@ -144,7 +147,7 @@ if ($displayForm) {
 
     foreach ($users as $user) {
         echo '<tr class="jsgrid-row" style="display: table-row;">';
-        echo '<td class="jsgrid-cell" style="width: 150px;">' . $user->user_id . '</td>';
+        echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 150px;">' . $user->user_id . '</td>';
         echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $user->login . '</td>';
         echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $user->password . '</td>';
         echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $user->type_id . '</td>';
@@ -152,19 +155,38 @@ if ($displayForm) {
         //echo "<pre>" . print_r($role, true) . "</pre>";
         echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $role[0]->role . '</td>';
         echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $user->create_date . '</td>';
-        echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;"> <a href="?action=update&user_id=' . $user->user_id . '">edit</a> </td>';
-        echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;"> <a href="?action=delete&user_id=' . $user->user_id . '">delete</a> </td>';
+        echo '<td class="jsgrid-cell jsgrid-control-field jsgrid-align-center" style="width: 50px;"> 
+                <a href="?action=update&user_id=' . $user->user_id . '"><span class="jsgrid-button jsgrid-edit-button ti-pencil" type="button" title="Edit"  ></span></a> 
+                <a href="?action=delete&user_id=' . $user->user_id . '"><span class="jsgrid-button jsgrid-delete-button ti-trash" type="button" title="Delete"></span></a> 
+                </td>';
         echo '</tr>';
     }
+
+
+
     echo '</tbody>
     </table>';
-}
+    }
+    echo '</div>
+                                </div>
+                            </div>
+                            <!-- /# card -->
+                        </div>
+                        <!-- /# column -->
+                    </div>
+                    <!-- /# row -->
+
+                    
+                </div>';
+
+
 
 echo '<a class="create" href="?action=create">Create</a>';
 echo '</div>';
 require_once '../footer.php';
 
 ?>
+
 
 <!--<link href="../assets/css/users.css" rel="stylesheet"> -->
 

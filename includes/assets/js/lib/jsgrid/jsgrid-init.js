@@ -12,7 +12,6 @@
                 pageSize: 15,
                 pageButtonCount: 5,
                 deleteConfirm: "Do you really want to delete the client?",
-                controller: db,
                 fields: [
                     { name: "Name", type: "text", width: 150 },
                     { name: "Age", type: "number", width: 50 },

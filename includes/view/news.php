@@ -1,9 +1,7 @@
 <?php
-echo '<div class="container">';
+require_once '../header.php';
 require_once '../model/news.php';
 require_once '../model/images.php';
-require_once '../header.php';
-require_once '../footer.php';
 
 $displayForm = false;
 
@@ -108,6 +106,7 @@ $images = getImages();
 
 //echo "<pre>" . print_r($_POST, true) . "</pre>";
 
+echo '<div class="container">';
 
 if ($displayForm) {
 
@@ -136,6 +135,8 @@ if ($displayForm) {
         <br>
         <input type="hidden" name="news_id" value="' . ($action == 'update' ? $id : '' ) . '">
         <input type="submit" name="submit" value="submit">
+        <a href="news.php">Retour</a>
+
     </form>
     ';
     echo '<div id="test" >
@@ -145,57 +146,60 @@ if ($displayForm) {
 } else {
     echo '
     <table>
+    <tbody>
         <tr>
-            <th>news_id</th>
-            <th>title</th>
-            <th>description</th>
-            <th>image_id</th>
-            <th>link</th>
-            <th>action</th>
-            <th>supprimer</th>
-       </tr>
+            <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">news_id</th>
+            <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">title</th>
+            <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">description</th>
+            <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">image_id</th>
+            <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">link</th>
+            <th class="jsgrid-header-cell jsgrid-control-field jsgrid-align-center" style="width: 50px;">
+                <a href="?action=create"><span class="jsgrid-button jsgrid-mode-button jsgrid-insert-mode-button ti-plus" type="button" title=""></span></a>
+            </th>  
+        </tr>
     ';
     //echo "<pre>" . print_r($newsCollection, true) . "</pre>";
     //echo "<pre>" . print_r($images, true) . "</pre>";
 
     foreach ($newsCollection as $news) {
-        echo '<tr>';
-        echo '<td>' . $news->news_id . '</td>';
-        echo '<td>' . $news->title . '</td>';
-        echo '<td>' . $news->description . '</td>';
-        //$imageInfo = getImageById($news->image_id);
-        //echo "<pre>" . print_r($imageInfo, true) . "</pre>";
-
-
-        //echo '<td>' getImage(->)
-        //echo "<pre>" . print_r($newsCollection, true) . "</pre>";
-
+        echo '<tr class="jsgrid-row" style="display: table-row;">';
+        echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 150px;">' . $news->news_id . '</td>';
+        echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $news->title . '</td>';
+        echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $news->description . '</td>';
         $imageById = isset($news->image_id) ? getImageById($news->image_id) : null;
-
-
-        if ($imageById){
-            echo '<td>' . $imageById->name . '</td>';
+        if ($imageById) {
+            echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $imageById->name . '</td>';
         } else {
-            echo '<td>' . "" . '</td>';
-
+            echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . "" . '</td>';
         }
-
-
-
-
-        //echo "<pre>" . print_r($news, true) . "</pre>";
-
-        echo '<td>' . $news->link . '</td>';
-        echo '<td> <a href="?action=update&news_id=' . $news->news_id . '">edit</a> </td>';
-        echo '<td> <a href="?action=delete&news_id=' . $news->news_id . '">delete</a> </td>';
+        echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $news->link . '</td>';
+        echo '<td class="jsgrid-cell jsgrid-control-field jsgrid-align-center" style="width: 50px;"> 
+                <a href="?action=update&news_id=' . $news->news_id . '"><span class="jsgrid-button jsgrid-edit-button ti-pencil" type="button" title="Edit"  ></span></a> 
+                <a href="?action=delete&news_idp=' . $news->news_id . '"><span class="jsgrid-button jsgrid-delete-button ti-trash" type="button" title="Delete"></span></a> 
+                </td>';
         echo '</tr>';
     }
-
-    echo '</table>';
 }
+    ';
+    </tbody>
+    </table>
+    </div>
+                                </div>
+                            </div>
+                            <!-- /# card -->
+                        </div>
+                        <!-- /# column -->
+                    </div>
+                    <!-- /# row -->
+
+                    
+                </div>';
+
 
 echo '<a class="create" href="?action=create">Create</a>';
-echo '</div>'
+echo '</div>';
+require_once '../footer.php';
+
 ?>
 
 
