@@ -29,7 +29,7 @@ if (isset($action)) {
             $allowedExtensions = ['jpg', 'jpeg', 'png'];
             $fileExtension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
 
-            $destination = '../assets/images/' . kodex_random_string($length=10) . '.' . $fileExtension;
+            $destination = '../assets/images/upload/' . kodex_random_string($length=10) . '.' . $fileExtension;
             //echo "<pre>" . print_r($destination, true) . "</pre>";
 
 
@@ -50,7 +50,7 @@ if (isset($action)) {
                         $statement->bindParam(':name', $filename, PDO::PARAM_STR);
                         $statement->execute();
 
-                        $destination2 = '../assets/images/' . $pdo->lastInsertId() . '.' . $fileExtension;
+                        $destination2 = '../assets/images/upload/' . $pdo->lastInsertId() . '.' . $fileExtension;
                         echo $destination;
                         echo '<br>';
                         echo $destination2;
@@ -86,8 +86,8 @@ if (isset($action)) {
                 $filename = $image->name;
                 //echo "<pre>" . print_r($filename, true) . "</pre>";
 
-                $fileCollection = glob('../assets/images/' . $filename . '.*');
-                $tempPath = '../assets/images/' . $filename;
+                $fileCollection = glob('../assets/images/upload/' . $filename . '.*');
+                $tempPath = '../assets/images/upload/' . $filename;
                 //echo "<pre>" . print_r($tempPath, true) . "</pre>";
 
                 foreach ($fileCollection as $filePath) {
@@ -124,8 +124,8 @@ if (isset($action)) {
         if ($image) {
             $allowedExtensions = ['jpg', 'jpeg', 'png'];
             $filename = $image->image_id;
-            $fileCollection = glob('../assets/images/' . $filename . '.*');
-            $tempPath = '../assets/images/' . $filename;
+            $fileCollection = glob('../assets/images/upload/' . $filename . '.*');
+            $tempPath = '../assets/images/upload/' . $filename;
             foreach ($fileCollection as $filePath) {
                 //echo "<pre>" . print_r($filePath, true) . "</pre>";
                 foreach ($allowedExtensions as $extension) {
@@ -140,7 +140,7 @@ if (isset($action)) {
 
             $fileExtension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
 
-            $imagePath = '../assets/images/' . $filename;
+            $imagePath = '../assets/images/upload/' . $filename;
             //echo "<pre>" . print_r($imagePath, true) . "</pre>";
 
             if (file_exists($imagePath)) {
@@ -162,7 +162,7 @@ if (isset($action)) {
 
 $imagesCollection = getImages();
 
-$imageDirectory = '../assets/images/';
+$imageDirectory = '../assets/images/upload';
 $images = scandir($imageDirectory);
 
 if ($displayForm) {
@@ -197,7 +197,7 @@ if ($displayForm) {
     foreach ($imagesCollection as $imageItem) {
         echo '<tr>';
         echo '<td>';
-        echo '<img src="' . getImage($imageItem->image_id) . '" alt="Image" title="' . $imageItem->name . '">' . PHP_EOL;
+        echo '<img id="imageTab" src="' . getImage($imageItem->image_id) . '" alt="Image" title="' . $imageItem->name . '">' . PHP_EOL;
 
         echo '</td>';
         echo '<td>' . $imageItem->image_id . '</td>';
@@ -214,7 +214,7 @@ if ($displayForm) {
 
 function getImage(string $id)
 {
-    $imageDirectory = '../assets/images/';
+    $imageDirectory = '../assets/images/upload/';
 
     foreach (['jpg', 'jpeg', 'png'] as $extension) {
         if (file_exists($imageDirectory . $id . '.' . $extension)) {
@@ -239,6 +239,5 @@ echo '</div>';
 
 ?>
 
-<link href="../assets/css/users.css" rel="stylesheet" media="screen">
 
 

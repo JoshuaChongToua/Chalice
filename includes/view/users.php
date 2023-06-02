@@ -3,7 +3,6 @@ echo '<div class="container">';
 require_once "../model/users.php";
 require_once "../model/types.php";
 require_once '../header.php';
-require_once '../footer.php';
 
 //var_dump($_POST);
 
@@ -126,44 +125,48 @@ if ($displayForm) {
     ';
 } else {
     echo '
-    <table>
-        <tr>
-            <th>user_id</th>
-            <th>Login</th>
-            <th>Password</th>
-            <th>type id</th>
-            <th>role</th>
-            <th>date</th>
-            <th>action</th>
-            <th>supprimer</th>
-        </tr>
+    <table class="jsgrid-table">
+        <tbody>
+            <tr class="jsgrid-header-row">
+                <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">user_id</th>
+                <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">Login</th>
+                <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">Password</th>
+                <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">type id</th>
+                <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">role</th>
+                <th class="jsgrid-header-cell jsgrid-align-center" style="width: 200px;">date</th>
+                <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">action</th>
+                <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">supprimer</th>
+            </tr>
+        
     ';
 
 
 
     foreach ($users as $user) {
-        echo '<tr>';
-        echo '<td>' . $user->user_id . '</td>';
-        echo '<td>' . $user->login . '</td>';
-        echo '<td>' . $user->password . '</td>';
-        echo '<td>' . $user->type_id . '</td>';
+        echo '<tr class="jsgrid-row" style="display: table-row;">';
+        echo '<td class="jsgrid-cell" style="width: 150px;">' . $user->user_id . '</td>';
+        echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $user->login . '</td>';
+        echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $user->password . '</td>';
+        echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $user->type_id . '</td>';
         $role = getRole($user->type_id);
         //echo "<pre>" . print_r($role, true) . "</pre>";
-        echo '<td>' . $role[0]->role . '</td>';
-        echo '<td>' . $user->create_date . '</td>';
-        echo '<td> <a href="?action=update&user_id=' . $user->user_id . '">edit</a> </td>';
-        echo '<td> <a href="?action=delete&user_id=' . $user->user_id . '">delete</a> </td>';
+        echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $role[0]->role . '</td>';
+        echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $user->create_date . '</td>';
+        echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;"> <a href="?action=update&user_id=' . $user->user_id . '">edit</a> </td>';
+        echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;"> <a href="?action=delete&user_id=' . $user->user_id . '">delete</a> </td>';
         echo '</tr>';
     }
-
-    echo '</table>';
+    echo '</tbody>
+    </table>';
 }
 
 echo '<a class="create" href="?action=create">Create</a>';
 echo '</div>';
+require_once '../footer.php';
+
 ?>
 
-<link href="../assets/css/users.css" rel="stylesheet" media="screen">
+<!--<link href="../assets/css/users.css" rel="stylesheet"> -->
 
 
 

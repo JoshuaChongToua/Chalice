@@ -23,7 +23,7 @@ if (isset($action)) {
             $title = $_POST['title'];
             $description = $_POST['description'];
             if ($_POST['image_id']=='--'){
-                $imageId = NULL;
+                $imageId = null;
 
             }
             else{
@@ -169,8 +169,22 @@ if ($displayForm) {
 
         //echo '<td>' getImage(->)
         //echo "<pre>" . print_r($newsCollection, true) . "</pre>";
-        $imageById = getImageById($news->image_id);
-        echo '<td>' . $imageById->name . '</td>';
+
+        $imageById = isset($news->image_id) ? getImageById($news->image_id) : null;
+
+
+        if ($imageById){
+            echo '<td>' . $imageById->name . '</td>';
+        } else {
+            echo '<td>' . "" . '</td>';
+
+        }
+
+
+
+
+        //echo "<pre>" . print_r($news, true) . "</pre>";
+
         echo '<td>' . $news->link . '</td>';
         echo '<td> <a href="?action=update&news_id=' . $news->news_id . '">edit</a> </td>';
         echo '<td> <a href="?action=delete&news_id=' . $news->news_id . '">delete</a> </td>';
@@ -185,7 +199,6 @@ echo '</div>'
 ?>
 
 
-<link href="../assets/css/news.css" rel="stylesheet" media="screen">
 
 
 

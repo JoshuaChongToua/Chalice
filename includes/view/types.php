@@ -115,4 +115,3 @@ echo '<a class="create" href="?action=create">Create</a>';
 echo '</div>';
 
 ?>
-<link href="../assets/css/types.css" rel="stylesheet" media="screen">

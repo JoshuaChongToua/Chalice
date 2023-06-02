@@ -16,8 +16,8 @@ function getImageById($id)
         $prep = $pdo->prepare($query);
         $prep->bindParam(':id', $id, PDO::PARAM_INT);
         $prep->execute();
-        $result = $prep->fetch();
-        return $result;
+        return $prep->fetch();
+
     }
     catch ( Exception $e ) {
         die("erreur dans la requete ".$e->getMessage());
