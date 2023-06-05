@@ -49,16 +49,18 @@ echo '
     <link href="../assets/css/style.css" rel="stylesheet">
     <link href="../assets/css/lib/jsgrid/jsgrid-theme.min.css" rel="stylesheet" />
     <link href="../assets/css/lib/jsgrid/jsgrid.min.css" type="text/css" rel="stylesheet" />
-
+    
+    
 </head>
-<body>
+<body onload="setDate()">
 ';
 ?>
+
 
 <div class="sidebar sidebar-hide-to-small sidebar-shrink sidebar-gestures">
     <div class="nano">
         <div class="nano-content">
-            <div class="logo"><a href="index.html"><img src="../assets/images/logo.png" alt=""/> <span>Focus</span></a>
+            <div class="logo"><a href="main.php"><img src="../assets/images/logo.png" alt=""/> <span>Focus</span></a>
             </div>
             <ul>
                 <li class="label">Apps</li>
@@ -67,6 +69,7 @@ echo '
                     <ul>
                         <li><a href="users.php">Liste Users</a></li>
                         <li><a href="users.php?action=create">Add User</a></li>
+                        <li><a href="../test.html">test</a></li>
                     </ul>
                 </li>
                 <li><a class="sidebar-sub-toggle"><i class="ti-bar-chart-alt"></i> News <span
@@ -247,7 +250,7 @@ echo '
                     </div>
                     <div class="dropdown dib">
                         <div class="header-icon" data-toggle="dropdown">
-                                <span class="user-avatar">John
+                                <span class="user-avatar"><?php echo $_SESSION['login']; ?>
                                     <i class="ti-angle-down f-s-10"></i>
                                 </span>
                             <div class="drop-down dropdown-profile dropdown-menu dropdown-menu-right">
