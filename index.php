@@ -10,6 +10,7 @@ if (!empty($_POST['login']) && !empty($_POST['password'])) {
         session_start();
         $_SESSION['login'] = $resultat->login;
         $_SESSION['type_id'] = $resultat->type_id;
+        $_SESSION['user_id'] = $resultat->user_id;
         header("Location:includes/view/main.php ");
 
     } else {

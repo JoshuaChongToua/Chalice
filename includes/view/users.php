@@ -29,19 +29,35 @@ if (isset($action)) {
             $login = $_POST['login'];
             $password = $_POST['password'];
             $typeId = $_POST['type_id'];
+            //$idUser = $_POST['user_id'];
 
             $sql = "INSERT INTO users(login, password, type_id) VALUES (:login, :password, :typeId);";
+            $sql2 = "INSERT INTO profile(user_id) VALUES (:id);";
             try {
                 global $pdo;
                 $statement = $pdo->prepare($sql);
-                var_dump($statement);
+                //var_dump($statement);
                 $statement->bindParam(':login', $login, PDO::PARAM_STR);
                 $statement->bindParam(':password', $password, PDO::PARAM_STR);
                 $statement->bindParam(':typeId', $typeId, PDO::PARAM_INT);
                 $statement->execute();
+                $newUserID = $pdo->lastInsertId();
+
+
+
             } catch (PDOException $e) {
                 echo "Erreur : " . $e->getMessage();
             }
+
+            try {
+                global $pdo;
+                $stat = $pdo->prepare($sql2);
+                $stat->bindParam(':id', $newUserID, PDO::PARAM_INT);
+                $stat->execute();
+            } catch (PDOException $e) {
+                echo "Erreur : " . $e->getMessage();
+            }
+
             // on retire le formulaire
             $displayForm = false;
 
@@ -79,12 +95,18 @@ if (isset($action)) {
     } else if ($action == "delete" && !empty($id)) {
 
         $sql = "DELETE FROM users WHERE user_id = :id";
+        $sq2 = "DELETE FROM profile WHERE user_id = :id";
 
         try {
             global $pdo;
             $statement = $pdo->prepare($sql);
             $statement->bindParam(':id', $id, PDO::PARAM_INT);
             $statement->execute();
+
+            $stat = $pdo->prepare($sq2);
+            $stat->bindParam(':id', $id, PDO::PARAM_INT);
+            $stat->execute();
+
         } catch (PDOException $e) {
             die("erreur dans la requete " . $e->getMessage());
         }
@@ -127,7 +149,7 @@ if ($displayForm) {
                             <div class="card">
                                 <div class="jsgrid-table-panel">
                                     <div id="jsGrid">
-    <table class="jsgrid-table">
+    <table>
         <tbody>
             <tr class="jsgrid-header-row">
                 <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">user_id</th>
@@ -146,20 +168,22 @@ if ($displayForm) {
 
 
     foreach ($users as $user) {
-        echo '<tr class="jsgrid-row" style="display: table-row;">';
-        echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 150px;">' . $user->user_id . '</td>';
-        echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $user->login . '</td>';
-        echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $user->password . '</td>';
-        echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $user->type_id . '</td>';
-        $role = getRole($user->type_id);
-        //echo "<pre>" . print_r($role, true) . "</pre>";
-        echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $role[0]->role . '</td>';
-        echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $user->create_date . '</td>';
-        echo '<td class="jsgrid-cell jsgrid-control-field jsgrid-align-center" style="width: 50px;"> 
+        if ($user->user_id != $_SESSION['user_id']) {
+            echo '<tr class="jsgrid-row" style="display: table-row;">';
+            echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 150px;">' . $user->user_id . '</td>';
+            echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $user->login . '</td>';
+            echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $user->password . '</td>';
+            echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $user->type_id . '</td>';
+            $role = getRole($user->type_id);
+            //echo "<pre>" . print_r($role, true) . "</pre>";
+            echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $role[0]->role . '</td>';
+            echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $user->create_date . '</td>';
+            echo '<td class="jsgrid-cell jsgrid-control-field jsgrid-align-center" style="width: 50px;"> 
                 <a href="?action=update&user_id=' . $user->user_id . '"><span class="jsgrid-button jsgrid-edit-button ti-pencil" type="button" title="Edit"  ></span></a> 
                 <a href="?action=delete&user_id=' . $user->user_id . '"><span class="jsgrid-button jsgrid-delete-button ti-trash" type="button" title="Delete"></span></a> 
                 </td>';
-        echo '</tr>';
+            echo '</tr>';
+        }
     }
 
 

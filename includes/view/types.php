@@ -99,7 +99,7 @@ if ($displayForm) {
                             <div class="card">
                                 <div class="jsgrid-table-panel">
                                     <div id="jsGrid">
-    <table class="jsgrid-table">
+    <table>
         <tbody>
 
             <tr class="jsgrid-header-row">

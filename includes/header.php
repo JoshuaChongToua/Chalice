@@ -1,7 +1,28 @@
 <?php
 session_start();
-
 require_once 'common/SPDO.php';
+
+function creerDossierUtilisateur($nomUtilisateur) {
+    $cheminDossier = "../assets/images/profiles/" . $nomUtilisateur;
+
+    if (!file_exists($cheminDossier)) {
+        // Créer le dossier avec les permissions appropriées (par exemple, 0777 pour des permissions complètes)
+        mkdir($cheminDossier, 0777, true);
+    }
+}
+
+creerDossierUtilisateur($_SESSION['user_id']);
+
+function kodex_random_string($length=20){
+    $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $string = '';
+    for($i=0; $i<$length; $i++){
+        $string .= $chars[rand(0, strlen($chars)-1)];
+    }
+    return $string;
+}
+
+
 
 $isLaragon = "";
 if ($_SERVER['HTTP_HOST'] == "localhost") {
@@ -60,33 +81,35 @@ echo '
 <div class="sidebar sidebar-hide-to-small sidebar-shrink sidebar-gestures">
     <div class="nano">
         <div class="nano-content">
-            <div class="logo"><a href="main.php"><img src="../assets/images/logo.png" alt=""/> <span>Focus</span></a>
+            <div class="logo"><a href="main.php"><img src="../assets/images/logo.png" width="50px" height="50px" alt=""/>
+                    <span>Chalice Admin</span></a>
             </div>
             <ul>
-                <li class="label">Apps</li>
-                <li><a class="sidebar-sub-toggle"><i class="ti-bar-chart-alt"></i> Users <span
+                <li class="label">Menu</li>
+                <li><a class="sidebar-sub-toggle"><i class="ti-user"></i> Users <span
                                 class="sidebar-collapse-icon ti-angle-down"></span></a>
                     <ul>
                         <li><a href="users.php">Liste Users</a></li>
                         <li><a href="users.php?action=create">Add User</a></li>
+                        <li><a href="profile.php">Profile</a></li>
                         <li><a href="../test.html">test</a></li>
                     </ul>
                 </li>
-                <li><a class="sidebar-sub-toggle"><i class="ti-bar-chart-alt"></i> News <span
+                <li><a class="sidebar-sub-toggle"><i class="ti-files"></i> News <span
                                 class="sidebar-collapse-icon ti-angle-down"></span></a>
                     <ul>
                         <li><a href="news.php">Liste News</a></li>
                         <li><a href="news.php?action=create">Add News</a></li>
                     </ul>
                 </li>
-                <li><a class="sidebar-sub-toggle"><i class="ti-bar-chart-alt"></i> Types <span
+                <li><a class="sidebar-sub-toggle"><i class="ti-target"></i> Types <span
                                 class="sidebar-collapse-icon ti-angle-down"></span></a>
                     <ul>
                         <li><a href="types.php">Liste Types</a></li>
                         <li><a href="types.php?action=create">Add Type</a></li>
                     </ul>
                 </li>
-                <li><a class="sidebar-sub-toggle"><i class="ti-bar-chart-alt"></i> Images <span
+                <li><a class="sidebar-sub-toggle"><i class="ti-image"></i> Images <span
                                 class="sidebar-collapse-icon ti-angle-down"></span></a>
                     <ul>
                         <li><a href="images.php">Liste Images</a></li>
@@ -99,6 +122,7 @@ echo '
         </div>
     </div>
 </div>
+
 <div class="header">
     <div class="container-fluid">
         <div class="row">

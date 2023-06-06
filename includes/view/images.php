@@ -94,7 +94,7 @@ if (isset($action)) {
 
                         if ($tempPath . '.' . $extension == $filePath) {
                             $filename = $title . '.' . $extension;
-                            echo "<pre>" . print_r($filename, true) . "</pre>";
+                            //echo "<pre>" . print_r($filename, true) . "</pre>";
                         }
                     }
                 }
@@ -189,7 +189,7 @@ if ($displayForm) {
                             <div class="card">
                                 <div class="jsgrid-table-panel">
                                     <div id="jsGrid">
-    <table class="jsgrid-table">
+    <table>
        <tbody>
             <tr class="jsgrid-header-row">
             <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;"></th>
@@ -247,14 +247,7 @@ function getImage(string $id)
     return $imageDirectory . "default.png";
 }
 
-function kodex_random_string($length=20){
-    $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $string = '';
-    for($i=0; $i<$length; $i++){
-        $string .= $chars[rand(0, strlen($chars)-1)];
-    }
-    return $string;
-}
+
 
 
 echo '<a class="create" href="?action=create">Create</a>';

@@ -122,5 +122,17 @@ function setDate()
     document.getElementById('date').setAttribute('min', formattedDate);
 }
 
+function validateEmail()
+{
+    var emailInput = document.getElementById("email");
+    var email = emailInput.value;
+    var pattern = /^[\w\.-]+@[\w\.-]+\.\w+$/;
+
+    if (pattern.test(email) == false) {
+        // L'e-mail est invalide, afficher un message d'erreur
+        alert("L'adresse e-mail est invalide.");
+        return false;
+    }
+}
 
 
