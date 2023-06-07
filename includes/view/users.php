@@ -44,7 +44,6 @@ if (isset($action)) {
                 $newUserID = $pdo->lastInsertId();
 
 
-
             } catch (PDOException $e) {
                 echo "Erreur : " . $e->getMessage();
             }
@@ -110,11 +109,29 @@ if (isset($action)) {
         } catch (PDOException $e) {
             die("erreur dans la requete " . $e->getMessage());
         }
+        $imagePath = '../assets/images/profiles/' . $id;
+        echo "<pre>" . print_r($imagePath, true) . "</pre>";
 
+        if (is_dir($imagePath)) {
+            $files = array_diff(scandir($imagePath), array('.', '..')); // Récupère tous les fichiers et dossiers dans le répertoire, en excluant les liens "." et ".."
+
+            foreach ($files as $file) {
+                if (is_dir("$imagePath/$file")) {
+                    deleteDirectory("$imagePath/$file"); // Appel récursif pour supprimer les sous-dossiers
+                } else {
+                    unlink("$imagePath/$file"); // Supprime les fichiers
+                }
+            }
+
+            rmdir($imagePath); // Supprime le dossier
+            echo "Le dossier a été supprimé avec succès.";
+        } else {
+            echo "Le dossier spécifié n'existe pas.";
+        }
     }
 
-
 }
+
 
 $users = getAllUsers();
 $typeCollection = getAllTypes();
@@ -123,23 +140,68 @@ echo '<div class="container">';
 
 if ($displayForm) {
     echo '
-    <form name="userForm" method="POST" action="?action=' . $action . '" onsubmit= "return validateForm2(\'userForm\',\'login\', \'password\'); " onkeypress="verifierCaracteres(event); return false;">
-        Login : <input type="text" name="login"  value="' . ($action == 'update' ? $userInfo->login : '') . '" />
-        <br>
-        Password : <input type="password" name="password"  value="' . ($action == 'update' ? $userInfo->password : '') . '">
-        <br>
-        <input type="hidden" name="user_id" value="' . ($action == 'update' ? $id : '' ) . '">
-        Role:
-            <select name="type_id">';
-        foreach ($typeCollection as $type){
-            echo '<option value ="' . $type->type_id . '"' . ( $action == 'update'   ? $type->role  : '' ) . ' >' . $type->role .'</option>';
-        }
+    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="card">
+                            <div class="card-title">
+                                    <h4>Formulaire</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="input-states">
+                                        
+                                                
+                                                    
+    <form class="form-horizontal" name="userForm" method="POST" action="?action=' . $action . '" onsubmit= "return validateForm(this); " >
+    <div class="form-group ">
 
-        echo '</select>
+    <div class="row">
+                                              
+        <label class="col-sm-3 control-label">Login :</label>
+        <div class="col-sm-9">
+         <input class="form-control" type="text" name="login"  value="' . ($action == 'update' ? $userInfo->login : '') . '" onkeypress="verifierCaracteres(event); return false;"/>
+         </div>
+         
+        <br>
         
-        <input type="submit" name="submit" value="submit">
+        <label class="col-sm-3 control-label">Password :</label>
+        <div class="col-sm-9">
+        <input class="form-control" type="password" name="password"  value="' . ($action == 'update' ? $userInfo->password : '') . '">
+        </div>
+        
+        <br>
+        
+        <input type="hidden" name="user_id" value="' . ($action == 'update' ? $id : '') . '">
+        
+        <div class="form-group">
+        <label>Role:</label>
+            <select class="form-control" name="type_id">';
+    foreach ($typeCollection as $type) {
+        echo '<option value ="' . $type->type_id . '"' . ($action == 'update' ? $type->role : '') . ' >' . $type->role . '</option>';
+    }
+
+    echo '</select>
+            </div>
+        
+        <br>
+        
+        <div class="row">
+                        <div class="col-lg-6">
+                            
+        <button type="submit" class="btn btn-default" name="submit" value="submit">Submit</button>
+        </div>
+                                </div>
+                            
+                        
+                        
         <a href="users.php">Retour</a>
+        
+                                            
     </form>
+    </div>
+            </div>
+            </div>
+            </div>
+            
     ';
 } else {
     echo '
@@ -166,7 +228,6 @@ if ($displayForm) {
     ';
 
 
-
     foreach ($users as $user) {
         if ($user->user_id != $_SESSION['user_id']) {
             echo '<tr class="jsgrid-row" style="display: table-row;">';
@@ -187,11 +248,10 @@ if ($displayForm) {
     }
 
 
-
     echo '</tbody>
     </table>';
-    }
-    echo '</div>
+}
+echo '</div>
                                 </div>
                             </div>
                             <!-- /# card -->
@@ -202,7 +262,6 @@ if ($displayForm) {
 
                     
                 </div>';
-
 
 
 echo '<a class="create" href="?action=create">Create</a>';

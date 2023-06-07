@@ -1,6 +1,11 @@
 <?php
 session_start();
 require_once 'common/SPDO.php';
+$url = $_SERVER['REQUEST_URI'];
+//parse_str(parse_url($url, PHP_URL_QUERY), $params);
+$filename = basename(parse_url($url, PHP_URL_PATH));
+$filenameWithoutExtension = pathinfo($filename, PATHINFO_FILENAME);
+
 
 function creerDossierUtilisateur($nomUtilisateur) {
     $cheminDossier = "../assets/images/profiles/" . $nomUtilisateur;
@@ -73,7 +78,7 @@ echo '
     
     
 </head>
-<body onload="setDate()">
+<body >
 ';
 ?>
 
@@ -287,6 +292,7 @@ echo '
                                         <li>
                                             <a href="#">
                                                 <i class="ti-user"></i>
+                                                <i class="ti-user"></i>
                                                 <span>Profile</span>
                                             </a>
                                         </li>
@@ -342,8 +348,15 @@ echo '
                     <div class="page-header">
                         <div class="page-title">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                                <li class="breadcrumb-item active">Table-Jsgrid</li>
+                                <li class="breadcrumb-item"><a href="<?php echo $filename; ?>"><?php echo $filenameWithoutExtension ?></a></li>
+                                <?php
+                                if (isset($_GET['action'])){
+                                    $action = $_GET['action'];
+                                } else {
+                                    $action = 'Listing';
+                                }
+                                ?>
+                                <li class="breadcrumb-item active"><?php echo $action ; ?> </li>
                             </ol>
                         </div>
                     </div>

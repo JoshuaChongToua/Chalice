@@ -125,29 +125,68 @@ if ($displayForm) {
 
 
     echo '
-    <form name="newsForm" method="POST" action="?action=' . $action . '" onsubmit= "return validateForm(\'newsForm\',\'title\'); "  >
-        <label for="title" class="title-label">Title :</label>  
+    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="card">
+                            <div class="card-title">
+                                    <h4>Input States</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="input-states">
+    <form class="form-horizontal" name="newsForm" method="POST" action="?action=' . $action . '" onsubmit= "return validateForm(\'newsForm\',\'title\'); "  >
+        <div class="form-group ">
+        <div class="row">
+        
+        <label class="col-sm-3 control-label" for="title" class="title-label">Title :</label>  
+        <div class="col-sm-9">
         <input type="text" name="title" placeholder="Title"  value="' . ($action == 'update' ? $newsInfo->title : '') . '" onkeypress="verifierCaracteres(event); return false;" />
+        </div>
+        
         <br>
-        Description: <textarea id="tiny" name="description">' . ($action == 'update' ? $newsInfo->description : '') . '</textarea>
+        
+        <label class="col-sm-3 control-label">Description:</label>
+        <div class="col-sm-9">
+         <textarea id="tiny" name="description">' . ($action == 'update' ? $newsInfo->description : '') . '</textarea>
+        </div>
+        
+        
         <br>';
+
+
     if (!empty($images)) {
-        echo ' Image_id : 
-            <select name="image_id" onchange="getImageSelect( this.value )" >';
-        echo '<option value="--">--</option>';
+        echo '<label class="col-sm-3 control-label">Image_id : </label>
+                <div class="col-sm-9">
+                <select name="image_id" onchange="getImageSelect( this.value )" >
+                </div>
+        <option value="--">--</option>';
 
         foreach ($images as $image) {
 
             echo '<option value="' . $image->image_id . '" data-name="' . $image->name . '" data-id="$image->image_id"  >' . $image->name . '</option>';
         }
         echo '</select>
+            
+            
             <br>';
+
+
     }
     echo '
+    
         Link : <input type="text" name="link" placeholder="Link" value="' . ($action == 'update' ? $newsInfo->link : '') . '" onkeypress="verifierCaracteres(event); return false;" autocomplete="off" />
+        
+        
+        
         <br>
+        
+        
         Date de publication : <input type="date" id="date" name="datePublication" value="">
+        
+        
         <br>
+        
+        
+        
         Enable : 
         <select name="enable">
             <option value="1">True</option>

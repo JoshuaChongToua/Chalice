@@ -116,8 +116,8 @@ if ($displayForm) {
         echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $type->type_id . '</td>';
         echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $type->role . '</td>';
         echo '<td class="jsgrid-cell jsgrid-control-field jsgrid-align-center" style="width: 50px;"> 
-                <a href="?action=update&user_id=' . $type->type_id . '"><span class="jsgrid-button jsgrid-edit-button ti-pencil" type="button" title="Edit"  ></span></a> 
-                <a href="?action=delete&user_id=' . $type->type_id . '"><span class="jsgrid-button jsgrid-delete-button ti-trash" type="button" title="Delete"></span></a> 
+                <a href="?action=update&type_id=' . $type->type_id . '"><span class="jsgrid-button jsgrid-edit-button ti-pencil" type="button" title="Edit"  ></span></a> 
+                <a href="?action=delete&type_id=' . $type->type_id . '"><span class="jsgrid-button jsgrid-delete-button ti-trash" type="button" title="Delete"></span></a> 
                </td>';
         echo '</tr>';
     }

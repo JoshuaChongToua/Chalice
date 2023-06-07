@@ -62,8 +62,31 @@ if (isset($action)) {
                     // Le fichier a été téléchargé avec succès, vous pouvez effectuer d'autres actions si nécessaire
                     echo "L'image a été téléchargée avec succès.";
 
+                    $sqlDeleteImageId = "UPDATE profile SET image_id=NULL WHERE user_id=:userId ;";
+                    $sqlDeleteImage = "DELETE FROM images_profile WHERE user_id=:userId;";
                     $sql = "INSERT INTO images_profile(user_id) VALUES (:userId);";
-                    $sql2 = "UPDATE profile SET image_id=:imageID WHERE user_id=:id;";
+                    $sql2 = "UPDATE profile JOIN images_profile ON images_profile.user_id = profile.user_id SET profile.image_id = images_profile.image_id WHERE profile.user_id = :userId;";
+
+                    try {
+                        global $pdo;
+                        $stat = $pdo->prepare($sqlDeleteImageId);
+                        $stat->bindParam(':userId', $userId, PDO::PARAM_INT);
+                        $stat->execute();
+
+                    } catch (PDOException $e) {
+                        echo 'Errrrrreur : ' . $e->getMessage();
+                    }
+                    try {
+                        global $pdo;
+                        $stat = $pdo->prepare($sqlDeleteImage);
+                        $stat->bindParam(':userId', $userId, PDO::PARAM_INT);
+                        $stat->execute();
+
+                    } catch (PDOException $e) {
+                        echo 'Errrrrreur : ' . $e->getMessage();
+                    }
+
+
                     try {
                         global $pdo;
                         $stat = $pdo->prepare($sql);
@@ -85,8 +108,7 @@ if (isset($action)) {
                     try {
                         global $pdo;
                         $statement = $pdo->prepare($sql2);
-                        $statement->bindParam(':id', $userId, PDO::PARAM_INT);
-                        $statement->bindParam(':imageId', $imageId, PDO::PARAM_INT);
+                        $statement->bindParam(':userId', $userId, PDO::PARAM_INT);
                         $statement->execute();
 
                     } catch (PDOException $e) {
@@ -104,6 +126,10 @@ if (isset($action)) {
     }
 }
     $profileUserData = getProfileById($_SESSION['user_id']);
+
+    $profileImagePath = ($profileUserData->image_id ? '../assets/images/profiles/' . $profileUserData->user_id . '/' . $profileUserData->image_id . '.jpg' : "../assets/images/user-profile.jpg");
+
+
 
     echo '<div class="container">';
 
@@ -134,6 +160,7 @@ if (isset($action)) {
         <input type="file" name="image" >
         <input type="hidden" name="user_id" value="' . ($action == 'updateImage' ? $id : '') . '">
         <input type="hidden" name="image_id" value="' . ($action == 'updateImage' ? $profileUserData->image_id : '') . '">
+        <a href="profile.php">Retour</a>
         <input type="submit" name="submit" value="submit" ">
     </form>';
 
@@ -153,7 +180,7 @@ if (isset($action)) {
                                     <div class="row">
                                         <div class="col-lg-4">
                                             <div class="user-photo m-b-30">
-                                                <a href="?action=updateImage&user_id=' . $profileUserData->user_id . '"> <img class="img-fluid" src="' . ($profileUserData->image_id ?? "../assets/images/user-profile.jpg") . '" alt=""/></a>
+                                                <a href="?action=updateImage&user_id=' . $profileUserData->user_id . '"> <img class="img-fluid" src="' . $profileImagePath . '" alt=""/></a>
                                             </div>
                                         </div>
                                         <div class="col-lg-8">
