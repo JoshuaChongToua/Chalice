@@ -1,6 +1,6 @@
 <?php
 require_once '../header.php';
-require_once "../model/profile.php";
+require_once "../model/profiles.php";
 
 
 if (isset($_GET['action'])) {
@@ -23,8 +23,9 @@ if (isset($action)) {
             $adresse = $_POST['adresse'];
             $email = $_POST['email'];
             $ville = $_POST['ville'];
+            $imageId = $_POST['image_id'];
 
-            $sql = "UPDATE profile SET nom=:nom, prenom=:prenom, phone=:phone, adresse=:adresse, email=:email, ville=:ville WHERE user_id=:id;";
+            $sql = "UPDATE profile SET nom=:nom, prenom=:prenom, phone=:phone, adresse=:adresse, email=:email, ville=:ville, image_id=:imageId WHERE user_id=:id;";
 
             try {
                 global $pdo;
@@ -36,6 +37,7 @@ if (isset($action)) {
                 $statement->bindParam(':adresse', $adresse, PDO::PARAM_STR);
                 $statement->bindParam(':email', $email, PDO::PARAM_STR);
                 $statement->bindParam(':ville', $ville, PDO::PARAM_STR);
+                $statement->bindParam(':imageId', $imageId, PDO::PARAM_STR);
                 $statement->execute();
             } catch (PDOException $e) {
                 echo 'Erreur : ' . $e->getMessage();
@@ -47,7 +49,7 @@ if (isset($action)) {
         if (isset($_POST['submit'])) {
             $userId = $_POST['user_id'];
             $imageId = $_POST['image_id'];
-            echo "<pre>" . print_r($_POST, true) . "</pre>";
+            //echo "<pre>" . print_r($_POST, true) . "</pre>";
 
             $file = $_FILES['image'];
             $tmpFilePath = $file['tmp_name'];
@@ -63,7 +65,7 @@ if (isset($action)) {
                     echo "L'image a été téléchargée avec succès.";
 
                     $sqlDeleteImageId = "UPDATE profile SET image_id=NULL WHERE user_id=:userId ;";
-                    $sqlDeleteImage = "DELETE FROM images_profile WHERE user_id=:userId;";
+                    //$sqlDeleteImage = "DELETE FROM images_profile WHERE user_id=:userId;";
                     $sql = "INSERT INTO images_profile(user_id) VALUES (:userId);";
                     $sql2 = "UPDATE profile JOIN images_profile ON images_profile.user_id = profile.user_id SET profile.image_id = images_profile.image_id WHERE profile.user_id = :userId;";
 
@@ -76,6 +78,8 @@ if (isset($action)) {
                     } catch (PDOException $e) {
                         echo 'Errrrrreur : ' . $e->getMessage();
                     }
+
+                    /*
                     try {
                         global $pdo;
                         $stat = $pdo->prepare($sqlDeleteImage);
@@ -85,6 +89,7 @@ if (isset($action)) {
                     } catch (PDOException $e) {
                         echo 'Errrrrreur : ' . $e->getMessage();
                     }
+                    */
 
 
                     try {
@@ -95,11 +100,8 @@ if (isset($action)) {
 
                         $destination2 = '../assets/images/profiles/' . $userId . '/' . $pdo->lastInsertId() . '.' . $fileExtension;
 
-                        if (rename($destination, $destination2)) {
-                            echo 'Fichier bien renomee';
-                        } else {
-                            echo 'echec';
-                        }
+                        rename($destination, $destination2);
+
                         $displayFormImage = false;
                     } catch (PDOException $e) {
                         echo 'pasla : ' . $e->getMessage();
@@ -124,6 +126,7 @@ if (isset($action)) {
             $displayFormImage = true;
         }
     }
+
 }
     $profileUserData = getProfileById($_SESSION['user_id']);
 
@@ -132,11 +135,15 @@ if (isset($action)) {
 
 
     echo '<div class="container">';
-
+    $images = getImagesProfileById($profileUserData->user_id);
+//echo "<pre>" . print_r($images, true) . "</pre>";
 
     if ($displayForm) {
         echo '
     <form name="profileForm" method="POST" action="?action=' . $action . '" onsubmit="return validateEmail()"  >
+        Photo de profil: <a href="?action=updateImage&user_id=' . $profileUserData->user_id . '"><button type="button" class="btn btn-primary btn-sm btn-addon m-b-5 m-l-5"><i class="ti-plus"></i>Add Photo</button>
+</a>
+        <br>
         Nom : <input type="text" name="nom" value="' . ($action == 'update' ? $profileUserData->nom : '') . '" autocomplete="off">
         <br>
         Prenom : <input type="text" name="prenom" value="' . ($action == 'update' ? $profileUserData->prenom : '') . '" autocomplete="off">
@@ -148,10 +155,34 @@ if (isset($action)) {
         Email : <input type="text" id="email" name="email"  value="' . ($action == 'update' ? $profileUserData->email : '') . '" autocomplete="off">
         <br>
         Ville : <input type="text" name="ville" value="' . ($action == 'update' ? $profileUserData->ville : '') . '" autocomplete="off" >
+        <br>';
+        if (!empty($images)) {
+        echo '
+
+            <label>ImageId:</label>
+                <select class="form-control"  name="image_id" onchange="getImageProfileSelect( this.value )" >';
+
+        foreach ($images as $image) {
+            $selected = ($image->image_id == $profileUserData->image_id) ? 'selected="selected"' : '';
+
+            echo '<option value="' . $image->image_id . '" ' . $selected . ' >' . $image->image_id . '</option>';
+        }
+        echo '</select>
+                
+            
+            <br>';
+        echo '<div id="test" >
+            
+    </div>';
+
+
+    }
+        echo'
+        <input type="hidden" id="user_id" name="user_id" value="' . ($action == 'update' ? $id : '') . '">
+        <button type="submit" name="submit"  class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-check"></i>Submit</button>
         <br>
-        <input type="hidden" name="user_id" value="' . ($action == 'update' ? $id : '') . '">
-        <input type="submit" name="submit" value="submit" ">
-        <a href="profile.php">Retour</a>
+
+        <a class="btn btn-info btn-flat btn-addon m-b-10 m-l-5" href="profiles.php"><i class="ti-back-left"></i></span>Retour</a>
     </form>';
 
     } elseif ($displayFormImage) {
@@ -160,8 +191,8 @@ if (isset($action)) {
         <input type="file" name="image" >
         <input type="hidden" name="user_id" value="' . ($action == 'updateImage' ? $id : '') . '">
         <input type="hidden" name="image_id" value="' . ($action == 'updateImage' ? $profileUserData->image_id : '') . '">
-        <a href="profile.php">Retour</a>
-        <input type="submit" name="submit" value="submit" ">
+        <a class="btn btn-info btn-flat btn-addon m-b-10 m-l-5" href="?action=update&user_id=' . $id . '"><i class="ti-back-left"></i></span>Retour</a>
+        <button type="submit" name="submit" class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-check"></i>Submit</button>
     </form>';
 
 
@@ -180,7 +211,7 @@ if (isset($action)) {
                                     <div class="row">
                                         <div class="col-lg-4">
                                             <div class="user-photo m-b-30">
-                                                <a href="?action=updateImage&user_id=' . $profileUserData->user_id . '"> <img class="img-fluid" src="' . $profileImagePath . '" alt=""/></a>
+                                                 <img class="img-fluid" src="' . $profileImagePath . '" alt=""/>
                                             </div>
                                         </div>
                                         <div class="col-lg-8">
@@ -204,32 +235,29 @@ if (isset($action)) {
                                                 <div class="tab-content">
                                                     <div role="tabpanel" class="tab-pane active" id="1">
                                                         <div class="contact-information">
-                                                            <h4>Contact information</h4>
+                                                            <h4>Contact information   <a href="?action=update&user_id=' . $profileUserData->user_id . '"><span class="jsgrid-button jsgrid-edit-button ti-pencil" type="button" title="Edit"  ></span></a></h4>
+                                                            
+                                                            
                                                             <div class="name-content">
                                                                 <span class="contact-title">Nom:</span>
                                                                 <span class="phone-number">' . $profileUserData->nom . '</span> 
-                                                                <a href="?action=update&user_id=' . $profileUserData->user_id . '"><span class="jsgrid-button jsgrid-edit-button ti-pencil" type="button" title="Edit"  ></span></a> 
 
                                                             </div>
                                                             <div class="name-content">
                                                                 <span class="contact-title">Prenom:</span>
                                                                 <span class="phone-number">' . $profileUserData->prenom . '</span>
-                                                                <a href="?action=update&user_id=' . $profileUserData->user_id . '"><span class="jsgrid-button jsgrid-edit-button ti-pencil" type="button" title="Edit"  ></span></a>
                                                             </div>
                                                             <div class="phone-content">
                                                                 <span class="contact-title">Phone:</span>
                                                                 <span class="phone-number">' . $profileUserData->phone . '</span>
-                                                                <a href="?action=update&user_id=' . $profileUserData->user_id . '"><span class="jsgrid-button jsgrid-edit-button ti-pencil" type="button" title="Edit"  ></span></a>
                                                             </div>
                                                             <div class="address-content">
                                                                 <span class="contact-title">Address:</span>
                                                                 <span class="mail-address">' . $profileUserData->adresse . '</span>
-                                                                <a href="?action=update&user_id=' . $profileUserData->user_id . '"><span class="jsgrid-button jsgrid-edit-button ti-pencil" type="button" title="Edit"  ></span></a>
                                                             </div>
                                                             <div class="email-content">
                                                                 <span class="contact-title">Email:</span>
                                                                 <span class="contact-email">' . $profileUserData->email . '</span>
-                                                                <a href="?action=update&user_id=' . $profileUserData->user_id . '"><span class="jsgrid-button jsgrid-edit-button ti-pencil" type="button" title="Edit"  ></span></a>
                                                             </div>
                                                         </div>
                                                     </div>

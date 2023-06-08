@@ -104,7 +104,7 @@ var form_validation = function() {
         }
     return {
         init: function() {
-            e(), a(), jQuery(".js-select2").on("change", function() {
+            e(), jQuery(".js-select2").on("change", function() {
                 jQuery(this).valid()
             })
         }

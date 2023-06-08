@@ -1,6 +1,8 @@
 <?php
 session_start();
 require_once 'common/SPDO.php';
+require_once "../model/users.php";
+
 $url = $_SERVER['REQUEST_URI'];
 //parse_str(parse_url($url, PHP_URL_QUERY), $params);
 $filename = basename(parse_url($url, PHP_URL_PATH));
@@ -42,6 +44,9 @@ if ($_SERVER['PHP_SELF'] != 'index.php') {
         header("Location:../../../index.php ");
     }
 }
+
+$role = getRole($_SESSION['type_id']);
+//echo $role[0]->role;
 
 
 echo '
@@ -91,13 +96,17 @@ echo '
             </div>
             <ul>
                 <li class="label">Menu</li>
+
                 <li><a class="sidebar-sub-toggle"><i class="ti-user"></i> Users <span
                                 class="sidebar-collapse-icon ti-angle-down"></span></a>
                     <ul>
+                        <?php
+                        if ($role[0]->role == "admin") { ?>
                         <li><a href="users.php">Liste Users</a></li>
                         <li><a href="users.php?action=create">Add User</a></li>
-                        <li><a href="profile.php">Profile</a></li>
-                        <li><a href="../test.html">test</a></li>
+                        <?php } ?>
+
+                        <li><a href="profiles.php">Profile</a></li>
                     </ul>
                 </li>
                 <li><a class="sidebar-sub-toggle"><i class="ti-files"></i> News <span
@@ -107,6 +116,8 @@ echo '
                         <li><a href="news.php?action=create">Add News</a></li>
                     </ul>
                 </li>
+                <?php
+                if ($role[0]->role == "admin") { ?>
                 <li><a class="sidebar-sub-toggle"><i class="ti-target"></i> Types <span
                                 class="sidebar-collapse-icon ti-angle-down"></span></a>
                     <ul>
@@ -114,6 +125,8 @@ echo '
                         <li><a href="types.php?action=create">Add Type</a></li>
                     </ul>
                 </li>
+                <?php } ?>
+
                 <li><a class="sidebar-sub-toggle"><i class="ti-image"></i> Images <span
                                 class="sidebar-collapse-icon ti-angle-down"></span></a>
                     <ul>

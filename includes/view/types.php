@@ -86,8 +86,8 @@ if ($displayForm) {
         Role : <input type="text" name="role" value="' . ($action == 'update' ? $typeInfo->role : '') . '"  />
         <br>
         <input type="hidden" name="type_id" value="' . ($action == 'update' ? $id : '' ) . '">
-        <input type="submit" name="submit" value="submit">
-        <a href="types.php">Retour</a>
+        <button type="submit" name="submit"  class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-check"></i>Submit</button>
+        <a class="btn btn-info btn-flat btn-addon m-b-10 m-l-5" href="types.php"><i class="ti-back-left"></i></span>Retour</a>
 
     </form>
     ';
@@ -103,9 +103,9 @@ if ($displayForm) {
         <tbody>
 
             <tr class="jsgrid-header-row">
-            <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">type_id</th>
-            <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">role</th>
-            <th class="jsgrid-header-cell jsgrid-control-field jsgrid-align-center" style="width: 50px;">
+            <th class="jsgrid-header-cell jsgrid-align-center" style="width: 400px;">type_id</th>
+            <th class="jsgrid-header-cell jsgrid-align-center" style="width: 400px;">role</th>
+            <th class="jsgrid-header-cell jsgrid-control-field jsgrid-align-center" style="width: 400px;">
                     <a href="?action=create"><span class="jsgrid-button jsgrid-mode-button jsgrid-insert-mode-button ti-plus" type="button" title=""></span></a>
             </th>
         </tr>
@@ -137,7 +137,6 @@ echo '</div>
                     
                 </div>';
 
-echo '<a class="create" href="?action=create">Create</a>';
 echo '</div>';
 require_once '../footer.php';
 

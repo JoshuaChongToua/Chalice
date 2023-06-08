@@ -9,6 +9,10 @@
 <script src="../assets/js/lib/bootstrap.min.js"></script>
 
 
+<script src="../assets/js/lib/select2/select2.full.min.js"></script>
+<script src="../assets/js/lib/form-validation/jquery.validate.min.js"></script>
+<script src="../assets/js/lib/form-validation/jquery.validate-init.js"></script>
+
 <script src="../assets/js/lib/jsgrid/db.js"></script>
 <script src="../assets/js/lib/jsgrid/jsgrid.core.js"></script>
 <script src="../assets/js/lib/jsgrid/jsgrid.load-indicator.js"></script>
@@ -55,7 +59,7 @@
                 document.getElementById("test").appendChild(imgElement);
             }
         };
-        var getImageSelect2 = function (string)
+        var getImageProfileSelect = function (string)
         {
             if (string == ""){
                 document.getElementById("test").innerHTML = "";
@@ -69,14 +73,6 @@
                 document.getElementById("test").appendChild(imgElement);
             }
         };
-
-
-
-
-
-
-
-
 
 
         var validateForm = function (form)

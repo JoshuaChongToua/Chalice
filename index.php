@@ -1,7 +1,6 @@
 <?php
 require_once "includes/model/users.php";
 
-require_once "includes/footer.php";
 
 if (!empty($_POST['login']) && !empty($_POST['password'])) {
 
@@ -10,8 +9,13 @@ if (!empty($_POST['login']) && !empty($_POST['password'])) {
         session_start();
         $_SESSION['login'] = $resultat->login;
         $_SESSION['type_id'] = $resultat->type_id;
+        $role = getRole($_SESSION['type_id']);
         $_SESSION['user_id'] = $resultat->user_id;
-        header("Location:includes/view/main.php ");
+        if ($role[0]->role == "customer"){
+            echo "Access denied";
+        } else {
+            header("Location:includes/view/main.php ");
+        }
 
     } else {
         echo "Login ou Password incorrect";
@@ -28,5 +32,7 @@ echo'
     <input type="submit" name="submit" value="submit">
 
 </form>';
+
+require_once "includes/footer.php";
 
 ?>

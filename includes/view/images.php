@@ -177,8 +177,8 @@ if ($displayForm) {
     echo '<br>
         <input type="hidden" name="image_id" value="' . ($action == 'update' ? $id : '') . '" >
         <br>
-        <input type="submit" name="submit" value="submit">
-        <a href="images.php">Retour</a>
+        <button type="submit" name="submit"  class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-check"></i>Submit</button>
+        <a class="btn btn-info btn-flat btn-addon m-b-10 m-l-5" href="images.php"><i class="ti-back-left"></i></span>Retour</a>
     </form>
     ';
 } else {
@@ -250,7 +250,6 @@ function getImage(string $id)
 
 
 
-echo '<a class="create" href="?action=create">Create</a>';
 echo '</div>';
 require_once '../footer.php';
 

@@ -126,15 +126,17 @@ if ($displayForm) {
 
     echo '
     <div class="row">
-                        <div class="col-lg-6">
+                        <div class="col-lg-12">
                             <div class="card">
                             <div class="card-title">
                                     <h4>Input States</h4>
                                 </div>
                                 <div class="card-body">
                                     <div class="input-states">
+                                    
     <form class="form-horizontal" name="newsForm" method="POST" action="?action=' . $action . '" onsubmit= "return validateForm(\'newsForm\',\'title\'); "  >
         <div class="form-group ">
+        
         <div class="row">
         
         <label class="col-sm-3 control-label" for="title" class="title-label">Title :</label>  
@@ -154,10 +156,11 @@ if ($displayForm) {
 
 
     if (!empty($images)) {
-        echo '<label class="col-sm-3 control-label">Image_id : </label>
-                <div class="col-sm-9">
-                <select name="image_id" onchange="getImageSelect( this.value )" >
-                </div>
+        echo '
+                
+                <label>ImageId:</label>
+                <select class="form-control" name="image_id" onchange="getImageSelect( this.value )" >
+                
         <option value="--">--</option>';
 
         foreach ($images as $image) {
@@ -165,42 +168,56 @@ if ($displayForm) {
             echo '<option value="' . $image->image_id . '" data-name="' . $image->name . '" data-id="$image->image_id"  >' . $image->name . '</option>';
         }
         echo '</select>
+          
+            <br>
+       <div id="test" >
             
-            
-            <br>';
+    </div>';
 
 
     }
     echo '
     
-        Link : <input type="text" name="link" placeholder="Link" value="' . ($action == 'update' ? $newsInfo->link : '') . '" onkeypress="verifierCaracteres(event); return false;" autocomplete="off" />
+    <label class="col-sm-3 control-label">Link :</label>
+        <div class="col-sm-9">
+         <input class="form-control" type="text" name="link" placeholder="Link" value="' . ($action == 'update' ? $newsInfo->link : '') . '" onkeypress="verifierCaracteres(event); return false;" autocomplete="off" />
+        </div>
+   
+        <br>
         
+        <label class="col-sm-3 control-label">Date de publication :</label>
+        <div class="col-sm-9">
+         <input type="date" id="date" name="datePublication" value="">
+        </div>
         
         
         <br>
         
         
-        Date de publication : <input type="date" id="date" name="datePublication" value="">
-        
-        
-        <br>
-        
-        
-        
-        Enable : 
-        <select name="enable">
+        <label>Enable :</label>
+        <select class="form-control" name="enable">
             <option value="1">True</option>
             <option value="0">False</option>
         </select>
+        <br>
+        
         <input type="hidden" name="news_id" value="' . ($action == 'update' ? $id : '' ) . '">
-        <input type="submit" name="submit" value="submit">
-        <a href="news.php">Retour</a>
+        
+        <br>
+        
+        <button type="submit" name="submit"  class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-check"></i>Submit</button>
+        
+                                
+                                
+        <a class="btn btn-info btn-flat btn-addon m-b-10 m-l-5" href="news.php"><i class="ti-back-left"></i></span>Retour</a>
 
     </form>
+    </div>
+            </div>
+            </div>
+            </div>
     ';
-    echo '<div id="test" >
-            
-    </div>';
+
 
 } else {
     echo '
@@ -264,7 +281,6 @@ if ($displayForm) {
                     
                 </div>';
 
-echo '<a class="create" href="?action=create">Create</a>';
 echo '</div>';
 
 

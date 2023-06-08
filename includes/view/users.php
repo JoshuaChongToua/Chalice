@@ -140,39 +140,41 @@ echo '<div class="container">';
 
 if ($displayForm) {
     echo '
+<section id="main-content">
     <div class="row">
-                        <div class="col-lg-6">
+                        <div class="col-lg-12">
                             <div class="card">
                             <div class="card-title">
                                     <h4>Formulaire</h4>
                                 </div>
                                 <div class="card-body">
-                                    <div class="input-states">
+                                    <div class="form-validation">
                                         
                                                 
                                                     
-    <form class="form-horizontal" name="userForm" method="POST" action="?action=' . $action . '" onsubmit= "return validateForm(this); " >
-    <div class="form-group ">
-
-    <div class="row">
-                                              
-        <label class="col-sm-3 control-label">Login :</label>
-        <div class="col-sm-9">
-         <input class="form-control" type="text" name="login"  value="' . ($action == 'update' ? $userInfo->login : '') . '" onkeypress="verifierCaracteres(event); return false;"/>
+    <form class="form-valide" name="userForm" method="POST" action="?action=' . $action . '"  >
+    
+    <div class="form-group row ">                             
+        <label class="col-lg-4 col-form-label" for="login">Login :<span class="text-danger">*</span></label>
+        <div class="col-lg-8">
+         <input class="form-control" type="text" id="login" name="login"  value="' . ($action == 'update' ? $userInfo->login : '') . '" onkeypress="verifierCaracteres(event); return false;"/>
          </div>
+    </div>
          
         <br>
         
-        <label class="col-sm-3 control-label">Password :</label>
-        <div class="col-sm-9">
-        <input class="form-control" type="password" name="password"  value="' . ($action == 'update' ? $userInfo->password : '') . '">
+        <div class="form-group row ">                             
+        <label class="col-lg-4 col-form-label" for="password">Password :<span class="text-danger">*</span></label>
+        <div class="col-lg-8">
+        <input class="form-control" id="password" type="password" name="password"  value="' . ($action == 'update' ? $userInfo->password : '') . '">
+        </div>
         </div>
         
         <br>
         
         <input type="hidden" name="user_id" value="' . ($action == 'update' ? $id : '') . '">
         
-        <div class="form-group">
+        
         <label>Role:</label>
             <select class="form-control" name="type_id">';
     foreach ($typeCollection as $type) {
@@ -180,27 +182,25 @@ if ($displayForm) {
     }
 
     echo '</select>
-            </div>
+           
         
         <br>
+      
+                            
+        <button type="submit" name="submit"  class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-check"></i>Submit</button>
         
-        <div class="row">
-                        <div class="col-lg-6">
-                            
-        <button type="submit" class="btn btn-default" name="submit" value="submit">Submit</button>
-        </div>
-                                </div>
-                            
                         
                         
-        <a href="users.php">Retour</a>
+        <a class="btn btn-info btn-flat btn-addon m-b-10 m-l-5" href="users.php"><i class="ti-back-left"></i></span>Retour</a>
         
                                             
     </form>
     </div>
+    </div>
             </div>
             </div>
             </div>
+            </section>
             
     ';
 } else {
@@ -264,7 +264,6 @@ echo '</div>
                 </div>';
 
 
-echo '<a class="create" href="?action=create">Create</a>';
 echo '</div>';
 require_once '../footer.php';
 
