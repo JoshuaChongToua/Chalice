@@ -140,26 +140,82 @@ if (isset($action)) {
 
     if ($displayForm) {
         echo '
-    <form name="profileForm" method="POST" action="?action=' . $action . '" onsubmit="return validateEmail()"  >
+        <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                            <div class="card-title">
+                                    <h4>Formulaire</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-validation">
+        
+    <form class="form-valide" name="profileForm" method="POST" action="?action=' . $action . '" onsubmit="return validateEmail()"  >
+     
+       
+        
+        
         Photo de profil: <a href="?action=updateImage&user_id=' . $profileUserData->user_id . '"><button type="button" class="btn btn-primary btn-sm btn-addon m-b-5 m-l-5"><i class="ti-plus"></i>Add Photo</button>
 </a>
         <br>
-        Nom : <input type="text" name="nom" value="' . ($action == 'update' ? $profileUserData->nom : '') . '" autocomplete="off">
+        
+        <div class="form-group row ">                             
+            <label class="col-lg-3 col-form-label" for="nom">Nom :</label>
+        <div class="col-lg-9">
+          <input class="form-control" type="text" name="nom" value="' . ($action == 'update' ? $profileUserData->nom : '') . '" autocomplete="off">
+        </div>
+        </div>
+        
         <br>
-        Prenom : <input type="text" name="prenom" value="' . ($action == 'update' ? $profileUserData->prenom : '') . '" autocomplete="off">
+        
+        <div class="form-group row ">                             
+            <label class="col-lg-3 col-form-label" for="prenom">Prenom :</label>
+        <div class="col-lg-9">
+        <input class="form-control" type="text" name="prenom" value="' . ($action == 'update' ? $profileUserData->prenom : '') . '" autocomplete="off">
+        </div>
+        </div>
+        
         <br>
-        Phone : <input type="text" name="phone" value="' . ($action == 'update' ? $profileUserData->phone : '') . '" autocomplete="off">
+        
+        <div class="form-group row ">                             
+            <label class="col-lg-3 col-form-label" for="phone">Phone :</label>
+                    <div class="col-lg-9">
+        <input class="form-control" type="text" name="phone" value="' . ($action == 'update' ? $profileUserData->phone : '') . '" autocomplete="off">
+        </div>
+        </div>
+        
         <br>
-        Adresse : <input type="text" name="adresse" value="' . ($action == 'update' ? $profileUserData->adresse : '') . '" autocomplete="off">
+        
+        <div class="form-group row ">                             
+            <label class="col-lg-3 col-form-label" for="adresse">Adresse :</label>
+                    <div class="col-lg-9">
+        <input class="form-control" type="text" name="adresse" value="' . ($action == 'update' ? $profileUserData->adresse : '') . '" autocomplete="off">
+        </div>
+        </div>
+        
         <br>
-        Email : <input type="text" id="email" name="email"  value="' . ($action == 'update' ? $profileUserData->email : '') . '" autocomplete="off">
+        
+        <div class="form-group row ">                             
+            <label class="col-lg-3 col-form-label" for="email">Email :</label>
+                    <div class="col-lg-9">
+         <input class="form-control" type="text" id="email" name="email"  value="' . ($action == 'update' ? $profileUserData->email : '') . '" autocomplete="off">
+        </div>
+        </div>
+        
         <br>
-        Ville : <input type="text" name="ville" value="' . ($action == 'update' ? $profileUserData->ville : '') . '" autocomplete="off" >
+        
+        <div class="form-group row ">                             
+            <label class="col-lg-3 col-form-label" for="ville">Ville :</label>
+                    <div class="col-lg-9">
+        <input class="form-control" type="text" name="ville" value="' . ($action == 'update' ? $profileUserData->ville : '') . '" autocomplete="off" >
+        </div>
+        </div>
+        
         <br>';
         if (!empty($images)) {
         echo '
-
-            <label>ImageId:</label>
+        <div class="form-group row ">                             
+            <label class="col-lg-3 col-form-label">ImageId:</label>
+             <div class="col-lg-9">
                 <select class="form-control"  name="image_id" onchange="getImageProfileSelect( this.value )" >';
 
         foreach ($images as $image) {
@@ -168,6 +224,8 @@ if (isset($action)) {
             echo '<option value="' . $image->image_id . '" ' . $selected . ' >' . $image->image_id . '</option>';
         }
         echo '</select>
+        </div>
+        </div>
                 
             
             <br>';
@@ -179,10 +237,11 @@ if (isset($action)) {
     }
         echo'
         <input type="hidden" id="user_id" name="user_id" value="' . ($action == 'update' ? $id : '') . '">
-        <button type="submit" name="submit"  class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-check"></i>Submit</button>
-        <br>
-
+        
         <a class="btn btn-info btn-flat btn-addon m-b-10 m-l-5" href="profiles.php"><i class="ti-back-left"></i></span>Retour</a>
+
+        <button type="submit" name="submit"  class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-check"></i>Submit</button>
+
     </form>';
 
     } elseif ($displayFormImage) {

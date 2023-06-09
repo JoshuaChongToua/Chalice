@@ -1,15 +1,18 @@
 function getImageSelect (string)
 {
-    if (string == ""){
+    if (string == "--"){
         document.getElementById("test").innerHTML = "";
 
     } else {
-        var imgElement = document.createElement("img");
-        var imgPath = "../assets/images/upload/" + string + ".jpg" ;
-        imgElement.src = imgPath;
-        document.getElementById("test").innerHTML = "";
-        document.getElementById("test").appendChild(imgElement);
+
+            var imgElement = document.createElement("img");
+            var imgPath = "../assets/images/upload/" + string + ".jpg";
+            imgElement.src = imgPath;
+            document.getElementById("test").innerHTML = "";
+            document.getElementById("test").appendChild(imgElement);
+
     }
+
 }
 function getImageProfileSelect (string)
 {

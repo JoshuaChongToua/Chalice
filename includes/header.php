@@ -95,7 +95,7 @@ echo '
                     <span>Chalice Admin</span></a>
             </div>
             <ul>
-                <li class="label">Menu</li>
+
 
                 <li><a class="sidebar-sub-toggle"><i class="ti-user"></i> Users <span
                                 class="sidebar-collapse-icon ti-angle-down"></span></a>

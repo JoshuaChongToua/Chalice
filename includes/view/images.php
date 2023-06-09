@@ -168,17 +168,34 @@ echo '<div class="container">';
 if ($displayForm) {
     //Formulaire pour upload l'image
     echo '
-    <form name="imageForm" action="?action=' . $action . '" method="POST" enctype="multipart/form-data" onsubmit= "return validateForm(\'imageForm\',\'imageTitle\');" onkeypress="verifierCaracteres(event); return false;">
-        <input type="text" name="imageTitle" placeholder="imageTitle" autocomplete="off" value="' . ($action == 'update' ? $image->name : '') . '">
+    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                            <div class="card-title">
+                                    <h4>Formulaire</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-validation">
+                                        
+    <form class="form-valide" name="imageForm" action="?action=' . $action . '" method="POST" enctype="multipart/form-data" onsubmit= "return validateForm(\'imageForm\',\'imageTitle\');" onkeypress="verifierCaracteres(event); return false;">
+            <div class="form-group row ">                             
+        <label class="col-lg-3 col-form-label" for="title">Title :<span class="text-danger">*</span></label>
+        <div class="col-lg-9">
+        <input class="form-control" type="text" name="imageTitle" placeholder="imageTitle" autocomplete="off" value="' . ($action == 'update' ? $image->name : '') . '">
+        </div>
+    </div>
+        
         <br>';
     if ($action != 'update') {
-        echo '<input type="file" name="image" >';
+        echo '
+        <input type="file" name="image" >';
     }
     echo '<br>
         <input type="hidden" name="image_id" value="' . ($action == 'update' ? $id : '') . '" >
         <br>
-        <button type="submit" name="submit"  class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-check"></i>Submit</button>
+        
         <a class="btn btn-info btn-flat btn-addon m-b-10 m-l-5" href="images.php"><i class="ti-back-left"></i></span>Retour</a>
+        <button type="submit" name="submit"  class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-check"></i>Submit</button>
     </form>
     ';
 } else {
@@ -192,11 +209,11 @@ if ($displayForm) {
     <table>
        <tbody>
             <tr class="jsgrid-header-row">
-            <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;"></th>
-            <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">image_id</th>
-            <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">name</th>
-            <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">create_date</th>
-            <th class="jsgrid-header-cell jsgrid-control-field jsgrid-align-center" style="width: 50px;">
+            <th class="jsgrid-header-cell jsgrid-align-center" style="width: 300px;"></th>
+            <th class="jsgrid-header-cell jsgrid-align-center" style="width: 300px;">image_id</th>
+            <th class="jsgrid-header-cell jsgrid-align-center" style="width: 300px;">name</th>
+            <th class="jsgrid-header-cell jsgrid-align-center" style="width: 300px;">create_date</th>
+            <th class="jsgrid-header-cell jsgrid-control-field jsgrid-align-center" style="width: 300px;">
                     <a href="?action=create"><span class="jsgrid-button jsgrid-mode-button jsgrid-insert-mode-button ti-plus" type="button" title=""></span></a>
             </th> 
         </tr>

@@ -129,26 +129,27 @@ if ($displayForm) {
                         <div class="col-lg-12">
                             <div class="card">
                             <div class="card-title">
-                                    <h4>Input States</h4>
+                                    <h4>Formulaire</h4>
                                 </div>
                                 <div class="card-body">
-                                    <div class="input-states">
+                                    <div class="form-validation">
                                     
-    <form class="form-horizontal" name="newsForm" method="POST" action="?action=' . $action . '" onsubmit= "return validateForm(\'newsForm\',\'title\'); "  >
-        <div class="form-group ">
+    <form class="form-valide" name="newsForm" method="POST" action="?action=' . $action . '"   >
         
-        <div class="row">
-        
-        <label class="col-sm-3 control-label" for="title" class="title-label">Title :</label>  
-        <div class="col-sm-9">
-        <input type="text" name="title" placeholder="Title"  value="' . ($action == 'update' ? $newsInfo->title : '') . '" onkeypress="verifierCaracteres(event); return false;" />
+        <div class="form-group row ">
+        <label class="col-lg-3 col-form-label" for="title" >Title :<span class="text-danger"> *</span></label>  
+        <div class="col-lg-9">
+        <input class="form-control" type="text" name="title" placeholder="Title"  value="' . ($action == 'update' ? $newsInfo->title : '') . '" onkeypress="verifierCaracteres(event); return false;" />
+        </div>
         </div>
         
         <br>
         
-        <label class="col-sm-3 control-label">Description:</label>
-        <div class="col-sm-9">
+        <div class="form-group row ">
+        <label class="col-lg-3 col-form-label">Description:</label>
+        <div class="col-lg-9">
          <textarea id="tiny" name="description">' . ($action == 'update' ? $newsInfo->description : '') . '</textarea>
+        </div>
         </div>
         
         
@@ -157,17 +158,21 @@ if ($displayForm) {
 
     if (!empty($images)) {
         echo '
-                
-                <label>ImageId:</label>
+                <div class="form-group row ">
+                <label class="col-lg-3 col-form-label">ImageId:</label>
+                <div class="col-lg-9">
                 <select class="form-control" name="image_id" onchange="getImageSelect( this.value )" >
                 
         <option value="--">--</option>';
 
         foreach ($images as $image) {
+            $selected = ($image->image_id == $newsInfo->image_id) ? 'selected="selected"' : '';
 
-            echo '<option value="' . $image->image_id . '" data-name="' . $image->name . '" data-id="$image->image_id"  >' . $image->name . '</option>';
+            echo '<option value="' . $image->image_id . '" ' . $selected . '  >' . $image->name . '</option>';
         }
         echo '</select>
+        </div>
+        </div>
           
             <br>
        <div id="test" >
@@ -177,40 +182,54 @@ if ($displayForm) {
 
     }
     echo '
-    
-    <label class="col-sm-3 control-label">Link :</label>
-        <div class="col-sm-9">
+        
+    <div class="form-group row ">                             
+    <label class="col-lg-3 col-form-label">Link :</label>
+        <div class="col-lg-9">
          <input class="form-control" type="text" name="link" placeholder="Link" value="' . ($action == 'update' ? $newsInfo->link : '') . '" onkeypress="verifierCaracteres(event); return false;" autocomplete="off" />
+        </div>
         </div>
    
         <br>
         
-        <label class="col-sm-3 control-label">Date de publication :</label>
-        <div class="col-sm-9">
-         <input type="date" id="date" name="datePublication" value="">
+        <div class="form-group row ">                             
+        <label class="col-lg-3 col-form-label">Date de publication :</label>
+        <div class="col-lg-9">
+         <input class="form-control" type="date" id="date" name="datePublication" value="' . ($action == 'update' ? $newsInfo->datePublication : '') . '">
+        </div>
         </div>
         
         
         <br>
         
+        <div class="form-group row ">                                     
+        <label class="col-lg-3 col-form-label">Enable :</label>
         
-        <label>Enable :</label>
-        <select class="form-control" name="enable">
-            <option value="1">True</option>
-            <option value="0">False</option>
-        </select>
+        <div class="col-lg-4">        
+        <input type="radio"  name="enable" value="' . ($action == "update" && $selected == 1 ? 'checked' : '1') . '">
+            <label>True</label>
+            </div>';
+        
+        $selected = $newsInfo->enable;
+        //echo $selected;
+
+        echo '
+         <div class="col-lg-5">        
+        <input type="radio"  name="enable" value="' . ($action == "update" && $selected == 0 ? 'checked="checked"' : '0') . '">
+            <label>False</label>
+        </div>
+        
+        
+        </div>
         <br>
         
         <input type="hidden" name="news_id" value="' . ($action == 'update' ? $id : '' ) . '">
         
         <br>
         
-        <button type="submit" name="submit"  class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-check"></i>Submit</button>
-        
-                                
-                                
         <a class="btn btn-info btn-flat btn-addon m-b-10 m-l-5" href="news.php"><i class="ti-back-left"></i></span>Retour</a>
-
+        <button type="submit" name="submit"  class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-check"></i>Submit</button>
+                         
     </form>
     </div>
             </div>
@@ -221,9 +240,15 @@ if ($displayForm) {
 
 } else {
     echo '
-    <table>
+<div id="main-content">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+    <table class="table table-striped">
     <tbody>
-        <tr>
+           <tr class="jsgrid-header-row">
             <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">news_id</th>
             <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">title</th>
             <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">description</th>
@@ -231,7 +256,7 @@ if ($displayForm) {
             <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">link</th>
             <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">Date de Publication</th>
             <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">Enable</th>
-            <th class="jsgrid-header-cell jsgrid-control-field jsgrid-align-center" style="width: 50px;">
+            <th class="jsgrid-header-cell jsgrid-control-field jsgrid-align-center" style="width: 100px;">
                 <a href="?action=create"><span class="jsgrid-button jsgrid-mode-button jsgrid-insert-mode-button ti-plus" type="button" title=""></span></a>
             </th>  
         </tr>
@@ -246,16 +271,24 @@ if ($displayForm) {
         echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $news->description . '</td>';
         $imageById = isset($news->image_id) ? getImageById($news->image_id) : null;
         if ($imageById) {
-            echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $imageById->name . '</td>';
+            echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 150px;">';
+            echo '<img id="imageTabNews" src="' . getImage($news->image_id) . '">' . PHP_EOL;
+            echo '</td>';
         } else {
-            echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . "" . '</td>';
+            echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . "- - -" . '</td>';
         }
         echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $news->link . '</td>';
         echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $news->datePublication . '</td>';
         if ($news->enable==1){
-            echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">True</td>';
+            echo '
+            <div class="stat-icon dib">
+            <td class="jsgrid-cell jsgrid-align-center" style="width: 100px;"><i class="ti-check color-success border-success"></i></td>
+            </div>';
         } else {
-            echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">False</td>';
+            echo '
+            <div class="stat-icon dib">
+            <td class="jsgrid-cell jsgrid-align-center" style="width: 100px;"><i class="ti-close color-danger border-danger"></i></td>
+            </div>';
 
         }
         echo '<td class="jsgrid-cell jsgrid-control-field jsgrid-align-center" style="width: 50px;"> 
@@ -270,6 +303,7 @@ if ($displayForm) {
     </tbody>
     </table>
     </div>
+    </div>
                                 </div>
                             </div>
                             <!-- /# card -->
@@ -283,7 +317,17 @@ if ($displayForm) {
 
 echo '</div>';
 
+function getImage(string $id)
+{
+    $imageDirectory = '../assets/images/upload/';
 
+    foreach (['jpg', 'jpeg', 'png'] as $extension) {
+        if (file_exists($imageDirectory . $id . '.' . $extension)) {
+            return $imageDirectory . $id . '.' . $extension;
+        }
+    }
+    return $imageDirectory . "default.png";
+}
 
 
 require_once '../footer.php';

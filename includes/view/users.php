@@ -155,8 +155,8 @@ if ($displayForm) {
     <form class="form-valide" name="userForm" method="POST" action="?action=' . $action . '"  >
     
     <div class="form-group row ">                             
-        <label class="col-lg-4 col-form-label" for="login">Login :<span class="text-danger">*</span></label>
-        <div class="col-lg-8">
+        <label class="col-lg-3 col-form-label" for="login">Login :<span class="text-danger">*</span></label>
+        <div class="col-lg-9">
          <input class="form-control" type="text" id="login" name="login"  value="' . ($action == 'update' ? $userInfo->login : '') . '" onkeypress="verifierCaracteres(event); return false;"/>
          </div>
     </div>
@@ -164,8 +164,8 @@ if ($displayForm) {
         <br>
         
         <div class="form-group row ">                             
-        <label class="col-lg-4 col-form-label" for="password">Password :<span class="text-danger">*</span></label>
-        <div class="col-lg-8">
+        <label class="col-lg-3 col-form-label" for="password">Password :<span class="text-danger">*</span></label>
+        <div class="col-lg-9">
         <input class="form-control" id="password" type="password" name="password"  value="' . ($action == 'update' ? $userInfo->password : '') . '">
         </div>
         </div>
@@ -174,8 +174,11 @@ if ($displayForm) {
         
         <input type="hidden" name="user_id" value="' . ($action == 'update' ? $id : '') . '">
         
-        
-        <label>Role:</label>
+       
+               <div class="form-group row ">                             
+
+        <label class="col-lg-3 col-form-label"for="role">Role :<span class="text-danger">*</span></label>
+        <div class="col-lg-9">
             <select class="form-control" name="type_id">';
     foreach ($typeCollection as $type) {
         echo '<option value ="' . $type->type_id . '"' . ($action == 'update' ? $type->role : '') . ' >' . $type->role . '</option>';
@@ -183,17 +186,14 @@ if ($displayForm) {
 
     echo '</select>
            
-        
+        </div>
+        </div>
         <br>
       
-                            
-        <button type="submit" name="submit"  class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-check"></i>Submit</button>
-        
-                        
-                        
         <a class="btn btn-info btn-flat btn-addon m-b-10 m-l-5" href="users.php"><i class="ti-back-left"></i></span>Retour</a>
-        
-                                            
+                   
+        <button type="submit" name="submit"  class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-check"></i>Submit</button>
+                                        
     </form>
     </div>
     </div>
@@ -220,7 +220,7 @@ if ($displayForm) {
                 <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">type id</th>
                 <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">role</th>
                 <th class="jsgrid-header-cell jsgrid-align-center" style="width: 200px;">date</th>
-                <th class="jsgrid-header-cell jsgrid-control-field jsgrid-align-center" style="width: 50px;">
+                <th class="jsgrid-header-cell jsgrid-control-field jsgrid-align-center" style="width: 100px;">
                     <a href="?action=create"><span class="jsgrid-button jsgrid-mode-button jsgrid-insert-mode-button ti-plus" type="button" title=""></span></a>
                 </th>            
             </tr>

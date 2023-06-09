@@ -81,15 +81,37 @@ echo '<div class="container">';
 if ($displayForm) {
 
     echo '
+    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                            <div class="card-title">
+                                    <h4>Formulaire</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-validation">
     
-    <form name="typeForm" method="POST" action="?action=' . $action . '" onsubmit= "return validateForm(\'typeForm\',\'role\'); " onkeypress="verifierCaracteres(event); return false;">
-        Role : <input type="text" name="role" value="' . ($action == 'update' ? $typeInfo->role : '') . '"  />
+    <form class="form-valide" name="typeForm" method="POST" action="?action=' . $action . '"  onkeypress="verifierCaracteres(event); return false;">
+        
+        <div class="form-group row ">                             
+         <label class="col-lg-3 col-form-label" for="login">Role :<span class="text-danger">*</span></label>
+         <div class="col-lg-9">
+        <input class="form-control" type="text" name="role" value="' . ($action == 'update' ? $typeInfo->role : '') . '"  />
+        </div>
+    </div>
+    
         <br>
+        
         <input type="hidden" name="type_id" value="' . ($action == 'update' ? $id : '' ) . '">
+        <br>
         <button type="submit" name="submit"  class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-check"></i>Submit</button>
         <a class="btn btn-info btn-flat btn-addon m-b-10 m-l-5" href="types.php"><i class="ti-back-left"></i></span>Retour</a>
 
     </form>
+     </div>
+    </div>
+            </div>
+            </div>
+            </div>
     ';
 } else {
     echo '
