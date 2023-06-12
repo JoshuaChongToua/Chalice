@@ -17,26 +17,26 @@ if (isset($action)) {
     if ($action == "update") {
         if (isset($_POST['submit'])) {
             $userId = $_POST['user_id'];
-            $nom = $_POST['nom'];
-            $prenom = $_POST['prenom'];
+            $nom = $_POST['name'];
+            $prenom = $_POST['firstName'];
             $phone = $_POST['phone'];
-            $adresse = $_POST['adresse'];
+            $adresse = $_POST['address'];
             $email = $_POST['email'];
-            $ville = $_POST['ville'];
+            $ville = $_POST['city'];
             $imageId = $_POST['image_id'];
 
-            $sql = "UPDATE profile SET nom=:nom, prenom=:prenom, phone=:phone, adresse=:adresse, email=:email, ville=:ville, image_id=:imageId WHERE user_id=:id;";
+            $sql = "UPDATE profile SET name=:name, firstName=:firstName, phone=:phone, address=:address, email=:email, city=:city, image_id=:imageId WHERE user_id=:id;";
 
             try {
                 global $pdo;
                 $statement = $pdo->prepare($sql);
                 $statement->bindParam(':id', $userId, PDO::PARAM_INT);
-                $statement->bindParam(':nom', $nom, PDO::PARAM_STR);
-                $statement->bindParam(':prenom', $prenom, PDO::PARAM_STR);
+                $statement->bindParam(':name', $nom, PDO::PARAM_STR);
+                $statement->bindParam(':firstName', $prenom, PDO::PARAM_STR);
                 $statement->bindParam(':phone', $phone, PDO::PARAM_STR);
-                $statement->bindParam(':adresse', $adresse, PDO::PARAM_STR);
+                $statement->bindParam(':address', $adresse, PDO::PARAM_STR);
                 $statement->bindParam(':email', $email, PDO::PARAM_STR);
-                $statement->bindParam(':ville', $ville, PDO::PARAM_STR);
+                $statement->bindParam(':city', $ville, PDO::PARAM_STR);
                 $statement->bindParam(':imageId', $imageId, PDO::PARAM_STR);
                 $statement->execute();
             } catch (PDOException $e) {
@@ -45,7 +45,7 @@ if (isset($action)) {
         } else {
             $displayForm = true;
         }
-    } else if ($action == "updateImage") {
+    } /*else if ($action == "updateImage") {
         if (isset($_POST['submit'])) {
             $userId = $_POST['user_id'];
             $imageId = $_POST['image_id'];
@@ -79,7 +79,7 @@ if (isset($action)) {
                         echo 'Errrrrreur : ' . $e->getMessage();
                     }
 
-                    /*
+
                     try {
                         global $pdo;
                         $stat = $pdo->prepare($sqlDeleteImage);
@@ -89,7 +89,7 @@ if (isset($action)) {
                     } catch (PDOException $e) {
                         echo 'Errrrrreur : ' . $e->getMessage();
                     }
-                    */
+
 
 
                     try {
@@ -126,25 +126,25 @@ if (isset($action)) {
             $displayFormImage = true;
         }
     }
+ */
 
 }
-    $profileUserData = getProfileById($_SESSION['user_id']);
+$profileUserData = getProfileById($_SESSION['user_id']);
 
-    $profileImagePath = ($profileUserData->image_id ? '../assets/images/profiles/' . $profileUserData->user_id . '/' . $profileUserData->image_id . '.jpg' : "../assets/images/user-profile.jpg");
+$profileImagePath = ($profileUserData->image_id ? '../assets/images/profiles/' . $profileUserData->user_id . '/' . $profileUserData->image_id . '.jpg' : "../assets/images/user-profile.jpg");
 
 
-
-    echo '<div class="container">';
-    $images = getImagesProfileById($profileUserData->user_id);
+echo '<div class="container">';
+$images = getImagesProfileById($profileUserData->user_id);
 //echo "<pre>" . print_r($images, true) . "</pre>";
 
-    if ($displayForm) {
-        echo '
+if ($displayForm) {
+    echo '
         <div class="row">
                         <div class="col-lg-12">
                             <div class="card">
                             <div class="card-title">
-                                    <h4>Formulaire</h4>
+                                    <h4>Update Profile</h4>
                                 </div>
                                 <div class="card-body">
                                     <div class="form-validation">
@@ -154,23 +154,23 @@ if (isset($action)) {
        
         
         
-        Photo de profil: <a href="?action=updateImage&user_id=' . $profileUserData->user_id . '"><button type="button" class="btn btn-primary btn-sm btn-addon m-b-5 m-l-5"><i class="ti-plus"></i>Add Photo</button>
+        Gestion Image Profile: <a href="gestionImageProfile.php?user_id=' . $profileUserData->user_id . '"><button type="button" class="btn btn-primary btn-sm btn-addon m-b-5 m-l-5"><i class="ti-plus"></i>Add Photo</button>
 </a>
         <br>
         
         <div class="form-group row ">                             
-            <label class="col-lg-3 col-form-label" for="nom">Nom :</label>
+            <label class="col-lg-3 col-form-label" for="name">Nom :</label>
         <div class="col-lg-9">
-          <input class="form-control" type="text" name="nom" value="' . ($action == 'update' ? $profileUserData->nom : '') . '" autocomplete="off">
+          <input class="form-control" type="text" name="name" value="' . ($action == 'update' ? $profileUserData->name : '') . '" autocomplete="off">
         </div>
         </div>
         
         <br>
         
         <div class="form-group row ">                             
-            <label class="col-lg-3 col-form-label" for="prenom">Prenom :</label>
+            <label class="col-lg-3 col-form-label" for="firstName">Prenom :</label>
         <div class="col-lg-9">
-        <input class="form-control" type="text" name="prenom" value="' . ($action == 'update' ? $profileUserData->prenom : '') . '" autocomplete="off">
+        <input class="form-control" type="text" name="firstName" value="' . ($action == 'update' ? $profileUserData->firstName : '') . '" autocomplete="off">
         </div>
         </div>
         
@@ -186,9 +186,9 @@ if (isset($action)) {
         <br>
         
         <div class="form-group row ">                             
-            <label class="col-lg-3 col-form-label" for="adresse">Adresse :</label>
+            <label class="col-lg-3 col-form-label" for="address">Adresse :</label>
                     <div class="col-lg-9">
-        <input class="form-control" type="text" name="adresse" value="' . ($action == 'update' ? $profileUserData->adresse : '') . '" autocomplete="off">
+        <input class="form-control" type="text" name="address" value="' . ($action == 'update' ? $profileUserData->address : '') . '" autocomplete="off">
         </div>
         </div>
         
@@ -204,26 +204,50 @@ if (isset($action)) {
         <br>
         
         <div class="form-group row ">                             
-            <label class="col-lg-3 col-form-label" for="ville">Ville :</label>
+            <label class="col-lg-3 col-form-label" for="city">Ville :</label>
                     <div class="col-lg-9">
-        <input class="form-control" type="text" name="ville" value="' . ($action == 'update' ? $profileUserData->ville : '') . '" autocomplete="off" >
+        <input class="form-control" type="text" name="city" value="' . ($action == 'update' ? $profileUserData->city : '') . '" autocomplete="off" >
         </div>
         </div>
         
         <br>';
-        if (!empty($images)) {
+
+
+    if (!empty($images)) {
         echo '
         <div class="form-group row ">                             
             <label class="col-lg-3 col-form-label">ImageId:</label>
-             <div class="col-lg-9">
-                <select class="form-control"  name="image_id" onchange="getImageProfileSelect( this.value )" >';
+             <div class="col-lg-9">';
 
-        foreach ($images as $image) {
+        $imagesPerRow = 6;
+        $imageCount = count($images);
+
+        for ($i = 0; $i < $imageCount; $i++) {
+            $image = $images[$i];
             $selected = ($image->image_id == $profileUserData->image_id) ? 'selected="selected"' : '';
 
-            echo '<option value="' . $image->image_id . '" ' . $selected . ' >' . $image->image_id . '</option>';
+            if ($i % $imagesPerRow == 0) {
+                if ($i != 0) {
+                    echo '</div>';
+                }
+
+                echo '<div class="row">';
+            }
+
+
+            echo '
+        <div class="col-lg-2">
+                <img id="imageTab" src="../assets/images/profiles/' . $profileUserData->user_id . '/' . $image->image_id . '.jpg">
+                
+        <input type="radio" id="imageRadio" name="image_id" value="' . $image->image_id . '">
+        </div>';
         }
-        echo '</select>
+
+// Fermer la dernière ligne
+        echo '</div>';
+
+        echo '
+        </div>
         </div>
         </div>
                 
@@ -235,28 +259,33 @@ if (isset($action)) {
 
 
     }
-        echo'
+    echo '
         <input type="hidden" id="user_id" name="user_id" value="' . ($action == 'update' ? $id : '') . '">
         
-        <a class="btn btn-info btn-flat btn-addon m-b-10 m-l-5" href="profiles.php"><i class="ti-back-left"></i></span>Retour</a>
+        <a class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" href="profiles.php"><i class="ti-back-left"></i></span>Retour</a>
 
         <button type="submit" name="submit"  class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-check"></i>Submit</button>
 
     </form>';
 
-    } elseif ($displayFormImage) {
-        echo '
+} elseif ($displayFormImage) {
+    echo '
     <form name="imageForm" action="?action=' . $action . '" method="POST" enctype="multipart/form-data" >
         <input type="file" name="image" >
         <input type="hidden" name="user_id" value="' . ($action == 'updateImage' ? $id : '') . '">
         <input type="hidden" name="image_id" value="' . ($action == 'updateImage' ? $profileUserData->image_id : '') . '">
         <a class="btn btn-info btn-flat btn-addon m-b-10 m-l-5" href="?action=update&user_id=' . $id . '"><i class="ti-back-left"></i></span>Retour</a>
         <button type="submit" name="submit" class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-check"></i>Submit</button>
-    </form>';
+    </form>
+    </div>
+    </div>
+            </div>
+            </div>
+            </div>';
 
 
-    } else {
-        echo '
+} else {
+    echo '
 
 <div class="content-wrap">
     <div class="main">
@@ -276,7 +305,7 @@ if (isset($action)) {
                                         <div class="col-lg-8">
                                             <div class="user-profile-name">' . $_SESSION['login'] . '</div>
                                             <div class="user-Location">
-                                                <i class="ti-location-pin">' . $profileUserData->ville . '</i>  
+                                                <i class="ti-location-pin">' . $profileUserData->city . '</i>  
                                             </div>
                                             <div class="user-job-title">Product Designer</div>
                                             
@@ -298,13 +327,13 @@ if (isset($action)) {
                                                             
                                                             
                                                             <div class="name-content">
-                                                                <span class="contact-title">Nom:</span>
-                                                                <span class="phone-number">' . $profileUserData->nom . '</span> 
+                                                                <span class="contact-title">Name:</span>
+                                                                <span class="phone-number">' . $profileUserData->name . '</span> 
 
                                                             </div>
                                                             <div class="name-content">
-                                                                <span class="contact-title">Prenom:</span>
-                                                                <span class="phone-number">' . $profileUserData->prenom . '</span>
+                                                                <span class="contact-title">First Name:</span>
+                                                                <span class="phone-number">' . $profileUserData->firstName . '</span>
                                                             </div>
                                                             <div class="phone-content">
                                                                 <span class="contact-title">Phone:</span>
@@ -312,7 +341,7 @@ if (isset($action)) {
                                                             </div>
                                                             <div class="address-content">
                                                                 <span class="contact-title">Address:</span>
-                                                                <span class="mail-address">' . $profileUserData->adresse . '</span>
+                                                                <span class="mail-address">' . $profileUserData->address . '</span>
                                                             </div>
                                                             <div class="email-content">
                                                                 <span class="contact-title">Email:</span>
@@ -333,8 +362,8 @@ if (isset($action)) {
     </div>
 </div>
 ';
-    }
+}
 
-    echo '</div>';
-    require_once '../footer.php';
-    ?>
+echo '</div>';
+require_once '../footer.php';
+?>

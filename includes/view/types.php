@@ -85,7 +85,7 @@ if ($displayForm) {
                         <div class="col-lg-12">
                             <div class="card">
                             <div class="card-title">
-                                    <h4>Formulaire</h4>
+                                    <h4>Add Type</h4>
                                 </div>
                                 <div class="card-body">
                                     <div class="form-validation">
@@ -103,8 +103,8 @@ if ($displayForm) {
         
         <input type="hidden" name="type_id" value="' . ($action == 'update' ? $id : '' ) . '">
         <br>
+        <a class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" href="types.php"><i class="ti-back-left"></i></span>Retour</a>
         <button type="submit" name="submit"  class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-check"></i>Submit</button>
-        <a class="btn btn-info btn-flat btn-addon m-b-10 m-l-5" href="types.php"><i class="ti-back-left"></i></span>Retour</a>
 
     </form>
      </div>
@@ -119,25 +119,26 @@ if ($displayForm) {
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="card">
-                                <div class="jsgrid-table-panel">
-                                    <div id="jsGrid">
-    <table>
-        <tbody>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
 
-            <tr class="jsgrid-header-row">
-            <th class="jsgrid-header-cell jsgrid-align-center" style="width: 400px;">type_id</th>
-            <th class="jsgrid-header-cell jsgrid-align-center" style="width: 400px;">role</th>
-            <th class="jsgrid-header-cell jsgrid-control-field jsgrid-align-center" style="width: 400px;">
-                    <a href="?action=create"><span class="jsgrid-button jsgrid-mode-button jsgrid-insert-mode-button ti-plus" type="button" title=""></span></a>
+           <tr class="jsgrid-align-center">
+            <th style="width: 400px;">#</th>
+            <th style="width: 400px;">Role</th>
+            <th style="width: 400px;">
+                 <a href="?action=create"><span class="jsgrid-button jsgrid-mode-button jsgrid-insert-mode-button ti-plus" type="button" title=""></span></a>
             </th>
         </tr>
-    ';
+         </thead>
+ <tbody> ';
 
     foreach ($types as $type) {
-        echo '<tr class="jsgrid-row" style="display: table-row;">';
-        echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $type->type_id . '</td>';
-        echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $type->role . '</td>';
-        echo '<td class="jsgrid-cell jsgrid-control-field jsgrid-align-center" style="width: 50px;"> 
+        echo '<tr class="jsgrid-align-center" style="display: table-row;">';
+        echo '<td style="width: 100px;">' . $type->type_id . '</td>';
+        echo '<td style="width: 100px;">' . $type->role . '</td>';
+        echo '<td style="width: 50px;"> 
                 <a href="?action=update&type_id=' . $type->type_id . '"><span class="jsgrid-button jsgrid-edit-button ti-pencil" type="button" title="Edit"  ></span></a> 
                 <a href="?action=delete&type_id=' . $type->type_id . '"><span class="jsgrid-button jsgrid-delete-button ti-trash" type="button" title="Delete"></span></a> 
                </td>';

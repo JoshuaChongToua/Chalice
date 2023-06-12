@@ -9,7 +9,8 @@ $filename = basename(parse_url($url, PHP_URL_PATH));
 $filenameWithoutExtension = pathinfo($filename, PATHINFO_FILENAME);
 
 
-function creerDossierUtilisateur($nomUtilisateur) {
+function creerDossierUtilisateur($nomUtilisateur)
+{
     $cheminDossier = "../assets/images/profiles/" . $nomUtilisateur;
 
     if (!file_exists($cheminDossier)) {
@@ -20,15 +21,15 @@ function creerDossierUtilisateur($nomUtilisateur) {
 
 creerDossierUtilisateur($_SESSION['user_id']);
 
-function kodex_random_string($length=20){
+function kodex_random_string($length = 20)
+{
     $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $string = '';
-    for($i=0; $i<$length; $i++){
-        $string .= $chars[rand(0, strlen($chars)-1)];
+    for ($i = 0; $i < $length; $i++) {
+        $string .= $chars[rand(0, strlen($chars) - 1)];
     }
     return $string;
 }
-
 
 
 $isLaragon = "";
@@ -91,24 +92,25 @@ echo '
 <div class="sidebar sidebar-hide-to-small sidebar-shrink sidebar-gestures">
     <div class="nano">
         <div class="nano-content">
-            <div class="logo"><a href="main.php"><img src="../assets/images/logo.png" width="50px" height="50px" alt=""/>
+            <div class="logo"><a href="main.php"><img src="../assets/images/logo.png" width="50px" height="50px"
+                                                      alt=""/>
                     <span>Chalice Admin</span></a>
             </div>
             <ul>
 
+                <?php
+                if ($role[0]->role == "admin") { ?>
+                    <li><a class="sidebar-sub-toggle"><i class="ti-user"></i> Users <span
+                                    class="sidebar-collapse-icon ti-angle-down"></span></a>
+                        <ul>
 
-                <li><a class="sidebar-sub-toggle"><i class="ti-user"></i> Users <span
-                                class="sidebar-collapse-icon ti-angle-down"></span></a>
-                    <ul>
-                        <?php
-                        if ($role[0]->role == "admin") { ?>
-                        <li><a href="users.php">Liste Users</a></li>
-                        <li><a href="users.php?action=create">Add User</a></li>
-                        <?php } ?>
+                            <li><a href="users.php">Liste Users</a></li>
+                            <li><a href="users.php?action=create">Add User</a></li>
+                            <li><a href="profiles.php">Profile</a></li>
 
-                        <li><a href="profiles.php">Profile</a></li>
-                    </ul>
-                </li>
+                        </ul>
+                    </li>
+                <?php } ?>
                 <li><a class="sidebar-sub-toggle"><i class="ti-files"></i> News <span
                                 class="sidebar-collapse-icon ti-angle-down"></span></a>
                     <ul>
@@ -118,13 +120,14 @@ echo '
                 </li>
                 <?php
                 if ($role[0]->role == "admin") { ?>
-                <li><a class="sidebar-sub-toggle"><i class="ti-target"></i> Types <span
-                                class="sidebar-collapse-icon ti-angle-down"></span></a>
-                    <ul>
-                        <li><a href="types.php">Liste Types</a></li>
-                        <li><a href="types.php?action=create">Add Type</a></li>
-                    </ul>
-                </li>
+                    <li><a class="sidebar-sub-toggle"><i class="ti-target"></i> Types <span
+                                    class="sidebar-collapse-icon ti-angle-down"></span></a>
+                        <ul>
+                            <li><a href="types.php">Liste Types</a></li>
+                            <li><a href="types.php?action=create">Add Type</a></li>
+
+                        </ul>
+                    </li>
                 <?php } ?>
 
                 <li><a class="sidebar-sub-toggle"><i class="ti-image"></i> Images <span
@@ -163,13 +166,13 @@ echo '
                                 <div class="dropdown-content-body">
                                     <ul>
                                         <li>
-                                            <a href="#">
+                                            <a href="../logout.php">
                                                 <img class="pull-left m-r-10 avatar-img"
                                                      src="../assets/images/avatar/3.jpg" alt=""/>
                                                 <div class="notification-content">
                                                     <small class="notification-timestamp pull-right">02:34 PM</small>
                                                     <div class="notification-heading">Mr. John</div>
-                                                    <div class="notification-text">5 members joined today</div>
+                                                    <div class="notification-text">6 members joined today</div>
                                                 </div>
                                             </a>
                                         </li>
@@ -296,15 +299,10 @@ echo '
                                     <i class="ti-angle-down f-s-10"></i>
                                 </span>
                             <div class="drop-down dropdown-profile dropdown-menu dropdown-menu-right">
-                                <div class="dropdown-content-heading">
-                                    <span class="text-left">Upgrade Now</span>
-                                    <p class="trial-day">30 Days Trail</p>
-                                </div>
                                 <div class="dropdown-content-body">
                                     <ul>
                                         <li>
-                                            <a href="#">
-                                                <i class="ti-user"></i>
+                                            <a href="profiles.php">
                                                 <i class="ti-user"></i>
                                                 <span>Profile</span>
                                             </a>
@@ -330,7 +328,7 @@ echo '
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="#">
+                                            <a href="../logout.php">
                                                 <i class="ti-power-off"></i>
                                                 <span>Logout</span>
                                             </a>
@@ -345,6 +343,8 @@ echo '
         </div>
     </div>
 </div>
+
+
 <div class="content-wrap">
     <div class="main">
         <div class="container-fluid">
@@ -361,15 +361,17 @@ echo '
                     <div class="page-header">
                         <div class="page-title">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="<?php echo $filename; ?>"><?php echo $filenameWithoutExtension ?></a></li>
+                                <li class="breadcrumb-item"><a
+                                            href="<?php echo $filename; ?>"><?php echo $filenameWithoutExtension ?></a>
+                                </li>
                                 <?php
-                                if (isset($_GET['action'])){
+                                if (isset($_GET['action'])) {
                                     $action = $_GET['action'];
                                 } else {
                                     $action = 'Listing';
                                 }
                                 ?>
-                                <li class="breadcrumb-item active"><?php echo $action ; ?> </li>
+                                <li class="breadcrumb-item active"><?php echo $action; ?> </li>
                             </ol>
                         </div>
                     </div>

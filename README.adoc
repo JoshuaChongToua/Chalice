@@ -1,0 +1,97 @@
+= Compte-rendu Stage
+:toc:
+== Sommaire
+
+Réalisé par : CHONG TOUA Joshua
+
+Date : Du 22/05/2023 au 12/06/2023
+
+== Contexte
+
+Projet pour le stage de première année du BTS SIO, intitulé Chalice,
+c'est un site de publication de news d'une auto éditrice de romans.
+
+== Rendu
+
+On s'est concentré sur la partie Administration de contenus qui permet
+la gestion des utilisateurs, des news, des images.
+Le site est codé avec PHP, HTML, CSS, JAVASCRIPT, SQL.
+Pour le moment le site est en PHP procédurale, puis petit à petit on s'orientera vers du MVC.
+
+
+image::image cr/news.png[]
+Page "news" du site qui, pour l'instant liste les informations des news renseigné dans un formulaire.
+
+---
+
+image::image cr/formuser.png[]
+Exemple du formulaire "Add User" qui permet de créer un utilisateur.
+
+---
+
+image::image cr/formimage.png[]
+Exemple du formulaire "Add Image" qui permet d'ajouter une image pour pouvoir l'utiliser
+dans la création de news.
+
+---
+
+image::image cr/admin.png[]
+Page "profile" où l'on peut rajouter des informations personnelles et une photo de profil.
+
+---
+
+Un Template, téléchargé sur internet et utilisant bootstrap, a été utilisé pour le site.
+Des modifications touchant aux "<class>" et aux "<div>" sont présentes pour adapter le template
+au site.
+
+[source,php]
+----
+[...]
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-title">
+                <h4>Add News</h4>
+            </div>
+            <div class="card-body">
+                <div class="form-validation">
+                    <form class="form-valide" name="newsForm" method="POST" action="?action=' . $action . '"   >
+                        <div class="form-group row ">
+                            <label class="col-lg-3 col-form-label" for="title" >Title :<span class="text-danger"> *</span></label>
+                                <div class="col-lg-9">
+                                    <input class="form-control" type="text" name="title" placeholder="Title"  value="' . ($action == 'update' ? $newsInfo->title : '') . '" onkeypress="verifierCaracteres(event); return false;" />
+                                </div>
+                        </div>
+
+                        <br>
+
+                        <div class="form-group row ">
+                            <label class="col-lg-3 col-form-label">Description:</label>
+                                <div class="col-lg-9">
+                                    <textarea id="tiny" name="description">' . ($action == 'update' ? $newsInfo->description : '') . '</textarea>
+                                </div>
+                        </div>
+
+                        <br>';
+
+
+                        if (!empty($images)) {
+                        echo '
+                            <div class="form-group row ">
+                                <label class="col-lg-3 col-form-label">ImageId:</label>
+                                <div class="col-lg-9">
+                                    <select class="form-control" name="image_id" onchange="getImageSelect( this.value )" >
+                                        <option value="--">--</option>';
+
+                                        foreach ($images as $image) {
+                                        $selected = ($image->image_id == $newsInfo->image_id) ? 'selected="selected"' : '';
+                                        echo '<option value="' . $image->image_id . '" ' . $selected . '  >' . $image->name . '</option>';
+                                        }
+                                        echo '</select>
+[...]
+----
+Voici un extrait de code qui utilise du PHP, HTML , et où on peut voir les balises <div class"...">
+utilisées.
+
+
+

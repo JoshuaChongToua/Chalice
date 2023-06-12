@@ -31,12 +31,12 @@ if (isset($action)) {
             }
 
             $link = $_POST['link'];
-            $datePublication = $_POST['datePublication'];
+            $PublicationDate = $_POST['PublicationDate'];
             $enable = $_POST['enable'];
             //echo "<pre>" . print_r($_POST, true) . "</pre>";
 
 
-            $sql = "INSERT INTO news(title, description, image_id, link, datePublication, enable) VALUES (:title, :description, :image_id, :link, :date, :enable);";
+            $sql = "INSERT INTO news(title, description, image_id, link, PublicationDate, enable) VALUES (:title, :description, :image_id, :link, :date, :enable);";
 
             try {
                 global $pdo;
@@ -45,7 +45,7 @@ if (isset($action)) {
                 $statement->bindParam(':description', $description, PDO::PARAM_STR);
                 $statement->bindParam(':image_id', $imageId, PDO::PARAM_INT);
                 $statement->bindParam(':link', $link, PDO::PARAM_STR);
-                $statement->bindParam(':date', $datePublication, PDO::PARAM_STR);
+                $statement->bindParam(':date', $PublicationDate, PDO::PARAM_STR);
                 $statement->bindParam(':enable', $enable, PDO::PARAM_STR);
                 $statement->execute();
             } catch (PDOException $e) {
@@ -68,11 +68,11 @@ if (isset($action)) {
             }
             $link = $_POST['link'];
             $id = $_POST['news_id'];
-            $datePublication = $_POST['datePublication'];
+            $PublicationDate = $_POST['PublicationDate'];
             $enable = $_POST['enable'];
 
 
-            $sql = "UPDATE news SET title=:title, description=:description, image_id=:image_id, link=:link, datePublication=:date, enable=:enable WHERE news_id=:id;";
+            $sql = "UPDATE news SET title=:title, description=:description, image_id=:image_id, link=:link, PublicationDate=:date, enable=:enable WHERE news_id=:id;";
 
             try {
                 global $pdo;
@@ -82,7 +82,7 @@ if (isset($action)) {
                 $statement->bindParam(':description', $description, PDO::PARAM_STR);
                 $statement->bindParam(':image_id', $imageId, PDO::PARAM_INT);
                 $statement->bindParam(':link', $link, PDO::PARAM_STR);
-                $statement->bindParam(':date', $datePublication, PDO::PARAM_STR);
+                $statement->bindParam(':date', $PublicationDate, PDO::PARAM_STR);
                 $statement->bindParam(':enable', $enable, PDO::PARAM_STR);
                 $statement->execute();
             } catch (PDOException $e) {
@@ -129,7 +129,7 @@ if ($displayForm) {
                         <div class="col-lg-12">
                             <div class="card">
                             <div class="card-title">
-                                    <h4>Formulaire</h4>
+                                    <h4>Add News</h4>
                                 </div>
                                 <div class="card-body">
                                     <div class="form-validation">
@@ -195,13 +195,18 @@ if ($displayForm) {
         <div class="form-group row ">                             
         <label class="col-lg-3 col-form-label">Date de publication :</label>
         <div class="col-lg-9">
-         <input class="form-control" type="date" id="date" name="datePublication" value="' . ($action == 'update' ? $newsInfo->datePublication : '') . '">
+         <input class="form-control" type="date" id="date" name="PublicationDate" value="' . ($action == 'update' ? $newsInfo->PublicationDate : '') . '">
         </div>
         </div>
         
         
-        <br>
-        
+        <br>';
+
+        if ($action == "update") {
+            $selected = $newsInfo->enable;
+        }
+        echo '
+
         <div class="form-group row ">                                     
         <label class="col-lg-3 col-form-label">Enable :</label>
         
@@ -210,7 +215,7 @@ if ($displayForm) {
             <label>True</label>
             </div>';
         
-        $selected = $newsInfo->enable;
+
         //echo $selected;
 
         echo '
@@ -227,7 +232,7 @@ if ($displayForm) {
         
         <br>
         
-        <a class="btn btn-info btn-flat btn-addon m-b-10 m-l-5" href="news.php"><i class="ti-back-left"></i></span>Retour</a>
+        <a class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" href="news.php"><i class="ti-back-left"></i></span>Retour</a>
         <button type="submit" name="submit"  class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-check"></i>Submit</button>
                          
     </form>
@@ -247,51 +252,47 @@ if ($displayForm) {
                                 <div class="card-body">
                                     <div class="table-responsive">
     <table class="table table-striped">
-    <tbody>
-           <tr class="jsgrid-header-row">
-            <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">news_id</th>
-            <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">title</th>
-            <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">description</th>
-            <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">image_id</th>
-            <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">link</th>
-            <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">Date de Publication</th>
-            <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">Enable</th>
-            <th class="jsgrid-header-cell jsgrid-control-field jsgrid-align-center" style="width: 100px;">
-                <a href="?action=create"><span class="jsgrid-button jsgrid-mode-button jsgrid-insert-mode-button ti-plus" type="button" title=""></span></a>
+        <thead>
+           <tr class="jsgrid-align-center">
+            <th style="width: 150px;">#</th>
+            <th style="width: 150px;">Title</th>
+            <th style="width: 150px;">Description</th>
+            <th style="width: 150px;">Image</th>
+            <th style="width: 150px;">Link</th>
+            <th style="width: 150px;">Publication Date</th>
+            <th style="width: 150px;">Enable</th>
+            <th style="width: 100px;">
+                <a href="?action=create"><span class="jsgrid-button jsgrid-mode-button jsgrid-insert-mode-button ti-plus jsgrid-align-center" type="button" title=""></span></a>
             </th>  
         </tr>
-    ';
-    //echo "<pre>" . print_r($newsCollection, true) . "</pre>";
-    //echo "<pre>" . print_r($images, true) . "</pre>";
+ </thead>
+    <tbody>';
 
     foreach ($newsCollection as $news) {
-        echo '<tr class="jsgrid-row" data-newsid="' . $news->news_id . '" style="display: table-row;">';
-        echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 150px;">' . $news->news_id . '</td>';
-        echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $news->title . '</td>';
-        echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $news->description . '</td>';
+        echo '<tr class="jsgrid-align-center" data-newsid="' . $news->news_id . '" style="display: table-row;">';
+        echo '<td style="width: 150px;">' . $news->news_id . '</td>';
+        echo '<td style="width: 100px;">' . $news->title . '</td>';
+        echo '<td style="width: 100px;">' . $news->description . '</td>';
         $imageById = isset($news->image_id) ? getImageById($news->image_id) : null;
         if ($imageById) {
-            echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 150px;">';
+            echo '<td style="width: 150px;">';
             echo '<img id="imageTabNews" src="' . getImage($news->image_id) . '">' . PHP_EOL;
             echo '</td>';
         } else {
-            echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . "- - -" . '</td>';
+            echo '<td style="width: 100px;">' . "- - -" . '</td>';
         }
-        echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $news->link . '</td>';
-        echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $news->datePublication . '</td>';
+        echo '<td style="width: 100px;">' . $news->link . '</td>';
+        echo '<td style="width: 100px;">' . $news->PublicationDate . '</td>';
         if ($news->enable==1){
             echo '
-            <div class="stat-icon dib">
-            <td class="jsgrid-cell jsgrid-align-center" style="width: 100px;"><i class="ti-check color-success border-success"></i></td>
-            </div>';
+            <td style="width: 100px;"><i class="ti-check color-success border-success"></i></td>
+            ';
         } else {
             echo '
-            <div class="stat-icon dib">
-            <td class="jsgrid-cell jsgrid-align-center" style="width: 100px;"><i class="ti-close color-danger border-danger"></i></td>
-            </div>';
+            <td style="width: 100px;"><i class="ti-close color-danger border-danger"></i></td>';
 
         }
-        echo '<td class="jsgrid-cell jsgrid-control-field jsgrid-align-center" style="width: 50px;"> 
+        echo '<td style="width: 50px;"> 
                 <a href="?action=update&news_id=' . $news->news_id . '"><span class="jsgrid-button jsgrid-edit-button ti-pencil" type="button" title="Edit"  ></span></a> 
                 <a href="?action=delete&news_id=' . $news->news_id . '"><span class="jsgrid-button jsgrid-delete-button ti-trash" type="button" title="Delete"></span></a> 
                 </td>';

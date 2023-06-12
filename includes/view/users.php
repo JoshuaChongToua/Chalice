@@ -145,7 +145,7 @@ if ($displayForm) {
                         <div class="col-lg-12">
                             <div class="card">
                             <div class="card-title">
-                                    <h4>Formulaire</h4>
+                                    <h4>Add User</h4>
                                 </div>
                                 <div class="card-body">
                                     <div class="form-validation">
@@ -190,7 +190,7 @@ if ($displayForm) {
         </div>
         <br>
       
-        <a class="btn btn-info btn-flat btn-addon m-b-10 m-l-5" href="users.php"><i class="ti-back-left"></i></span>Retour</a>
+        <a class="btn btn-default btn-flat btn-addon m-b-10 m-l-5" href="users.php"><i class="ti-back-left"></i></span>Retour</a>
                    
         <button type="submit" name="submit"  class="btn btn-success btn-flat btn-addon m-b-10 m-l-5"><i class="ti-check"></i>Submit</button>
                                         
@@ -209,37 +209,33 @@ if ($displayForm) {
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="card">
-                                <div class="jsgrid-table-panel">
-                                    <div id="jsGrid">
-    <table>
-        <tbody>
-            <tr class="jsgrid-header-row">
-                <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">user_id</th>
-                <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">Login</th>
-                <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">Password</th>
-                <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">type id</th>
-                <th class="jsgrid-header-cell jsgrid-align-center" style="width: 150px;">role</th>
-                <th class="jsgrid-header-cell jsgrid-align-center" style="width: 200px;">date</th>
-                <th class="jsgrid-header-cell jsgrid-control-field jsgrid-align-center" style="width: 100px;">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+    <table class="table table-striped">
+            <thead>
+           <tr class="jsgrid-align-center">
+                <th style="width: 150px;">#</th>
+                <th style="width: 150px;">Login</th>
+                <th style="width: 150px;">Role</th>
+                <th style="width: 200px;">Create Date</th>
+                <th style="width: 100px;">
                     <a href="?action=create"><span class="jsgrid-button jsgrid-mode-button jsgrid-insert-mode-button ti-plus" type="button" title=""></span></a>
                 </th>            
             </tr>
-        
-    ';
+         </thead>
+           <tbody>';
 
 
     foreach ($users as $user) {
         if ($user->user_id != $_SESSION['user_id']) {
-            echo '<tr class="jsgrid-row" style="display: table-row;">';
-            echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 150px;">' . $user->user_id . '</td>';
-            echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $user->login . '</td>';
-            echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $user->password . '</td>';
-            echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $user->type_id . '</td>';
+            echo '<tr class="jsgrid-align-center" style="display: table-row;">';
+            echo '<td style="width: 150px;">' . $user->user_id . '</td>';
+            echo '<td style="width: 100px;">' . $user->login . '</td>';
             $role = getRole($user->type_id);
             //echo "<pre>" . print_r($role, true) . "</pre>";
-            echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $role[0]->role . '</td>';
-            echo '<td class="jsgrid-cell jsgrid-align-center" style="width: 100px;">' . $user->create_date . '</td>';
-            echo '<td class="jsgrid-cell jsgrid-control-field jsgrid-align-center" style="width: 50px;"> 
+            echo '<td style="width: 100px;">' . $role[0]->role . '</td>';
+            echo '<td style="width: 100px;">' . $user->create_date . '</td>';
+            echo '<td style="width: 50px;"> 
                 <a href="?action=update&user_id=' . $user->user_id . '"><span class="jsgrid-button jsgrid-edit-button ti-pencil" type="button" title="Edit"  ></span></a> 
                 <a href="?action=delete&user_id=' . $user->user_id . '"><span class="jsgrid-button jsgrid-delete-button ti-trash" type="button" title="Delete"></span></a> 
                 </td>';

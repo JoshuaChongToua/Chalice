@@ -1,3 +1,16 @@
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(25px, 1fr));
+    grid-gap: 0px;
+    justify-content: center;
+    align-items: center;
+    grid-auto-flow: dense;
+}
+
+.image-wrapper {
+    text-align: center;
+}
+
 #imageTab {
     height: 100px;
     width: 100px;
@@ -6,5 +19,11 @@
 #imageTabNews {
     height: 50px;
     width: 50px;
+}
+
+#imageRadio {
+    display: block;
+    margin-top: 5px;
+    margin-left: 18%;
 }
 
