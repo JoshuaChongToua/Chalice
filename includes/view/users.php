@@ -24,26 +24,24 @@ if (isset($_GET['user_id'])) {
 if (isset($action)) {
     if ($action == "create") {
         $displayForm = true;
-        // si le formulaire a été submit
+        // si le formulaire a été soumis
         if (isset($_POST['login']) && isset($_POST['password'])) {
             $login = $_POST['login'];
             $password = $_POST['password'];
             $typeId = $_POST['type_id'];
-            //$idUser = $_POST['user_id'];
+
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
             $sql = "INSERT INTO users(login, password, type_id) VALUES (:login, :password, :typeId);";
             $sql2 = "INSERT INTO profile(user_id) VALUES (:id);";
             try {
                 global $pdo;
                 $statement = $pdo->prepare($sql);
-                //var_dump($statement);
                 $statement->bindParam(':login', $login, PDO::PARAM_STR);
-                $statement->bindParam(':password', $password, PDO::PARAM_STR);
+                $statement->bindParam(':password', $hashedPassword, PDO::PARAM_STR);
                 $statement->bindParam(':typeId', $typeId, PDO::PARAM_INT);
                 $statement->execute();
                 $newUserID = $pdo->lastInsertId();
-
-
             } catch (PDOException $e) {
                 echo "Erreur : " . $e->getMessage();
             }
@@ -59,9 +57,9 @@ if (isset($action)) {
 
             // on retire le formulaire
             $displayForm = false;
-
         }
-    } else if ($action == "update") {
+    }
+    else if ($action == "update") {
         // si le formulaire a été submit
         if (isset($_POST['login']) && isset($_POST['password'])) {
             $login = $_POST['login'];

@@ -1,6 +1,6 @@
 <?php
 require_once "D:\laragon\www\Chalice\includes\common\SPDO.php";
-function getVerification($login,$password)
+/*function getVerification($login,$password)
 {
     global $pdo;
     $query = "SELECT * FROM users WHERE login=:login and password=:password";
@@ -16,6 +16,25 @@ function getVerification($login,$password)
         return false;
     }
 }
+*/
+
+function getVerification($login, $password)
+{
+    global $pdo;
+    $query = "SELECT * FROM users WHERE login=:login";
+    $prep = $pdo->prepare($query);
+    $prep->bindValue(':login', $login, PDO::PARAM_STR);
+    $prep->execute();
+    $result = $prep->fetch(PDO::FETCH_OBJ);
+
+    if ($result && password_verify($password, $result->password)) {
+        return $result;
+    } else {
+        return false;
+    }
+}
+
+
 
 
 function getAllUsers()
